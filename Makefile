@@ -8,7 +8,9 @@ LIBFT_DIR	:= ./libft
 HEADERS	:= -I ./include -I $(MLX_DIR)/include -I $(LIBFT)/include
 MLX42	:= $(MLX_DIR)/build/libmlx42.a
 LIBFT	:= $(LIBFT_DIR)/libft.a
-SRCS	:= 	main.c
+SRCS	:= 	cub3d.c \
+			move_player.c \
+			render_walls.c \
 			
 OBJS	:= ${SRCS:.c=.o}
 
