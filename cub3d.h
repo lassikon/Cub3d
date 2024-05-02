@@ -24,12 +24,11 @@
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
 
-typedef struct player_s
-{
-	float	x;
-	float	y;
+typedef struct  s_player{
+	int		x;
+	int		y;
 	float	angle;
-} 			player_t;
+} t_player;
 
 typedef struct s_scene
 {
@@ -43,20 +42,28 @@ typedef struct s_scene
 }			t_scene;
 
 typedef struct  ray_s{
-	float	x;
-	float	y;
+	int		hx;
+	int		hy;
+	int		vx;
+	int		vy;
+	int		hx_step;
+	int		hy_step;
+	int		vx_step;
+	int		vy_step;
+	float	distance_to_horizontal;
+	float	distance_to_vertical;
+	int		collision;
+	int 	wall_direction;
 	float	distance;
 	float	angle;
-	int		hit;
-	int 	vertical;
-	int 	wall_direction;
-} ray_t;
+} t_ray;
 
 typedef struct s_game {
 	mlx_t		*mlx;
 	mlx_image_t	*image;
-	player_t	p;
+	t_player	p;
 	int			map[MAP_HEIGHT][MAP_WIDTH];
+	int			distance_to_projection_plane;
 } t_game;
 
 void	move_player(t_game *game);

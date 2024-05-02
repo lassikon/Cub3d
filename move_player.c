@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/01 19:55:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/02 16:28:45 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	move_forward(t_game *game)
 {
-	float	new_x;
-	float	new_y;
+	int		new_x;
+	int		new_y;
 
 	new_x = game->p.x + cos(game->p.angle) * MOVEMENT_SPEED;
 	new_y = game->p.y + sin(game->p.angle) * MOVEMENT_SPEED;
-	if (game->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+	if (game->map[new_y / TILE_SIZE][new_x / TILE_SIZE] == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -28,12 +28,12 @@ void	move_forward(t_game *game)
 
 void	move_backward(t_game *game)
 {
-	float	new_x;
-	float	new_y;
+	int		new_x;
+	int		new_y;
 
 	new_x = game->p.x - cos(game->p.angle) * MOVEMENT_SPEED;
 	new_y = game->p.y - sin(game->p.angle) * MOVEMENT_SPEED;
-	if (game->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+	if (game->map[new_y / TILE_SIZE][new_x / TILE_SIZE] == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -42,12 +42,12 @@ void	move_backward(t_game *game)
 
 void	move_left(t_game *game)
 {
-	float	new_x;
-	float	new_y;
+	int		new_x;
+	int		new_y;
 
 	new_x = game->p.x - cos(game->p.angle + M_PI / 2) * STRAFE_SPEED;
 	new_y = game->p.y - sin(game->p.angle + M_PI / 2) * STRAFE_SPEED;
-	if (game->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+	if (game->map[new_y / TILE_SIZE][new_x / TILE_SIZE] == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -56,12 +56,12 @@ void	move_left(t_game *game)
 
 void	move_right(t_game *game)
 {
-	float	new_x;
-	float	new_y;
+	int		new_x;
+	int		new_y;
 
 	new_x = game->p.x + cos(game->p.angle + M_PI / 2) * STRAFE_SPEED;
 	new_y = game->p.y + sin(game->p.angle + M_PI / 2) * STRAFE_SPEED;
-	if (game->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+	if (game->map[new_y / TILE_SIZE][new_x / TILE_SIZE] == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;

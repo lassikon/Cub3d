@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/02 13:02:44 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/02 16:27:40 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,20 @@ void	init_game(t_game *game)
 {
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
 	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	game->p.x = TILE_SIZE * 1.5f;
-	game->p.y = TILE_SIZE * 1.5f;
-	game->p.angle = 0.0f;
+	game->distance_to_projection_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
+	game->p.x = 1 * TILE_SIZE + (TILE_SIZE / 2);
+	game->p.y = 1 * TILE_SIZE + (TILE_SIZE / 2);
+	game->p.angle = 0;
+	// game->p.angle = M_PI / 2;
 	ft_memcpy(game->map, map, sizeof(map));
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
 }
 
 void	game_loop(void *param)
 {
-	t_game *game = (t_game *)param;
+	t_game	*game;
 
+	game = (t_game *)param;
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
 	render_walls(game);
@@ -47,13 +50,13 @@ void	game_loop(void *param)
 
 int	main(int argc, char **argv)
 {
-	//t_game	game;
+	t_game	game;
 	t_scene	scene;
 
 	check_args(&scene, argc, argv);
-	// init_game(&game);
-	// mlx_loop_hook(game.mlx, game_loop, &game);
-	// mlx_loop(game.mlx);
-	// mlx_terminate(game.mlx);
-	// return (0);
+	init_game(&game);
+	mlx_loop_hook(game.mlx, game_loop, &game);
+	mlx_loop(game.mlx);
+	mlx_terminate(game.mlx);
+	return (0);
 }
