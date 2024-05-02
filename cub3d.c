@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/01 19:52:14 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:02:44 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,15 @@ void	game_loop(void *param)
 		mlx_close_window(game->mlx);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	t_game	game;
+	//t_game	game;
+	t_scene	scene;
 
-	init_game(&game);
-	mlx_loop_hook(game.mlx, game_loop, &game);
-	mlx_loop(game.mlx);
-	mlx_terminate(game.mlx);
-	return (0);
+	check_args(&scene, argc, argv);
+	// init_game(&game);
+	// mlx_loop_hook(game.mlx, game_loop, &game);
+	// mlx_loop(game.mlx);
+	// mlx_terminate(game.mlx);
+	// return (0);
 }

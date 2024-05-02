@@ -12,6 +12,7 @@
 
 # include "libft/include/libft.h"
 # include "MLX42/include/MLX42/MLX42.h"
+# include "token.h"
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -23,11 +24,23 @@
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
 
-typedef struct  player_s{
+typedef struct player_s
+{
 	float	x;
 	float	y;
 	float	angle;
-} player_t;
+} 			player_t;
+
+typedef struct s_scene
+{
+	char	*no_texture;
+	char	*so_texture;
+	char	*we_texture;
+	char	*ea_texture;
+	int		floor_color[3];
+	int		ceiling_color[3];
+	char	**map;
+}			t_scene;
 
 typedef struct  ray_s{
 	float	x;
@@ -48,5 +61,8 @@ typedef struct s_game {
 
 void	move_player(t_game *game);
 void	render_walls(t_game *game);
+void	check_args(t_scene *scene, int argc, char **argv);
+void    tokenize(t_list	**head, char *line);
+void	malloc_guard(t_list **head, void *ptr);
 
 #endif
