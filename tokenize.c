@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/02 15:06:38 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/02 18:27:07 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	take_textures(t_list **head, char *line, t_type type, size_t *iter)
+/* void	take_textures(t_list **head, char *line, t_type type, size_t *iter)
 {
 	t_token	token;
 	t_token	*tokenp;
@@ -120,4 +120,4 @@ void	malloc_guard(t_list **head, void *ptr)
 		printf("Malloc failed");
 		exit(1);
 	}
-}
+} */

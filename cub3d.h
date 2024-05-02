@@ -15,22 +15,24 @@
 # include "token.h"
 
 #define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
+#define SCREEN_HEIGHT 512
 #define TILE_SIZE 64
-#define FOV (M_PI / 3) // Field of view (60 degrees)
-#define MOVEMENT_SPEED 4.0f
-#define STRAFE_SPEED 2.5f
-#define ROTATION_SPEED (M_PI / 100)
+#define PI 3.14159265359
+#define FOV 1.0471975512 // 60 degrees
+#define MOVE_SPEED 4
+#define STRAFE_SPEED 2
+#define ROTATION_SPEED (M_PI / 90) // 2 degrees
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
+#define MINIMAP_SIZE 128
 
-typedef struct  s_player{
+typedef struct  s_player {
 	int		x;
 	int		y;
 	float	angle;
 } t_player;
 
-typedef struct s_scene
+/* typedef struct s_scene
 {
 	char	*no_texture;
 	char	*so_texture;
@@ -39,9 +41,9 @@ typedef struct s_scene
 	int		floor_color[3];
 	int		ceiling_color[3];
 	char	**map;
-}			t_scene;
+}			t_scene; */
 
-typedef struct  ray_s{
+typedef struct  ray_s {
 	int		hx;
 	int		hy;
 	int		vx;
@@ -61,15 +63,17 @@ typedef struct  ray_s{
 typedef struct s_game {
 	mlx_t		*mlx;
 	mlx_image_t	*image;
+	mlx_image_t	*minimap;
 	t_player	p;
-	int			map[MAP_HEIGHT][MAP_WIDTH];
+	char		**map;
 	int			distance_to_projection_plane;
 } t_game;
 
 void	move_player(t_game *game);
 void	render_walls(t_game *game);
-void	check_args(t_scene *scene, int argc, char **argv);
-void    tokenize(t_list	**head, char *line);
-void	malloc_guard(t_list **head, void *ptr);
+int		wall_collision(char **map, int x, int y);
+// void	check_args(t_scene *scene, int argc, char **argv);
+// void    tokenize(t_list	**head, char *line);
+// void	malloc_guard(t_list **head, void *ptr);
 
 #endif

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/02 15:51:47 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/02 18:26:56 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	parse_color(int *color, char *line)
+/* void	parse_color(int *color, char *line)
 {
 	int		i;
 	int		j;
@@ -117,5 +117,5 @@ void	check_args(t_scene *scene, int argc, char **argv)
 		printf("Error\nCould not open file\n");
 	call_gnl(scene, map_fd);
 	close(map_fd);
-}
+} */
 
