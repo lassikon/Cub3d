@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/02 15:06:38 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/02 20:31:09 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	take_textures(t_list **head, char *line, t_type type, size_t *iter)
 	token.type = type;
 	token.location.start = *iter;
 	token.location.len = 0;
-	while (line[*iter])
+	while (line[*iter] != '\n' && line[*iter] != '\0')
 	{
 		(*iter)++;
 		token.location.len++;
@@ -51,7 +51,7 @@ void	take_fc(t_list **head, char *line, t_type type, size_t *iter)
 	while (line[*iter] == ' ')
 		*iter += 1;
 	token.location.start = *iter;
-	while (line[*iter])
+	while (line[*iter] != '\n' && line[*iter] != '\0')
 	{
 		(*iter)++;
 		token.location.len++;
@@ -73,7 +73,9 @@ void	take_map(t_list **head, char *line, t_type type, size_t *iter)
 	token.line = line;
 	token.type = type;
 	token.location.len = 0;
-	while (line[*iter])
+	token.location.start = 0;
+	*iter = 0;
+	while (line[*iter] != '\n' && line[*iter] != '\0')
 	{
 		(*iter)++;
 		token.location.len++;
