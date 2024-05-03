@@ -44,14 +44,10 @@ typedef struct  s_player {
 }			t_scene; */
 
 typedef struct  ray_s {
-	int		hx;
-	int		hy;
-	int		vx;
-	int		vy;
-	int		hx_step;
-	int		hy_step;
-	int		vx_step;
-	int		vy_step;
+	int		x;
+	int		y;
+	int		x_step;
+	int		y_step;
 	float	distance_to_horizontal;
 	float	distance_to_vertical;
 	int		collision;
@@ -66,7 +62,7 @@ typedef struct s_game {
 	mlx_image_t	*minimap;
 	t_player	p;
 	char		**map;
-	int			distance_to_projection_plane;
+	float		distance_to_projection_plane;
 } t_game;
 
 void	move_player(t_game *game);

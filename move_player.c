@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/02 21:08:04 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:35:46 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	move_forward(t_game *game)
 {
-	int	new_x;
-	int	new_y;
+	float	new_x;
+	float	new_y;
 
 	new_x = game->p.x + cos(game->p.angle) * MOVE_SPEED;
 	new_y = game->p.y + sin(game->p.angle) * MOVE_SPEED;
-	if (wall_collision(game->map, new_x, new_y) == 0)
+	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -28,12 +28,12 @@ void	move_forward(t_game *game)
 
 void	move_backward(t_game *game)
 {
-	int	new_x;
-	int	new_y;
+	float	new_x;
+	float	new_y;
 
 	new_x = game->p.x - cos(game->p.angle) * MOVE_SPEED;
 	new_y = game->p.y - sin(game->p.angle) * MOVE_SPEED;
-	if (wall_collision(game->map, new_x, new_y) == 0)
+	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -42,12 +42,12 @@ void	move_backward(t_game *game)
 
 void	move_left(t_game *game)
 {
-	int	new_x;
-	int	new_y;
+	float	new_x;
+	float	new_y;
 
 	new_x = game->p.x + cos(game->p.angle - PI / 2) * MOVE_SPEED;
 	new_y = game->p.y + sin(game->p.angle - PI / 2) * MOVE_SPEED;
-	if (wall_collision(game->map, new_x, new_y) == 0)
+	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -56,12 +56,12 @@ void	move_left(t_game *game)
 
 void	move_right(t_game *game)
 {
-	int	new_x;
-	int	new_y;
+	float	new_x;
+	float	new_y;
 
 	new_x = game->p.x + cos(game->p.angle + PI / 2) * MOVE_SPEED;
 	new_y = game->p.y + sin(game->p.angle + PI / 2) * MOVE_SPEED;
-	if (wall_collision(game->map, new_x, new_y) == 0)
+	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;

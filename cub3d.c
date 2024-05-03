@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/02 21:08:28 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:21:32 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	init_game(t_game *game)
 	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	// game->minimap = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
 	game->distance_to_projection_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
-	game->p.x = 1 * TILE_SIZE + (TILE_SIZE / 2);
-	game->p.y = 1 * TILE_SIZE + (TILE_SIZE / 2);
+	game->p.x = 2 * TILE_SIZE + TILE_SIZE / 2;
+	game->p.y = 2 * TILE_SIZE + TILE_SIZE / 2;
 	game->p.angle = 0;
 	// game->p.angle = M_PI / 2;
 	game->map = ft_split(map, '\n');

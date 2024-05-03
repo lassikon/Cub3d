@@ -1,9 +1,9 @@
 NAME		:= cub3d
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -g
-# Linux flags -Iinclude -ldl -lglfw -pthread -lm
-# MacOS flags -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/"
-MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
+# Linux flags: -Iinclude -ldl -lglfw -pthread -lm
+# MacOS flags: -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/"
+MLXFLAGS	:= -Iinclude -lglfw -L"/Users/lkonttin/.brew/opt/glfw/lib/"
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
 
