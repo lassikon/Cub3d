@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/02 20:31:09 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/03 12:24:50 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	malloc_guard_lst(t_list **head, void *ptr)
+{
+	if (ptr == NULL)
+	{
+		ft_lstclear(head, free);
+		ft_putstr_fd("Malloc failed\n", 2);
+		exit(1);
+	}
+}
 
 void	take_textures(t_list **head, char *line, t_type type, size_t *iter)
 {
@@ -31,10 +41,10 @@ void	take_textures(t_list **head, char *line, t_type type, size_t *iter)
 		token.location.len++;
 	}
 	tokenp = malloc(sizeof(t_token));
-	malloc_guard(head, tokenp);
+	malloc_guard_lst(head, tokenp);
 	*tokenp = token;
 	new = ft_lstnew(tokenp);
-	malloc_guard(head, new);
+	malloc_guard_lst(head, new);
 	ft_lstadd_back(head, new);
 }
 
@@ -57,10 +67,10 @@ void	take_fc(t_list **head, char *line, t_type type, size_t *iter)
 		token.location.len++;
 	}
 	tokenp = malloc(sizeof(t_token));
-	malloc_guard(head, tokenp);
+	malloc_guard_lst(head, tokenp);
 	*tokenp = token;
 	new = ft_lstnew(tokenp);
-	malloc_guard(head, new);
+	malloc_guard_lst(head, new);
 	ft_lstadd_back(head, new);
 }
 
@@ -81,10 +91,10 @@ void	take_map(t_list **head, char *line, t_type type, size_t *iter)
 		token.location.len++;
 	}
 	tokenp = malloc(sizeof(t_token));
-	malloc_guard(head, tokenp);
+	malloc_guard_lst(head, tokenp);
 	*tokenp = token;
 	new = ft_lstnew(tokenp);
-	malloc_guard(head, new);
+	malloc_guard_lst(head, new);
 	ft_lstadd_back(head, new);
 }
 
@@ -111,15 +121,5 @@ void	tokenize(t_list	**head, char *line)
 			iter++;
 		else
 			take_map(head, line, MAP, &iter);
-	}
-}
-
-void	malloc_guard(t_list **head, void *ptr)
-{
-	if (ptr == NULL)
-	{
-		ft_lstclear(head, free);
-		printf("Malloc failed");
-		exit(1);
 	}
 }

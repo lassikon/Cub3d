@@ -1,8 +1,8 @@
 NAME		:= cub3d
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -g
-#MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/"
-MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
+MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/"
+#MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
 
@@ -12,8 +12,13 @@ LIBFT	:= $(LIBFT_DIR)/libft.a
 SRCS	:= 	cub3d.c \
 			move_player.c \
 			render_walls.c \
-			map_parsing.c \
+			parse.c \
+			parse_map.c \
+			parse_map_validate.c \
+			parse_utils.c \
 			tokenize.c \
+			errors.c \
+			frees.c \
 			
 OBJS	:= ${SRCS:.c=.o}
 

@@ -14,6 +14,7 @@
 # include "MLX42/include/MLX42/MLX42.h"
 # include "token.h"
 
+
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 #define TILE_SIZE 64
@@ -59,10 +60,40 @@ typedef struct s_game {
 	int			map[MAP_HEIGHT][MAP_WIDTH];
 } t_game;
 
+/*error*/
+typedef enum e_err_code
+{
+	NO_ERR,
+	MALLOC_ERR,
+	ARG_ERR,
+	FILE_EXT_ERR,
+	FILE_OPEN_ERR,
+	SCENE_FORMAT_ERR,
+	MAP_NOT_CLOSED_ERR,
+}	t_err_code;
+
+typedef struct s_error_entry
+{
+	char		*message;
+	t_err_code	code;
+}	t_error_entry;
+
 void	move_player(t_game *game);
 void	render_walls(t_game *game);
+
 void	check_args(t_scene *scene, int argc, char **argv);
-void    tokenize(t_list	**head, char *line);
-void	malloc_guard(t_list **head, void *ptr);
+void	tokenize(t_list	**head, char *line);
+void	write_data(t_scene *scene, t_list **head);
+void	is_valid(t_scene *scene, size_t longest_row);
+void	malloc_guard_lst(t_list **head, void *ptr);
+void	malloc_guard_scene(t_scene *scene, t_list **head, char ***tmp, void *ptr);
+size_t	ft_arrlen(char **arr);
+void	free_arr(char ***array);
+void	free_lst(t_list **head);
+void	free_scene(t_scene *scene);
+void	error_handler(t_scene *scene, t_err_code code);
+
+/*debug*/
+void	print_array(char **array);
 
 #endif
