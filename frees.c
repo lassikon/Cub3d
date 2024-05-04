@@ -3,20 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   frees.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:35:07 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/03 13:41:44 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/04 10:46:38 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	free_funcs(t_scene *scene, t_list **head, char ***tmp, void *ptr)
+{
+	if (scene != NULL)
+	{
+		free_scene(scene);
+		free(scene);
+	}
+	if (head != NULL)
+	{
+		free_lst(head);
+		free(head);
+	}
+	if (tmp != NULL)
+	{
+		free_arr(tmp);
+		free(tmp);
+	}
+	if (ptr != NULL)
+	{
+		free(ptr);
+	}
+}
 
 void	free_arr(char ***array)
 {
 	size_t	i;
 	char	**tmp;
 
+	if (*array == NULL)
+		return ;
 	tmp = *array;
 	i = 0;
 	while (tmp[i] != NULL)
@@ -33,6 +58,8 @@ void	free_lst(t_list **head)
 {
 	t_list	*tmp;
 
+	if (*head == NULL)
+		return ;
 	tmp = *head;
 	while (tmp)
 	{

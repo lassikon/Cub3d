@@ -3,26 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/03 12:24:50 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/04 11:00:42 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	malloc_guard_lst(t_list **head, void *ptr)
-{
-	if (ptr == NULL)
-	{
-		ft_lstclear(head, free);
-		ft_putstr_fd("Malloc failed\n", 2);
-		exit(1);
-	}
-}
-
-void	take_textures(t_list **head, char *line, t_type type, size_t *iter)
+static void	take_textures(t_list **head, char *line, t_type type, size_t *iter)
 {
 	t_token	token;
 	t_token	*tokenp;
@@ -41,14 +31,14 @@ void	take_textures(t_list **head, char *line, t_type type, size_t *iter)
 		token.location.len++;
 	}
 	tokenp = malloc(sizeof(t_token));
-	malloc_guard_lst(head, tokenp);
+	malloc_guard(NULL, head, NULL, tokenp);
 	*tokenp = token;
 	new = ft_lstnew(tokenp);
-	malloc_guard_lst(head, new);
+	malloc_guard(NULL, head, NULL, new);
 	ft_lstadd_back(head, new);
 }
 
-void	take_fc(t_list **head, char *line, t_type type, size_t *iter)
+static void	take_fc(t_list **head, char *line, t_type type, size_t *iter)
 {
 	t_token	token;
 	t_token	*tokenp;
@@ -67,14 +57,14 @@ void	take_fc(t_list **head, char *line, t_type type, size_t *iter)
 		token.location.len++;
 	}
 	tokenp = malloc(sizeof(t_token));
-	malloc_guard_lst(head, tokenp);
+	malloc_guard(NULL, head, NULL, tokenp);
 	*tokenp = token;
 	new = ft_lstnew(tokenp);
-	malloc_guard_lst(head, new);
+	malloc_guard(NULL, head, NULL, new);
 	ft_lstadd_back(head, new);
 }
 
-void	take_map(t_list **head, char *line, t_type type, size_t *iter)
+static void	take_map(t_list **head, char *line, t_type type, size_t *iter)
 {
 	t_token	token;
 	t_token	*tokenp;
@@ -91,35 +81,35 @@ void	take_map(t_list **head, char *line, t_type type, size_t *iter)
 		token.location.len++;
 	}
 	tokenp = malloc(sizeof(t_token));
-	malloc_guard_lst(head, tokenp);
+	malloc_guard(NULL, head, NULL, tokenp);
 	*tokenp = token;
 	new = ft_lstnew(tokenp);
-	malloc_guard_lst(head, new);
+	malloc_guard(NULL, head, NULL, new);
 	ft_lstadd_back(head, new);
 }
 
 void	tokenize(t_list	**head, char *line)
 {
-	size_t	iter;
+	size_t	i;
 
-	iter = 0;
-	while (line[iter] != '\0')
+	i = 0;
+	while (line[i] != '\0')
 	{
-		if (line[iter] == 'N' && line[iter + 1] == 'O')
-			take_textures(head, line, NO, &iter);
-		else if (line[iter] == 'S' && line[iter + 1] == 'O')
-			take_textures(head, line, SO, &iter);
-		else if (line[iter] == 'W' && line[iter + 1] == 'E')
-			take_textures(head, line, WE, &iter);
-		else if (line[iter] == 'E' && line[iter + 1] == 'A')
-			take_textures(head, line, EA, &iter);
-		else if (line[iter] == 'F')
-			take_fc(head, line, F, &iter);
-		else if (line[iter] == 'C')
-			take_fc(head, line, C, &iter);
-		else if (line[iter] == ' ' || line[iter] == '\t' || line[iter] == '\n')
-			iter++;
+		if (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
+			i++;
+		else if (line[i] == 'N' && line[i + 1] == 'O' && line[i + 2] == ' ')
+			take_textures(head, line, NO, &i);
+		else if (line[i] == 'S' && line[i + 1] == 'O' && line[i + 2] == ' ')
+			take_textures(head, line, SO, &i);
+		else if (line[i] == 'W' && line[i + 1] == 'E' && line[i + 2] == ' ')
+			take_textures(head, line, WE, &i);
+		else if (line[i] == 'E' && line[i + 1] == 'A' && line[i + 2] == ' ')
+			take_textures(head, line, EA, &i);
+		else if (line[i] == 'F' && line[i + 1] == ' ')
+			take_fc(head, line, F, &i);
+		else if (line[i] == 'C' && line[i + 1] == ' ')
+			take_fc(head, line, C, &i);
 		else
-			take_map(head, line, MAP, &iter);
+			take_map(head, line, MAP, &i);
 	}
 }

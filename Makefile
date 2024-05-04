@@ -1,8 +1,8 @@
 NAME		:= cub3d
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -g
-MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/"
-#MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
+CFLAGS		:= -Wall -Wextra -Werror -g -fsanitize=address
+#MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/"
+MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
 

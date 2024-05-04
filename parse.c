@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/03 14:51:36 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/04 11:03:03 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static void	syntax_error(t_scene *scene, t_list **head, char *line, int *flag)
+{
+	int	i;
+	int	invalid;
+
+	i = 0;
+	invalid = 0;
+	if (line != NULL)
+	{
+		while (line[i] && line[i] != '\n')
+		{
+			if (ft_strchr(MAP_CHARS, line[i]) == NULL)
+				invalid = 1;
+			i++;
+		}
+	}
+	if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
+		|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1 || invalid)
+	{
+		free_lst(head);
+		if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
+			|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1)
+			error_handler(scene, FREE_SCENE, SCENE_FORMAT_ERR);
+		else
+			error_handler(scene, FREE_SCENE, INVALID_MAP_ERR);
+	}
+}
 
 static void	scene_syntax(t_scene *scene, t_list **head)
 {
@@ -33,40 +61,12 @@ static void	scene_syntax(t_scene *scene, t_list **head)
 			flag[4]++;
 		else if (((t_token *)tmp->content)->type == C)
 			flag[5]++;
+		else if (((t_token *)tmp->content)->type == MAP)
+			syntax_error(scene, head, ((t_token *)tmp->content)->line, flag);
 		tmp = tmp->next;
 	}
-	if (flag[0] != 1 || flag[1] != 1 || flag[2] != 1
-		|| flag[3] != 1 || flag[4] != 1 || flag[5] != 1)
-	{
-		free_lst(head);
-		error_handler(scene, SCENE_FORMAT_ERR);
-	}
+	syntax_error(scene, head, NULL, flag);
 }
-
-
-// static void	extract_data(t_scene *scene, t_list **head)
-// {
-// 	size_t	longest_row;
-// 	int		j;
-
-// 	while (*head)
-// 	{
-// 		write_data(scene, head);
-// 		if (*head)
-// 			*head = (*head)->next;
-// 	}
-// 	if (head)
-// 		free_lst(head);
-// 	longest_row = 0;
-// 	j = 0;
-// 	while (scene->map[j])
-// 	{
-// 		if (ft_strlen(scene->map[j]) > longest_row)
-// 			longest_row = ft_strlen(scene->map[j]);
-// 		j++;
-// 	}
-// 	is_valid(scene, longest_row);
-// }
 
 static void	init_scene(t_scene *scene)
 {
@@ -83,6 +83,7 @@ static void	call_gnl(t_scene *scene, int map_fd)
 {
 	t_list	*head;
 	char	*line;
+	int		i;
 
 	head = NULL;
 	while (1)
@@ -90,31 +91,34 @@ static void	call_gnl(t_scene *scene, int map_fd)
 		line = get_next_line(map_fd);
 		if (line == NULL)
 			break ;
-		else if (line[0] == '\n')
+		i = 0;
+		while (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
+			i++;
+		if (line[i] == '\0')
 			free(line);
-		else if (line[0] != '\0')
+		else
 			tokenize(&head, line);
 	}
 	scene_syntax(scene, &head);
-	//extract_data(scene, &head);
+	extract_data(scene, &head);
 	free_lst(&head);
 	free_scene(scene);
 }
 
-void	check_args(t_scene *scene, int argc, char **argv)
+void	parse(t_scene *scene, int argc, char **argv)
 {
 	int		map_fd;
 
 	init_scene(scene);
 	if (argc != 2)
-		error_handler(scene, ARG_ERR);
+		error_handler(NULL, NFREE, ARG_ERR);
 	if (ft_strlen(argv[1]) < 4)
-		error_handler(scene, FILE_EXT_ERR);
+		error_handler(NULL, NFREE, FILE_EXT_ERR);
 	if (ft_strlen(ft_strnstr(argv[1], ".cub", ft_strlen(argv[1]))) != 4)
-		error_handler(scene, FILE_EXT_ERR);
+		error_handler(NULL, NFREE, FILE_EXT_ERR);
 	map_fd = open(argv[1], O_RDONLY);
 	if (map_fd < 0)
-		error_handler(scene, FILE_OPEN_ERR);
+		error_handler(NULL, NFREE, FILE_OPEN_ERR);
 	call_gnl(scene, map_fd);
 	close(map_fd);
 }

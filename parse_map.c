@@ -3,52 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/03 14:49:49 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/04 11:08:07 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-char	*substr_guard(t_scene *scene, t_list **head)
-{
-	char	*t_line;
-	size_t	t_len;
-	size_t	t_start;
-	char	*substr;
-
-	t_line = ((t_token *)(*head)->content)->line;
-	t_len = ((t_token *)(*head)->content)->location.len;
-	t_start = ((t_token *)(*head)->content)->location.start;
-	substr = ft_substr(t_line, t_start, t_len);
-	malloc_guard_scene(scene, head, NULL, substr);
-	return (substr);
-}
-
-static void	write_map(t_scene *scene, t_list **head, \
-	int i, size_t t_longest_row)
-{
-	char	*t_line;
-	t_type	t_type;
-	size_t	t_len;
-	size_t	t_start;
-
-	t_line = ((t_token *)(*head)->content)->line;
-	t_type = ((t_token *)(*head)->content)->type;
-	t_len = ((t_token *)(*head)->content)->location.len;
-	t_start = ((t_token *)(*head)->content)->location.start;
-	if (t_type == MAP)
-	{
-		scene->map[i] = ft_calloc(t_longest_row + 1, sizeof(char));
-		malloc_guard_scene(scene, head, &scene->map, scene->map[i]);
-		ft_memcpy(scene->map[i], t_line + t_start, t_len);
-		printf("map: %s\n", scene->map[i]);
-	}
-}
-
-void	parse_color(t_scene *scene, t_list **head, int *color)
+static void	parse_color(t_scene *scene, t_list **head, int *color)
 {
 	int		i;
 	int		j;
@@ -59,20 +23,20 @@ void	parse_color(t_scene *scene, t_list **head, int *color)
 	j = 0;
 	line = substr_guard(scene, head);
 	split = ft_split(line, ',');
-	malloc_guard_scene(scene, head, NULL, split);
+	malloc_guard(scene, head, NULL, split);
+	free(line);
 	while (split[i])
 	{
 		color[j] = ft_atoi(split[i]);
 		if (color[j] < 0 || color[j] > 255)
-			error_handler(scene, SCENE_FORMAT_ERR);
+			error_handler(scene, FREE_SCENE, SCENE_FORMAT_ERR);
 		i++;
 		j++;
 	}
 	free_arr(&split);
 }
 
-
-void	parse_map(t_scene *scene, t_list **head)
+static void	parse_map(t_scene *scene, t_list **head)
 {
 	int		map_size;
 	t_list	*tmp;
@@ -81,7 +45,7 @@ void	parse_map(t_scene *scene, t_list **head)
 
 	map_size = ft_lstsize(*head);
 	scene->map = ft_calloc(map_size + 1, sizeof(char *));
-	malloc_guard_scene(scene, head, NULL, scene->map);
+	malloc_guard(scene, head, NULL, scene->map);
 	tmp = *head;
 	t_longest_row = 0;
 	while (tmp)
@@ -100,27 +64,7 @@ void	parse_map(t_scene *scene, t_list **head)
 	scene->map[i] = NULL;
 }
 
-static int	check_texture(t_scene *scene)
-{
-	if (scene->no_texture == NULL)
-		return (0);
-	if (scene->so_texture == NULL)
-		return (0);
-	if (scene->we_texture == NULL)
-		return (0);
-	if (scene->ea_texture == NULL)
-		return (0);
-	if (scene->floor_color[0] == -1 || scene->floor_color[1] == -1
-		|| scene->floor_color[2] == -1)
-		return (0);
-	if (scene->ceiling_color[0] == -1 || scene->ceiling_color[1] == -1
-		|| scene->ceiling_color[2] == -1)
-		return (0);
-	return (1);
-}
-
-
-void	parse_texture(t_scene *scene, t_list **head)
+static void	parse_texture(t_scene *scene, t_list **head)
 {
 	t_type	t_type;
 
@@ -135,7 +79,7 @@ void	parse_texture(t_scene *scene, t_list **head)
 		scene->ea_texture = substr_guard(scene, head);
 }
 
-void	write_data(t_scene *scene, t_list **head)
+static void	write_data(t_scene *scene, t_list **head)
 {
 	t_type	t_type;
 
@@ -146,8 +90,32 @@ void	write_data(t_scene *scene, t_list **head)
 		parse_color(scene, head, scene->floor_color);
 	else if (t_type == C)
 		parse_color(scene, head, scene->ceiling_color);
-	else if (t_type == MAP && check_texture(scene))
-		parse_map(scene, head);
 	else
-		error_handler(scene, SCENE_FORMAT_ERR);
+		parse_map(scene, head);
+}
+
+void	extract_data(t_scene *scene, t_list **head)
+{
+	size_t	longest_row;
+	int		j;
+	t_list	*tmp;
+
+	tmp = *head;
+	while (tmp)
+	{
+		write_data(scene, &tmp);
+		if (tmp)
+			tmp = tmp->next;
+	}
+	if (head)
+		free_lst(head);
+	longest_row = 0;
+	j = 0;
+	while (scene->map[j])
+	{
+		if (ft_strlen(scene->map[j]) > longest_row)
+			longest_row = ft_strlen(scene->map[j]);
+		j++;
+	}
+	is_valid(scene, longest_row);
 }

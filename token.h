@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:42:54 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/02 14:54:30 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/04 10:53:56 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,4 @@ typedef struct s_token
 	char	*line;
 }	t_token;
 
-# endif
+#endif

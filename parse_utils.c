@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/03 13:40:29 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/04 11:09:17 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	malloc_guard_scene(t_scene *scene, t_list **head, char ***tmp, void *ptr)
+void	malloc_guard(t_scene *scene, t_list **head, char ***tmp, void *ptr)
 {
 	if (ptr == NULL)
 	{
@@ -46,5 +46,41 @@ void	print_array(char **array)
 	{
 		printf("env: %s\n", array[i]);
 		i++;
+	}
+}
+
+char	*substr_guard(t_scene *scene, t_list **head)
+{
+	char	*t_line;
+	size_t	t_len;
+	size_t	t_start;
+	char	*substr;
+
+	t_line = ((t_token *)(*head)->content)->line;
+	t_len = ((t_token *)(*head)->content)->location.len;
+	t_start = ((t_token *)(*head)->content)->location.start;
+	substr = ft_substr(t_line, t_start, t_len);
+	malloc_guard(scene, head, NULL, substr);
+	return (substr);
+}
+
+void	write_map(t_scene *scene, t_list **head, \
+	int i, size_t t_longest_row)
+{
+	char	*t_line;
+	t_type	t_type;
+	size_t	t_len;
+	size_t	t_start;
+
+	t_line = ((t_token *)(*head)->content)->line;
+	t_type = ((t_token *)(*head)->content)->type;
+	t_len = ((t_token *)(*head)->content)->location.len;
+	t_start = ((t_token *)(*head)->content)->location.start;
+	if (t_type == MAP)
+	{
+		scene->map[i] = ft_calloc(t_longest_row + 1, sizeof(char));
+		malloc_guard(scene, head, &scene->map, scene->map[i]);
+		ft_memcpy(scene->map[i], t_line + t_start, t_len);
+		printf("map: %s\n", scene->map[i]);
 	}
 }
