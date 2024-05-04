@@ -14,26 +14,25 @@
 # include "MLX42/include/MLX42/MLX42.h"
 # include "token.h"
 
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 512
+#define TILE_SIZE 64
 #define PI 3.14159265359
 #define FOV 1.0471975512 // 60 degrees
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
-#define TILE_SIZE 64
-//#define FOV (M_PI / 3) // Field of view (60 degrees)
-#define MOVEMENT_SPEED 4.0f
-#define STRAFE_SPEED 2.5f
-#define ROTATION_SPEED (M_PI / 100)
+#define MOVE_SPEED 4
+#define STRAFE_SPEED 2
+#define ROTATION_SPEED (PI / 90) // 2 degrees
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
+#define MINIMAP_SIZE 128
 
 # define MAP_CHARS " 01NSEW"
 
-typedef struct player_s
-{
-	float	x;
-	float	y;
+typedef struct  s_player {
+	int		x;
+	int		y;
 	float	angle;
-} 			player_t;
+} t_player;
 
 typedef struct s_scene
 {
@@ -46,21 +45,26 @@ typedef struct s_scene
 	char	**map;
 }			t_scene;
 
-typedef struct  ray_s{
-	float	x;
-	float	y;
+typedef struct  ray_s {
+	int		x;
+	int		y;
+	int		x_step;
+	int		y_step;
+	float	distance_to_horizontal;
+	float	distance_to_vertical;
+	int		collision;
+	int 	wall_direction;
 	float	distance;
 	float	angle;
-	int		hit;
-	int 	vertical;
-	int 	wall_direction;
-} ray_t;
+} t_ray;
 
 typedef struct s_game {
 	mlx_t		*mlx;
 	mlx_image_t	*image;
-	player_t	p;
-	int			map[MAP_HEIGHT][MAP_WIDTH];
+	mlx_image_t	*minimap;
+	t_player	p;
+	char		**map;
+	float		distance_to_projection_plane;
 } t_game;
 
 /*error*/
@@ -94,6 +98,7 @@ typedef struct s_error_entry
 
 void	move_player(t_game *game);
 void	render_walls(t_game *game);
+int		wall_collision(char **map, int x, int y);
 
 /*parse and utils*/
 void	tokenize(t_list	**head, char *line);

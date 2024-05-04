@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/01 19:55:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:08:25 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	move_forward(t_game *game)
 	float	new_x;
 	float	new_y;
 
-	new_x = game->p.x + cos(game->p.angle) * MOVEMENT_SPEED;
-	new_y = game->p.y + sin(game->p.angle) * MOVEMENT_SPEED;
-	if (game->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+	new_x = game->p.x + cos(game->p.angle) * MOVE_SPEED;
+	new_y = game->p.y + sin(game->p.angle) * MOVE_SPEED;
+	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -31,9 +31,9 @@ void	move_backward(t_game *game)
 	float	new_x;
 	float	new_y;
 
-	new_x = game->p.x - cos(game->p.angle) * MOVEMENT_SPEED;
-	new_y = game->p.y - sin(game->p.angle) * MOVEMENT_SPEED;
-	if (game->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+	new_x = game->p.x - cos(game->p.angle) * MOVE_SPEED;
+	new_y = game->p.y - sin(game->p.angle) * MOVE_SPEED;
+	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -45,9 +45,9 @@ void	move_left(t_game *game)
 	float	new_x;
 	float	new_y;
 
-	new_x = game->p.x - cos(game->p.angle + M_PI / 2) * STRAFE_SPEED;
-	new_y = game->p.y - sin(game->p.angle + M_PI / 2) * STRAFE_SPEED;
-	if (game->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+	new_x = game->p.x + cos(game->p.angle - PI / 2) * MOVE_SPEED;
+	new_y = game->p.y + sin(game->p.angle - PI / 2) * MOVE_SPEED;
+	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -59,9 +59,9 @@ void	move_right(t_game *game)
 	float	new_x;
 	float	new_y;
 
-	new_x = game->p.x + cos(game->p.angle + M_PI / 2) * STRAFE_SPEED;
-	new_y = game->p.y + sin(game->p.angle + M_PI / 2) * STRAFE_SPEED;
-	if (game->map[(int)(new_y / TILE_SIZE)][(int)(new_x / TILE_SIZE)] == 0)
+	new_x = game->p.x + cos(game->p.angle + PI / 2) * MOVE_SPEED;
+	new_y = game->p.y + sin(game->p.angle + PI / 2) * MOVE_SPEED;
+	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -82,12 +82,12 @@ void	move_player(t_game *game)
 	{
 		game->p.angle -= ROTATION_SPEED;
 		if (game->p.angle < 0)
-			game->p.angle += 2 * M_PI;
+			game->p.angle += 2 * PI;
 	}
 	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
 	{
 		game->p.angle += ROTATION_SPEED;
-		if (game->p.angle > 2 * M_PI)
-			game->p.angle -= 2 * M_PI;
+		if (game->p.angle > 2 * PI)
+			game->p.angle -= 2 * PI;
 	}
 }
