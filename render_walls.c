@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/03 15:40:08 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/04 11:49:46 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,9 @@ void	vertical_intersection(t_game *game, t_ray *ray)
 	{
 		ray->x = (game->p.x / TILE_SIZE) * TILE_SIZE - 1;
 		if (ray->angle < PI)
-			ray->y = (game->p.x - ray->x) / tanf(ray->angle) + game->p.y;
+			ray->y = (game->p.x - ray->x) * tanf(PI - ray->angle) + game->p.y;
 		else
-			ray->y = game->p.y - ((game->p.x - ray->x) / tanf(ray->angle));
+			ray->y = game->p.y - ((game->p.x - ray->x) * tanf(ray->angle - PI));
 		ray->x_step = -TILE_SIZE;
 		ray->y_step = TILE_SIZE * tanf(ray->angle);
 		if (ray->angle > PI)
@@ -113,9 +113,9 @@ void	vertical_intersection(t_game *game, t_ray *ray)
 	{
 		ray->x = (game->p.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
 		if (ray->angle < PI / 2)
-			ray->y = (game->p.x - ray->x) / tanf(ray->angle) + game->p.y;
+			ray->y = (ray->x - game->p.x) * tanf(ray->angle) + game->p.y;
 		else
-			ray->y = game->p.y - ((game->p.x - ray->x) / tanf(ray->angle));
+			ray->y = game->p.y - ((ray->x - game->p.x) * tanf(2 * PI - ray->angle));
 		ray->x_step = TILE_SIZE;
 		ray->y_step = TILE_SIZE * tanf(ray->angle);
 		if (ray->angle > 3 * PI / 2)
