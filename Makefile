@@ -13,6 +13,7 @@ LIBFT	:= $(LIBFT_DIR)/libft.a
 SRCS	:= 	cub3d.c \
 			move_player.c \
 			render_walls.c \
+			gnl_chk.c \
 			parse.c \
 			parse_map.c \
 			parse_map_validate.c \

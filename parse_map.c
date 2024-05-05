@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/04 11:08:07 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 13:05:21 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	parse_map(t_scene *scene, t_list **head)
 	size_t	i;
 
 	map_size = ft_lstsize(*head);
+	printf("map_size: %d\n", map_size);
 	scene->map = ft_calloc(map_size + 1, sizeof(char *));
 	malloc_guard(scene, head, NULL, scene->map);
 	tmp = *head;
@@ -55,7 +56,8 @@ static void	parse_map(t_scene *scene, t_list **head)
 		tmp = tmp->next;
 	}
 	i = 0;
-	while (*head)
+	tmp = *head;
+	while (tmp)
 	{
 		write_map(scene, head, i, t_longest_row);
 		*head = (*head)->next;

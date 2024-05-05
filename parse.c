@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/04 11:03:03 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 13:43:17 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,19 @@ static void	init_scene(t_scene *scene)
 	ft_memset(scene->floor_color, -1, 3);
 	ft_memset(scene->ceiling_color, -1, 3);
 	scene->map = NULL;
+	scene->tokens = NULL;
 }
 
 static void	call_gnl(t_scene *scene, int map_fd)
 {
-	t_list	*head;
 	char	*line;
 	int		i;
 
-	head = NULL;
+	line = NULL;
 	while (1)
 	{
+		/* if (gnl_chk(&line, map_fd) == -1)
+			error_handler(&head, FREE_LST, MALLOC_ERR); */
 		line = get_next_line(map_fd);
 		if (line == NULL)
 			break ;
@@ -97,12 +99,12 @@ static void	call_gnl(t_scene *scene, int map_fd)
 		if (line[i] == '\0')
 			free(line);
 		else
-			tokenize(&head, line);
+			tokenize(scene, line);
 	}
 	scene_syntax(scene, &head);
 	extract_data(scene, &head);
 	free_lst(&head);
-	free_scene(scene);
+	//free_scene(scene);
 }
 
 void	parse(t_scene *scene, int argc, char **argv)

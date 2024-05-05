@@ -43,6 +43,7 @@ typedef struct s_scene
 	int		floor_color[3];
 	int		ceiling_color[3];
 	char	**map;
+	t_list	*tokens;
 }			t_scene;
 
 typedef struct  ray_s {
@@ -101,6 +102,7 @@ void	render_walls(t_game *game);
 int		wall_collision(char **map, int x, int y);
 
 /*parse and utils*/
+int		gnl_chk(char **line, int fd);
 void	tokenize(t_list	**head, char *line);
 void	parse(t_scene *scene, int argc, char **argv);
 void	malloc_guard(t_scene *scene, t_list **head, char ***tmp, void *ptr);
@@ -119,5 +121,6 @@ void	error_handler(void *data, t_free_func func, t_err_code code);
 
 /*debug*/
 void	print_array(char **array);
+void print_list(t_list *head);
 
 #endif

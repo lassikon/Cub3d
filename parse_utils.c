@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/04 11:09:17 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 12:51:31 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,25 @@ void	print_array(char **array)
 	i = 0;
 	while (array[i] != NULL)
 	{
-		printf("env: %s\n", array[i]);
+		printf("map: %s\n", array[i]);
 		i++;
+	}
+}
+
+void print_list(t_list *head)
+{
+	t_list	*tmp;
+	t_token	*token;
+
+	tmp = head;
+	while (tmp)
+	{
+		token = (t_token *)tmp->content;
+		printf("line: %s\n", token->line);
+		printf("type: %d\n", token->type);
+		printf("start: %zu\n", token->location.start);
+		printf("len: %zu\n", token->location.len);
+		tmp = tmp->next;
 	}
 }
 
@@ -81,6 +98,5 @@ void	write_map(t_scene *scene, t_list **head, \
 		scene->map[i] = ft_calloc(t_longest_row + 1, sizeof(char));
 		malloc_guard(scene, head, &scene->map, scene->map[i]);
 		ft_memcpy(scene->map[i], t_line + t_start, t_len);
-		printf("map: %s\n", scene->map[i]);
 	}
 }

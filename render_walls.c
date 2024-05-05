@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/04 13:51:46 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 12:15:31 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,15 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	int		height;
 	int		y;
 	int		color;
-
+	float	da;
+	
+	//fisheye
+	da = game->p.angle - ray.angle;
+	if (da < 0)
+		da += 2 * PI;
+	if (da > 2 * PI)
+		da -= 2 * PI;
+	ray.distance *= cos(da);
 	height = (int)(TILE_SIZE / ray.distance * game->distance_to_projection_plane);
 	if (height > SCREEN_HEIGHT)
 		height = SCREEN_HEIGHT;
@@ -53,19 +61,22 @@ void	horizontal_intersection(t_game *game, t_ray *ray)
 		ray->distance_to_horizontal = INT_MAX;
 		return ;
 	}
-	else if (ray->angle < PI)
+	else if (ray->angle > PI)
 	{
-		ray->y = (game->p.y / TILE_SIZE) * TILE_SIZE - 1;
-		ray->x = game->p.x + ((game->p.y - ray->y) / tanf(ray->angle));
+		if (game->p.y % TILE_SIZE == 0)
+			ray->y = game->p.y - TILE_SIZE;
+		else
+			ray->y = (game->p.y / TILE_SIZE) * TILE_SIZE - 1;
+		ray->x = game->p.x + ((game->p.y - ray->y) / (-1 * tanf(ray->angle)));
 		ray->y_step = -TILE_SIZE;
-		ray->x_step = TILE_SIZE / tanf(ray->angle);
+		ray->x_step = TILE_SIZE / (-1 * tanf(ray->angle));
 	}
 	else
 	{
 		ray->y = (game->p.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
-		ray->x = game->p.x + ((game->p.y - ray->y) / tanf(ray->angle));
+		ray->x = game->p.x + ((ray->y - game->p.y) / tanf(ray->angle));
 		ray->y_step = TILE_SIZE;
-		ray->x_step = TILE_SIZE / tanf(ray->angle);
+		ray->x_step = TILE_SIZE / (tanf(ray->angle));
 	}
 	ray->distance_to_horizontal = get_distance(game->p.x, game->p.y, ray->x, ray->y);
 	if (ray->distance_to_horizontal == INT_MAX)
@@ -82,34 +93,40 @@ void	horizontal_intersection(t_game *game, t_ray *ray)
 
 void	vertical_intersection(t_game *game, t_ray *ray)
 {
-	if (ray->angle == PI || ray->angle ==  3 * PI / 2)
+	if (ray->angle == PI / 2 || ray->angle ==  3 * PI / 2)
 	{
-		ray->distance_to_horizontal = INT_MAX;
+		ray->distance_to_vertical = INT_MAX;
 		return ;
 	}
 	else if (ray->angle > PI / 2 && ray->angle < 3 * PI / 2)
 	{
-		ray->x = (game->p.x / TILE_SIZE) * TILE_SIZE - 1;
-		ray->y = game->p.y + ((game->p.x - ray->x) * tanf(ray->angle));
+		if (game->p.x % TILE_SIZE == 0)
+			ray->x = game->p.x - TILE_SIZE;
+		else
+			ray->x = (game->p.x / TILE_SIZE) * TILE_SIZE - 1;
+		ray->y = game->p.y + ((game->p.x - ray->x) * (-1 * tanf(ray->angle)));
 		ray->x_step = -TILE_SIZE;
-		ray->y_step = TILE_SIZE * tanf(ray->angle);
+		ray->y_step = TILE_SIZE * (-1 * tanf(ray->angle));
 	}
 	else if (ray->angle < PI / 2 || ray->angle > 3 * PI / 2)
 	{
-		ray->x = (game->p.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
-		ray->y = game->p.y + ((game->p.x - ray->x) * tanf(ray->angle));
+		if (game->p.x % TILE_SIZE == 0)
+			ray->x = game->p.x + TILE_SIZE;
+		else
+			ray->x = (game->p.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
+		ray->y = game->p.y + ((ray->x - game->p.x) * tanf(ray->angle));
 		ray->x_step = TILE_SIZE;
 		ray->y_step = TILE_SIZE * tanf(ray->angle);
 	}
-	ray->distance_to_horizontal = get_distance(game->p.x, game->p.y, ray->x, ray->y);
-	if (ray->distance_to_horizontal == INT_MAX)
+	ray->distance_to_vertical = get_distance(game->p.x, game->p.y, ray->x, ray->y);
+	if (ray->distance_to_vertical == INT_MAX)
 		return ;
 	while (wall_collision(game->map, ray->x, ray->y) == 0)
 	{
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
-		ray->distance_to_horizontal = get_distance(game->p.x, game->p.y, ray->x, ray->y);
-		if (ray->distance_to_horizontal == INT_MAX)
+		ray->distance_to_vertical = get_distance(game->p.x, game->p.y, ray->x, ray->y);
+		if (ray->distance_to_vertical == INT_MAX)
 			return ;
 	}
 }
@@ -117,11 +134,8 @@ void	vertical_intersection(t_game *game, t_ray *ray)
 
 void	cast_ray(t_game *game, t_ray *ray)
 {
-	printf("Player position: x = %d, y = %d, ray angle = %f\n", game->p.x, game->p.y, ray->angle);
 	horizontal_intersection(game, ray);
-	printf("Horizontal intersection: x = %d, y = %d, distance = %f\n", ray->x, ray->y, ray->distance_to_horizontal);
 	vertical_intersection(game, ray);
-	printf("Vertical intersection: x = %d, y = %d, distance = %f\n", ray->x, ray->y, ray->distance_to_vertical);
 	if (ray->distance_to_horizontal < ray->distance_to_vertical)
 		ray->distance = ray->distance_to_horizontal;
 	else
@@ -151,7 +165,7 @@ void	render_walls(t_game *game)
 	init_ray(&ray);
 	column = 0;
 	angle_step = FOV / SCREEN_WIDTH;
-	ray.angle = game->p.angle - (FOV / 2);
+	ray.angle = game->p.angle - FOV / 2;
 	// printf("Player position: x = %f, y = %f, angle = %f\n", game->p.x, game->p.y, game->p.angle);
 	while (column < SCREEN_WIDTH)
 	{

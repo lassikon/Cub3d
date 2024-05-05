@@ -6,19 +6,19 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 10:12:32 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/04 11:08:26 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 12:48:09 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	check_zero(char **map, int row, int col)
+static void	check_zero(char **map, int row, int col, size_t row_max)
 {
 	if (row - 1 >= 0 && (map[row - 1][col] == '0'
 		|| map[row - 1][col] == 'N' || map[row - 1][col] == 'S'
 		|| map[row - 1][col] == 'W' || map[row - 1][col] == 'E'))
 		map[row - 1][col] = 'V';
-	if (row + 1 <= 15 && (map[row + 1][col] == '0'
+	if (row + 1 <= (int)row_max && (map[row + 1][col] == '0'
 		|| map[row + 1][col] == 'N' || map[row + 1][col] == 'S'
 		|| map[row + 1][col] == 'W' || map[row + 1][col] == 'E'))
 		map[row + 1][col] = 'V';
@@ -40,7 +40,7 @@ static void	fill_map(char **map, int row, int col)
 	if (row < 0 || col < 0 || map[row][col] == 'X')
 		return ;
 	map[row][col] = 'X';
-	check_zero(map, row, col);
+	check_zero(map, row, col, row_max);
 	if (row - 1 >= 0 && (map[row - 1][col] == 'J' || map[row - 1][col] == ' '))
 		fill_map(map, row - 1, col);
 	if (row + 1 <= (int)row_max

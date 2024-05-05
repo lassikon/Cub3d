@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/04 11:53:10 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 13:43:26 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,10 @@ static void	take_map(t_list **head, char *line, t_type type, size_t *iter)
 	ft_lstadd_back(head, new);
 }
 
-void	tokenize(t_list	**head, char *line)
+void	tokenize(t_scene *scene, char *line)
 {
 	size_t	i;
+	t_list	*head;
 
 	i = 0;
 	while (line[i] != '\0')
@@ -112,4 +113,5 @@ void	tokenize(t_list	**head, char *line)
 		else
 			take_map(head, line, MAP, &i);
 	}
+	head = scene->tokens;
 }
