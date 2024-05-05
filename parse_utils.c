@@ -6,24 +6,19 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/05 12:51:31 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 15:42:44 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	malloc_guard(t_scene *scene, t_list **head, char ***tmp, void *ptr)
+void	malloc_guard(t_scene *scene, char ***tmp, void *ptr)
 {
 	if (ptr == NULL)
 	{
 		if (*tmp != NULL)
 			free_arr(tmp);
-		if (head != NULL)
-			free_lst(head);
-		if (scene->map != NULL)
-			free_scene(scene);
-		ft_putstr_fd("Malloc failed\n", 2);
-		exit(1);
+		error_handler(scene, MALLOC_ERR);
 	}
 }
 
@@ -77,11 +72,11 @@ char	*substr_guard(t_scene *scene, t_list **head)
 	t_len = ((t_token *)(*head)->content)->location.len;
 	t_start = ((t_token *)(*head)->content)->location.start;
 	substr = ft_substr(t_line, t_start, t_len);
-	malloc_guard(scene, head, NULL, substr);
+	malloc_guard(scene, NULL, substr);
 	return (substr);
 }
 
-void	write_map(t_scene *scene, t_list **head, \
+void	write_map(t_scene *scene, t_list *lst_iter, \
 	int i, size_t t_longest_row)
 {
 	char	*t_line;
@@ -89,14 +84,14 @@ void	write_map(t_scene *scene, t_list **head, \
 	size_t	t_len;
 	size_t	t_start;
 
-	t_line = ((t_token *)(*head)->content)->line;
-	t_type = ((t_token *)(*head)->content)->type;
-	t_len = ((t_token *)(*head)->content)->location.len;
-	t_start = ((t_token *)(*head)->content)->location.start;
+	t_line = ((t_token *)(lst_iter)->content)->line;
+	t_type = ((t_token *)(lst_iter)->content)->type;
+	t_len = ((t_token *)(lst_iter)->content)->location.len;
+	t_start = ((t_token *)(lst_iter)->content)->location.start;
 	if (t_type == MAP)
 	{
 		scene->map[i] = ft_calloc(t_longest_row + 1, sizeof(char));
-		malloc_guard(scene, head, &scene->map, scene->map[i]);
+		malloc_guard(scene, &scene->map, scene->map[i]);
 		ft_memcpy(scene->map[i], t_line + t_start, t_len);
 	}
 }

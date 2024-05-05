@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/05 12:57:57 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 16:00:33 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@
 		x++;
 	}
 } */
-
+/*segfaults on 7row below by 8col*/
 void	init_game(t_game *game, t_scene *scene)
 {
-	//char	*map;
+	char	*map;
 
-	//map = "11111111\n10000001\n10001001\n10000001\n10000001\n10000001\n10000001\n11111111";
+	map = "11111111\n10000001\n10001001\n10000001\n10000001\n10000001\n10000001\n11111111";
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
 	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	// game->minimap = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
@@ -57,10 +57,10 @@ void	init_game(t_game *game, t_scene *scene)
 	game->p.y = 2 * TILE_SIZE + TILE_SIZE / 2;
 	game->p.angle = 0.0f;
 	// game->p.angle = M_PI / 2;
-	//game->map = ft_split(map, '\n');
+	game->map = ft_split(map, '\n');
+	print_array(game->map);
 	game->map = scene->map;
 	print_array(game->map);
-	print_array(scene->map);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
 	// mlx_image_to_window(game->mlx, game->minimap, SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	// mlx_set_instance_depth(game->minimap->instances, 1);
@@ -90,6 +90,5 @@ int	main(int argc, char **argv)
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);
 	free(game.map);
-
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:35:07 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/04 10:46:38 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 13:49:13 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,10 @@ void	free_scene(t_scene *scene)
 	{
 		free_arr(&(scene->map));
 		scene->map = NULL;
+	}
+	if (scene->tokens != NULL)
+	{
+		free_lst(&(scene->tokens));
+		scene->tokens = NULL;
 	}
 }

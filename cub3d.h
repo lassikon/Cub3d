@@ -82,15 +82,6 @@ typedef enum e_err_code
 	MAP_NOT_CLOSED_ERR,
 }	t_err_code;
 
-typedef enum e_free_func
-{
-	NFREE,
-	FREE_SCENE,
-	FREE_LST,
-	FREE_ARR,
-	FREE,
-}	t_free_func;
-
 typedef struct s_error_entry
 {
 	char		*message;
@@ -103,21 +94,21 @@ int		wall_collision(char **map, int x, int y);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);
-void	tokenize(t_list	**head, char *line);
+void	tokenize(t_scene *scene, char *line);
 void	parse(t_scene *scene, int argc, char **argv);
-void	malloc_guard(t_scene *scene, t_list **head, char ***tmp, void *ptr);
+void	malloc_guard(t_scene *scene, char ***tmp, void *ptr);
 size_t	ft_arrlen(char **arr);
 char	*substr_guard(t_scene *scene, t_list **head);
-void	write_map(t_scene *scene, t_list **head, \
+void	write_map(t_scene *scene, t_list *head, \
 	int i, size_t t_longest_row);
-void	extract_data(t_scene *scene, t_list **head);
+void	extract_data(t_scene *scene);
 void	is_valid(t_scene *scene, size_t longest_row);
 
 /*frees and error*/
 void	free_arr(char ***array);
 void	free_lst(t_list **head);
 void	free_scene(t_scene *scene);
-void	error_handler(void *data, t_free_func func, t_err_code code);
+void	error_handler(t_scene *scene, t_err_code code);
 
 /*debug*/
 void	print_array(char **array);

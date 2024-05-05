@@ -6,13 +6,13 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/05 13:43:17 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 15:25:12 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	syntax_error(t_scene *scene, t_list **head, char *line, int *flag)
+static void	syntax_error(t_scene *scene, char *line, int *flag)
 {
 	int	i;
 	int	invalid;
@@ -31,21 +31,20 @@ static void	syntax_error(t_scene *scene, t_list **head, char *line, int *flag)
 	if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
 		|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1 || invalid)
 	{
-		free_lst(head);
 		if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
 			|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1)
-			error_handler(scene, FREE_SCENE, SCENE_FORMAT_ERR);
+			error_handler(scene, SCENE_FORMAT_ERR);
 		else
-			error_handler(scene, FREE_SCENE, INVALID_MAP_ERR);
+			error_handler(scene, INVALID_MAP_ERR);
 	}
 }
 
-static void	scene_syntax(t_scene *scene, t_list **head)
+static void	scene_syntax(t_scene *scene)
 {
 	int		flag[6];
 	t_list	*tmp;
 
-	tmp = *head;
+	tmp = scene->tokens;
 	ft_memset(flag, 0, 6 * sizeof(int));
 	while (tmp)
 	{
@@ -62,10 +61,10 @@ static void	scene_syntax(t_scene *scene, t_list **head)
 		else if (((t_token *)tmp->content)->type == C)
 			flag[5]++;
 		else if (((t_token *)tmp->content)->type == MAP)
-			syntax_error(scene, head, ((t_token *)tmp->content)->line, flag);
+			syntax_error(scene, ((t_token *)tmp->content)->line, flag);
 		tmp = tmp->next;
 	}
-	syntax_error(scene, head, NULL, flag);
+	syntax_error(scene, NULL, flag);
 }
 
 static void	init_scene(t_scene *scene)
@@ -101,9 +100,8 @@ static void	call_gnl(t_scene *scene, int map_fd)
 		else
 			tokenize(scene, line);
 	}
-	scene_syntax(scene, &head);
-	extract_data(scene, &head);
-	free_lst(&head);
+	scene_syntax(scene);
+	extract_data(scene);
 	//free_scene(scene);
 }
 
@@ -113,14 +111,14 @@ void	parse(t_scene *scene, int argc, char **argv)
 
 	init_scene(scene);
 	if (argc != 2)
-		error_handler(NULL, NFREE, ARG_ERR);
+		error_handler(scene, ARG_ERR);
 	if (ft_strlen(argv[1]) < 4)
-		error_handler(NULL, NFREE, FILE_EXT_ERR);
+		error_handler(scene, FILE_EXT_ERR);
 	if (ft_strlen(ft_strnstr(argv[1], ".cub", ft_strlen(argv[1]))) != 4)
-		error_handler(NULL, NFREE, FILE_EXT_ERR);
+		error_handler(scene, FILE_EXT_ERR);
 	map_fd = open(argv[1], O_RDONLY);
 	if (map_fd < 0)
-		error_handler(NULL, NFREE, FILE_OPEN_ERR);
+		error_handler(scene, FILE_OPEN_ERR);
 	call_gnl(scene, map_fd);
 	close(map_fd);
 }

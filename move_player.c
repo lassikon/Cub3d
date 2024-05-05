@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/04 12:08:25 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 15:16:42 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,13 @@ void	move_player(t_game *game)
 		game->p.angle -= ROTATION_SPEED;
 		if (game->p.angle < 0)
 			game->p.angle += 2 * PI;
+		printf("L angle: %f\n", game->p.angle);
 	}
 	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
 	{
 		game->p.angle += ROTATION_SPEED;
 		if (game->p.angle > 2 * PI)
 			game->p.angle -= 2 * PI;
+		printf("R angle: %f\n", game->p.angle);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:14:58 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/04 10:49:57 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 13:48:27 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_entry(t_error_entry *errors)
 	errors[6] = (t_error_entry){"Error\nMap is not closed\n", MAP_NOT_CLOSED_ERR};
 }
 
-void	error_handler(void *data, t_free_func func, t_err_code code)
+void	error_handler(t_scene *scene, t_err_code code)
 {
 	t_error_entry	errors[7];
 	int				i;
@@ -34,16 +34,7 @@ void	error_handler(void *data, t_free_func func, t_err_code code)
 	{
 		if (errors[i].code == code)
 		{
-			if (func == FREE_SCENE)
-				free_scene((t_scene *)data);
-			else if (func == FREE_LST)
-				free_lst((t_list **)data);
-			else if (func == FREE_ARR)
-				free_arr((char ***)data);
-			else if (func == FREE)
-				free((char *)data);
-			else
-				(void)data;
+			free_scene(scene);
 			ft_putstr_fd(errors[i].message, 2);
 			exit(code);
 		}
