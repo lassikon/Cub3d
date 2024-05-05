@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/05 16:00:33 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 16:57:44 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,56 @@
 		x++;
 	}
 } */
+
+void	find_char(t_game *game)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (game->map[i])
+	{
+		j = 0;
+		while (game->map[i][j])
+		{
+			if (ft_strchr("NSWE", game->map[i][j]) != NULL)
+			{
+				if (game->map[i][j] == 'N')
+					game->p.angle = 3 * PI / 2;
+				if (game->map[i][j] == 'S')
+					game->p.angle = PI / 2;
+				if (game->map[i][j] == 'W')
+					game->p.angle = PI;
+				if (game->map[i][j] == 'E')
+					game->p.angle = 0;
+				game->p.x = j * TILE_SIZE + TILE_SIZE / 2;
+				game->p.y = i * TILE_SIZE + TILE_SIZE / 2;
+				printf("i: %d, j: %d\n", i, j);
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 /*segfaults on 7row below by 8col*/
 void	init_game(t_game *game, t_scene *scene)
 {
-	char	*map;
+	//char	*map;
 
-	map = "11111111\n10000001\n10001001\n10000001\n10000001\n10000001\n10000001\n11111111";
+	//map = "11111111\n10000001\n10001001\n10000001\n10000001\n10000001\n10000001\n11111111";
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
 	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	// game->minimap = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
 	game->distance_to_projection_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
-	game->p.x = 2 * TILE_SIZE + TILE_SIZE / 2;
-	game->p.y = 2 * TILE_SIZE + TILE_SIZE / 2;
-	game->p.angle = 0.0f;
+	/* game->p.x = 6 * TILE_SIZE + TILE_SIZE / 2;
+	game->p.y = 6 * TILE_SIZE + TILE_SIZE / 2;
+	game->p.angle = 0.0f; */
 	// game->p.angle = M_PI / 2;
-	game->map = ft_split(map, '\n');
-	print_array(game->map);
+	//game->map = ft_split(map, '\n');
+
 	game->map = scene->map;
-	print_array(game->map);
+	find_char(game);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
 	// mlx_image_to_window(game->mlx, game->minimap, SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	// mlx_set_instance_depth(game->minimap->instances, 1);

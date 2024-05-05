@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/05 15:30:14 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/05 17:34:59 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	wall_collision(char **map, int x, int y)
 
 float	get_distance(int px, int py, int dx, int dy)
 {
-	if (dx < 0 || dx > (MAP_WIDTH * TILE_SIZE) || dy < 0 || dy > (MAP_HEIGHT * TILE_SIZE))
+	if (dx < 0 || dx > (MAP_WIDTH * TILE_SIZE) || (dy < 0 || dy > (MAP_HEIGHT * TILE_SIZE)))
 		return (INT_MAX);
 	return (sqrt(((px - dx) * (px - dx)) + ((py - dy) * (py - dy))));
 }
@@ -81,6 +81,7 @@ void	horizontal_intersection(t_game *game, t_ray *ray)
 	ray->distance_to_horizontal = get_distance(game->p.x, game->p.y, ray->x, ray->y);
 	if (ray->distance_to_horizontal == INT_MAX)
 		return ;
+	
 	while (wall_collision(game->map, ray->x, ray->y) == 0)
 	{
 		ray->x += ray->x_step;
@@ -140,6 +141,7 @@ void	cast_ray(t_game *game, t_ray *ray)
 		ray->distance = ray->distance_to_horizontal;
 	else
 		ray->distance = ray->distance_to_vertical;
+	printf("Horizontal distance: %f, Vertical distance: %f\n", ray->distance_to_horizontal, ray->distance_to_vertical);
 }
 
 void init_ray(t_ray *ray)
