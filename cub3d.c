@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/06 11:59:56 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:02:45 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,12 @@ void	init_game(t_game *game, t_scene *scene)
 
 	game->map = scene->map;
 	find_char(game);
+	game->no_texture = mlx_load_png("textures/wall.png");
+	game->no_img = mlx_texture_to_image(game->mlx, game->no_texture);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
+	
+	mlx_image_to_window(game->mlx, game->no_img, 300, 300);
+	printf("here\n");
 	game->map_width = scene->map_width * TILE_SIZE;
 	game->map_height = scene->map_height * TILE_SIZE;
 	// mlx_image_to_window(game->mlx, game->minimap, SCREEN_WIDTH - MINIMAP_SIZE, 0);

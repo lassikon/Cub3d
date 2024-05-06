@@ -64,6 +64,8 @@ typedef struct s_game {
 	mlx_t		*mlx;
 	mlx_image_t	*image;
 	mlx_image_t	*minimap;
+	mlx_texture_t	*no_texture;
+	mlx_image_t	*no_img;
 	t_player	p;
 	char		**map;
 	int			map_width;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/06 12:23:01 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/06 14:56:49 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,16 +177,16 @@ void	render_walls(t_game *game)
 	angle_step = FOV / SCREEN_WIDTH;
 	ray.angle = game->p.angle - FOV / 2;
 	// printf("Player position: x = %f, y = %f, angle = %f\n", game->p.x, game->p.y, game->p.angle);
-	while (column < SCREEN_WIDTH)
-	{
-		if (ray.angle < 0)
-			ray.angle += 2 * PI;
-		else if (ray.angle > 2 * PI)
-			ray.angle -= 2 * PI;
-		cast_ray(game, &ray);
-		// printf("Player angle: %f, Ray angle: %f, distance: %f\n", game->p.angle, ray.angle, ray.distance);
-		draw_column(game, ray, column);
-		column++;
-		ray.angle += angle_step;
-	}
+	// while (column < SCREEN_WIDTH)
+	// {
+	// 	if (ray.angle < 0)
+	// 		ray.angle += 2 * PI;
+	// 	else if (ray.angle > 2 * PI)
+	// 		ray.angle -= 2 * PI;
+	// 	cast_ray(game, &ray);
+	// 	// printf("Player angle: %f, Ray angle: %f, distance: %f\n", game->p.angle, ray.angle, ray.distance);
+	// 	draw_column(game, ray, column);
+	// 	column++;
+	// 	ray.angle += angle_step;
+	// }
 }
