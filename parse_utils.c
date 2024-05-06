@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/05 15:42:44 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/06 10:08:47 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ char	*substr_guard(t_scene *scene, t_list **head)
 	return (substr);
 }
 
-void	write_map(t_scene *scene, t_list *lst_iter, \
-	int i, size_t t_longest_row)
+void	write_map(t_scene *scene, t_list *lst_iter, int i)
 {
 	char	*t_line;
 	t_type	t_type;
@@ -90,7 +89,7 @@ void	write_map(t_scene *scene, t_list *lst_iter, \
 	t_start = ((t_token *)(lst_iter)->content)->location.start;
 	if (t_type == MAP)
 	{
-		scene->map[i] = ft_calloc(t_longest_row + 1, sizeof(char));
+		scene->map[i] = ft_calloc(scene->map_width + 1, sizeof(char));
 		malloc_guard(scene, &scene->map, scene->map[i]);
 		ft_memcpy(scene->map[i], t_line + t_start, t_len);
 	}

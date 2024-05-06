@@ -43,6 +43,8 @@ typedef struct s_scene
 	int		floor_color[3];
 	int		ceiling_color[3];
 	char	**map;
+	int		map_width;
+	int		map_height;
 	t_list	*tokens;
 }			t_scene;
 
@@ -99,10 +101,9 @@ void	parse(t_scene *scene, int argc, char **argv);
 void	malloc_guard(t_scene *scene, char ***tmp, void *ptr);
 size_t	ft_arrlen(char **arr);
 char	*substr_guard(t_scene *scene, t_list **head);
-void	write_map(t_scene *scene, t_list *head, \
-	int i, size_t t_longest_row);
+void	write_map(t_scene *scene, t_list *head, int i);
 void	extract_data(t_scene *scene);
-void	is_valid(t_scene *scene, size_t longest_row);
+void	is_valid(t_scene *scene);
 
 /*frees and error*/
 void	free_arr(char ***array);

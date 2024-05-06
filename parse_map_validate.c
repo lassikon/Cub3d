@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map_validate.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 10:12:32 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/05 15:26:58 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/06 10:10:03 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	is_valid_map(t_scene *scene, char **tmp)
 	}
 }
 
-void	is_valid(t_scene *scene, size_t longest_row)
+void	is_valid(t_scene *scene)
 {
 	char	**tmp;
 	int		i;
@@ -84,20 +84,20 @@ void	is_valid(t_scene *scene, size_t longest_row)
 	tmp = ft_calloc(ft_arrlen(scene->map) + 3, sizeof(char *));
 	malloc_guard(scene, NULL, tmp);
 	i = 0;
-	tmp[i] = ft_calloc(longest_row + 3, sizeof(char));
+	tmp[i] = ft_calloc(scene->map_width + 3, sizeof(char));
 	malloc_guard(scene, &tmp, tmp[i]);
-	ft_memset(tmp[i], 'J', longest_row + 2);
+	ft_memset(tmp[i], 'J', scene->map_width + 2);
 	while (scene->map[i])
 	{
-		tmp[i + 1] = ft_calloc(longest_row + 3, sizeof(char));
+		tmp[i + 1] = ft_calloc(scene->map_width + 3, sizeof(char));
 		malloc_guard(scene, &tmp, tmp[i + 1]);
-		ft_memset(tmp[i + 1], 'J', longest_row + 2);
+		ft_memset(tmp[i + 1], 'J', scene->map_width + 2);
 		ft_memcpy(tmp[i + 1] + 1, scene->map[i], ft_strlen(scene->map[i]));
 		i++;
 	}
-	tmp[i + 1] = ft_calloc(longest_row + 3, sizeof(char));
+	tmp[i + 1] = ft_calloc(scene->map_width + 3, sizeof(char));
 	malloc_guard(scene, NULL, tmp[i + 1]);
-	ft_memset(tmp[i + 1], 'J', longest_row + 2);
+	ft_memset(tmp[i + 1], 'J', scene->map_width + 2);
 	tmp[i + 2] = NULL;
 	fill_map(tmp, 0, 0);
 	is_valid_map(scene, tmp);

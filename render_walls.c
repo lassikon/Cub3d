@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/05 17:34:59 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/06 09:01:42 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	if (height > SCREEN_HEIGHT)
 		height = SCREEN_HEIGHT;
 	y = SCREEN_HEIGHT / 2 - height / 2;
-	color = 0x00FF00FF;
+	if (ray.distance_to_horizontal < ray.distance_to_vertical)
+		color = 0x0000FFFF;
+	else
+		color = 0x00FF00FF;
 	while (y < SCREEN_HEIGHT / 2 + height / 2)
 	{
 		mlx_put_pixel(game->image, column, y, color);
@@ -63,9 +66,9 @@ void	horizontal_intersection(t_game *game, t_ray *ray)
 	}
 	else if (ray->angle > PI)
 	{
-		if (game->p.y % TILE_SIZE == 0)
-			ray->y = game->p.y - TILE_SIZE;
-		else
+		// if (game->p.y % TILE_SIZE == 0)
+		// 	ray->y = game->p.y - TILE_SIZE;
+		// else
 			ray->y = (game->p.y / TILE_SIZE) * TILE_SIZE - 1;
 		ray->x = game->p.x + ((game->p.y - ray->y) / (-1 * tanf(ray->angle)));
 		ray->y_step = -TILE_SIZE;
@@ -101,9 +104,9 @@ void	vertical_intersection(t_game *game, t_ray *ray)
 	}
 	else if (ray->angle > PI / 2 && ray->angle < 3 * PI / 2)
 	{
-		if (game->p.x % TILE_SIZE == 0)
-			ray->x = game->p.x - TILE_SIZE;
-		else
+		// if (game->p.x % TILE_SIZE == 0)
+		// 	ray->x = game->p.x - TILE_SIZE;
+		// else
 			ray->x = (game->p.x / TILE_SIZE) * TILE_SIZE - 1;
 		ray->y = game->p.y + ((game->p.x - ray->x) * (-1 * tanf(ray->angle)));
 		ray->x_step = -TILE_SIZE;
@@ -141,7 +144,7 @@ void	cast_ray(t_game *game, t_ray *ray)
 		ray->distance = ray->distance_to_horizontal;
 	else
 		ray->distance = ray->distance_to_vertical;
-	printf("Horizontal distance: %f, Vertical distance: %f\n", ray->distance_to_horizontal, ray->distance_to_vertical);
+	//printf("Horizontal distance: %f, Vertical distance: %f\n", ray->distance_to_horizontal, ray->distance_to_vertical);
 }
 
 void init_ray(t_ray *ray)

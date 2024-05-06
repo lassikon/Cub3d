@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/05 15:52:36 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/06 10:33:14 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static int	is_arrdigit(char **arr)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (arr[i])
+	{
+		j = 0;
+		while (arr[i][j])
+		{
+			if (!ft_isdigit(arr[i][j]))
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
 
 static void	parse_color(t_scene *scene, t_list **lst_iter, int *color)
 {
@@ -24,6 +44,8 @@ static void	parse_color(t_scene *scene, t_list **lst_iter, int *color)
 	line = substr_guard(scene, lst_iter);
 	split = ft_split(line, ',');
 	malloc_guard(scene, NULL, split);
+	if (is_arrdigit(split))
+		error_handler(scene, SCENE_FORMAT_ERR);
 	free(line);
 	while (split[i])
 	{
@@ -40,28 +62,29 @@ static void	parse_map(t_scene *scene, t_list **map_head)
 {
 	int		map_size;
 	t_list	*lst_iter;
-	size_t	t_longest_row;
 	size_t	i;
+	size_t	t_len;
 
 	map_size = ft_lstsize(*map_head);
 	scene->map = ft_calloc(map_size + 1, sizeof(char *));
 	malloc_guard(scene, NULL, scene->map);
 	lst_iter = *map_head;
-	t_longest_row = 0;
 	while (lst_iter)
 	{
-		if (((t_token *)lst_iter->content)->location.len > t_longest_row)
-			t_longest_row = ((t_token *)lst_iter->content)->location.len;
+		t_len = ((t_token *)lst_iter->content)->location.len;
+		if (t_len > (size_t)scene->map_width)
+			scene->map_width = ((t_token *)lst_iter->content)->location.len;
 		lst_iter = lst_iter->next;
 	}
 	i = 0;
 	while (*map_head)
 	{
-		write_map(scene, *map_head, i, t_longest_row);
+		write_map(scene, *map_head, i);
 		*map_head = (*map_head)->next;
 		i++;
 	}
 	scene->map[i] = NULL;
+	scene->map_height = i;
 }
 
 static void	parse_texture(t_scene *scene, t_list **lst_iter)
@@ -79,41 +102,25 @@ static void	parse_texture(t_scene *scene, t_list **lst_iter)
 		scene->ea_texture = substr_guard(scene, lst_iter);
 }
 
-static void	write_data(t_scene *scene, t_list **lst_iter)
-{
-	t_type	t_type;
-
-	t_type = ((t_token *)(*lst_iter)->content)->type;
-	if (t_type == NO || t_type == SO || t_type == WE || t_type == EA)
-		parse_texture(scene, lst_iter);
-	else if (t_type == F)
-		parse_color(scene, lst_iter, scene->floor_color);
-	else if (t_type == C)
-		parse_color(scene, lst_iter, scene->ceiling_color);
-	else
-		parse_map(scene, lst_iter);
-}
-
 void	extract_data(t_scene *scene)
 {
-	size_t	longest_row;
-	int		j;
 	t_list	*lst_iter;
+	t_type	t_type;
 
 	lst_iter = scene->tokens;
 	while (lst_iter)
 	{
-		write_data(scene, &lst_iter);
+		t_type = ((t_token *)(lst_iter)->content)->type;
+		if (t_type == NO || t_type == SO || t_type == WE || t_type == EA)
+			parse_texture(scene, &lst_iter);
+		else if (t_type == F)
+			parse_color(scene, &lst_iter, scene->floor_color);
+		else if (t_type == C)
+			parse_color(scene, &lst_iter, scene->ceiling_color);
+		else
+			parse_map(scene, &lst_iter);
 		if (lst_iter)
 			lst_iter = lst_iter->next;
 	}
-	longest_row = 0;
-	j = 0;
-	while (scene->map[j])
-	{
-		if (ft_strlen(scene->map[j]) > longest_row)
-			longest_row = ft_strlen(scene->map[j]);
-		j++;
-	}
-	is_valid(scene, longest_row);
+	is_valid(scene);
 }
