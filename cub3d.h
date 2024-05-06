@@ -28,8 +28,8 @@
 # define MAP_CHARS " 01NSEW"
 
 typedef struct  s_player {
-	int		x;
-	int		y;
+	float	x;
+	float	y;
 	float	angle;
 } t_player;
 
@@ -48,10 +48,10 @@ typedef struct s_scene
 }			t_scene;
 
 typedef struct  ray_s {
-	int		x;
-	int		y;
-	int		x_step;
-	int		y_step;
+	float	x;
+	float	y;
+	float	x_step;
+	float	y_step;
 	float	distance_to_horizontal;
 	float	distance_to_vertical;
 	int		collision;
@@ -96,7 +96,7 @@ typedef struct s_error_entry
 
 void	move_player(t_game *game);
 void	render_walls(t_game *game);
-int		wall_collision(t_game *game, int x, int y);
+int		wall_collision(t_game *game, float x, float y);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);
