@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/06 16:10:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:15:01 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,20 +140,6 @@ void	cast_ray(t_game *game, t_ray *ray)
 		ray->distance = ray->distance_to_horizontal;
 	else
 		ray->distance = ray->distance_to_vertical;
-}
-
-void init_ray(t_ray *ray)
-{
-	ray->x = 0;
-	ray->y = 0;
-	ray->x_step = 0;
-	ray->y_step = 0;
-	ray->distance_to_horizontal = 0;
-	ray->distance_to_vertical = 0;
-	ray->collision = 0;
-	ray->wall_direction = 0;
-	ray->distance = 0;
-	ray->angle = 0;
 }
 
 void init_ray(t_ray *ray)
