@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/06 09:01:42 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/06 12:23:01 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	if (height > SCREEN_HEIGHT)
 		height = SCREEN_HEIGHT;
 	y = SCREEN_HEIGHT / 2 - height / 2;
-	if (ray.distance_to_horizontal < ray.distance_to_vertical)
+	if (ray.distance_to_horizontal == ray.distance_to_vertical)
+		color = 0x00FF0000; //red
+	else if (ray.distance_to_horizontal < ray.distance_to_vertical)
 		color = 0x0000FFFF;
 	else
 		color = 0x00FF00FF;
@@ -41,20 +43,21 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	}
 }
 
-int	wall_collision(char **map, int x, int y)
+int	wall_collision(t_game *game, int x, int y)
 {
-	if (x < 0 || x >= MAP_WIDTH * TILE_SIZE || y < 0 || y >= MAP_HEIGHT * TILE_SIZE)
+	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
 		return (1);
-	if (map[y / TILE_SIZE][x / TILE_SIZE] == '1')
+	// printf("x: %d, y: %d\n", x/TILE_SIZE, y/TILE_SIZE);
+	if (!game->map[y / TILE_SIZE][x / TILE_SIZE] || game->map[y / TILE_SIZE][x / TILE_SIZE] == '1')
 		return (1);
 	return (0);
-}
+} 
 
-float	get_distance(int px, int py, int dx, int dy)
+float	get_distance(t_game *game, int dx, int dy)
 {
-	if (dx < 0 || dx > (MAP_WIDTH * TILE_SIZE) || (dy < 0 || dy > (MAP_HEIGHT * TILE_SIZE)))
+	if (dx < 0 || dx > game->map_width || (dy < 0 || dy > game->map_height))
 		return (INT_MAX);
-	return (sqrt(((px - dx) * (px - dx)) + ((py - dy) * (py - dy))));
+	return (sqrt(((game->p.x - dx) * (game->p.x - dx)) + ((game->p.y - dy) * (game->p.y - dy))));
 }
 
 void	horizontal_intersection(t_game *game, t_ray *ray)
@@ -81,15 +84,15 @@ void	horizontal_intersection(t_game *game, t_ray *ray)
 		ray->y_step = TILE_SIZE;
 		ray->x_step = TILE_SIZE / (tanf(ray->angle));
 	}
-	ray->distance_to_horizontal = get_distance(game->p.x, game->p.y, ray->x, ray->y);
+	ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
 	if (ray->distance_to_horizontal == INT_MAX)
 		return ;
 	
-	while (wall_collision(game->map, ray->x, ray->y) == 0)
+	while (wall_collision(game, ray->x, ray->y) == 0)
 	{
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
-		ray->distance_to_horizontal = get_distance(game->p.x, game->p.y, ray->x, ray->y);
+		ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
 		if (ray->distance_to_horizontal == INT_MAX)
 			return ;
 	}
@@ -122,14 +125,14 @@ void	vertical_intersection(t_game *game, t_ray *ray)
 		ray->x_step = TILE_SIZE;
 		ray->y_step = TILE_SIZE * tanf(ray->angle);
 	}
-	ray->distance_to_vertical = get_distance(game->p.x, game->p.y, ray->x, ray->y);
+	ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
 	if (ray->distance_to_vertical == INT_MAX)
 		return ;
-	while (wall_collision(game->map, ray->x, ray->y) == 0)
+	while (wall_collision(game, ray->x, ray->y) == 0)
 	{
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
-		ray->distance_to_vertical = get_distance(game->p.x, game->p.y, ray->x, ray->y);
+		ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
 		if (ray->distance_to_vertical == INT_MAX)
 			return ;
 	}
@@ -140,7 +143,9 @@ void	cast_ray(t_game *game, t_ray *ray)
 {
 	horizontal_intersection(game, ray);
 	vertical_intersection(game, ray);
-	if (ray->distance_to_horizontal < ray->distance_to_vertical)
+	if (ray->distance_to_horizontal == ray->distance_to_vertical)
+		printf("Horizontal distance: %f, Vertical distance: %f\n", ray->distance_to_horizontal, ray->distance_to_vertical);
+	if (ray->distance_to_horizontal <= ray->distance_to_vertical)
 		ray->distance = ray->distance_to_horizontal;
 	else
 		ray->distance = ray->distance_to_vertical;

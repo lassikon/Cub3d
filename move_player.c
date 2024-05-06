@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/05 16:50:07 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/06 11:36:04 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	player_collision(t_game *game, int x, int y)
+{
+	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
+		return (1);
+	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET)/ TILE_SIZE] == '1')
+		return (1);
+	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1')
+		return (1);
+	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1')
+		return (1);
+	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1')
+		return (1);
+	return (0);
+}
 
 void	move_forward(t_game *game)
 {
@@ -19,7 +34,7 @@ void	move_forward(t_game *game)
 
 	new_x = game->p.x + cos(game->p.angle) * MOVE_SPEED;
 	new_y = game->p.y + sin(game->p.angle) * MOVE_SPEED;
-	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
+	if (!player_collision(game, (int)new_x, (int)new_y))
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -33,7 +48,7 @@ void	move_backward(t_game *game)
 
 	new_x = game->p.x - cos(game->p.angle) * MOVE_SPEED;
 	new_y = game->p.y - sin(game->p.angle) * MOVE_SPEED;
-	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
+	if (!player_collision(game, (int)new_x, (int)new_y))
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -47,7 +62,7 @@ void	move_left(t_game *game)
 
 	new_x = game->p.x + cos(game->p.angle - PI / 2) * MOVE_SPEED;
 	new_y = game->p.y + sin(game->p.angle - PI / 2) * MOVE_SPEED;
-	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
+	if (!player_collision(game, (int)new_x, (int)new_y))
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;
@@ -61,7 +76,7 @@ void	move_right(t_game *game)
 
 	new_x = game->p.x + cos(game->p.angle + PI / 2) * MOVE_SPEED;
 	new_y = game->p.y + sin(game->p.angle + PI / 2) * MOVE_SPEED;
-	if (wall_collision(game->map, (int)new_x, (int)new_y) == 0)
+	if (!player_collision(game, (int)new_x, (int)new_y))
 	{
 		game->p.x = new_x;
 		game->p.y = new_y;

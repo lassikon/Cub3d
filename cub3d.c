@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/06 10:42:30 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/06 11:59:56 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void	init_game(t_game *game, t_scene *scene)
 	game->map = scene->map;
 	find_char(game);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
+	game->map_width = scene->map_width * TILE_SIZE;
+	game->map_height = scene->map_height * TILE_SIZE;
 	// mlx_image_to_window(game->mlx, game->minimap, SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	// mlx_set_instance_depth(game->minimap->instances, 1);
 }
@@ -109,6 +111,7 @@ void	game_loop(void *param)
 	// minimap(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
+	game->frame_count++;
 }
 
 int	main(int argc, char **argv)
@@ -120,6 +123,7 @@ int	main(int argc, char **argv)
 	init_game(&game, &scene);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
+	printf("Average FPS: %f\n", game.frame_count / mlx_get_time());
 	mlx_terminate(game.mlx);
 	free_scene(&scene);
 	return (0);

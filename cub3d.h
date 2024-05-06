@@ -22,9 +22,8 @@
 #define MOVE_SPEED 4
 #define STRAFE_SPEED 2
 #define ROTATION_SPEED (PI / 90) // 2 degrees
-#define MAP_WIDTH 8
-#define MAP_HEIGHT 8
 #define MINIMAP_SIZE 128
+#define COLL_OFFSET 8
 
 # define MAP_CHARS " 01NSEW"
 
@@ -67,7 +66,10 @@ typedef struct s_game {
 	mlx_image_t	*minimap;
 	t_player	p;
 	char		**map;
+	int			map_width;
+	int			map_height;
 	float		distance_to_projection_plane;
+	int			frame_count;
 } t_game;
 
 /*error*/
@@ -92,7 +94,7 @@ typedef struct s_error_entry
 
 void	move_player(t_game *game);
 void	render_walls(t_game *game);
-int		wall_collision(char **map, int x, int y);
+int		wall_collision(t_game *game, int x, int y);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);
