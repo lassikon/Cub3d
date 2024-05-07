@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/07 15:15:44 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:51:53 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,43 @@ void	init_game(t_game *game, t_scene *scene)
 
 	game->map = scene->map;
 	find_char(game);
-	game->no_texture = mlx_load_png("textures/wall.png");
-	game->no_img = mlx_texture_to_image(game->mlx, game->no_texture);
+	game->no_txtr = mlx_load_png("textures/wall.png");
+	game->no_img = mlx_texture_to_image(game->mlx, game->no_txtr);
+	mlx_resize_image(game->no_img, 512, 512);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
+
+	// uint32_t nwidth = 60;
+	// uint32_t nheight = 321;
+
+	// uint32_t* origin = (uint32_t*)game->no_img->pixels;
+	// float wstep = (float)game->no_img->width / nwidth;
+	// float hstep = (float)game->no_img->height / nheight;
+
+	// uint8_t* tempbuff = calloc(nwidth * nheight, 4);
 	
-	// mlx_image_to_window(game->mlx, game->no_img, 300, 300);
+	// game->no_img->pixels = tempbuff;
+
+	// uint32_t* destin = (uint32_t*)game->no_img->pixels;
+	// for (uint32_t j = 0; j < nheight; j++)
+	// 	for (uint32_t i = 0; i < nwidth; i++)
+	// 		destin[j * nwidth + i] = origin[(uint32_t)(j * hstep) * game->no_img->width + (uint32_t)(i * wstep)];
+	// (*(uint32_t*)&game->no_img->width) = nwidth;
+	// (*(uint32_t*)&game->no_img->height) = nheight;
+
+
+    // for (uint32_t y = 0; y < (uint32_t)game->no_img->height; y++)
+    // {
+    // 	for (uint32_t x = 0; x < (uint32_t)game->no_img->width; x++)
+    //     {
+    //         uint8_t* pixelstart = &game->no_img->pixels[(uint32_t)(y  * game->no_img->width + x) * 4];
+    //         uint8_t red = pixelstart[0];     // Red component
+    //         uint8_t green = pixelstart[1];   // Green component
+    //         uint8_t blue = pixelstart[2];    // Blue component
+    //         uint8_t alpha = pixelstart[3];
+    //         int color = get_rgba(red, green, blue, alpha);
+    //         mlx_put_pixel(game->image, x, y, color);
+    //     }
+    // }
 	game->map_width = scene->map_width * TILE_SIZE;
 	game->map_height = scene->map_height * TILE_SIZE;
 	mlx_image_to_window(game->mlx, game->mini_img, SCREEN_WIDTH - MINIMAP_SIZE, 0);

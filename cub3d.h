@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/07 14:54:57 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/07 15:55:23 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "libft/include/libft.h"
 # include "MLX42/include/MLX42/MLX42.h"
 # include "token.h"
+# include "MLX42/include/glad/glad.h"
 
 # define SCREEN_WIDTH 1024
 # define SCREEN_HEIGHT 768
@@ -72,6 +73,8 @@ typedef struct  ray_s
 {
 	float	x;
 	float	y;
+	float	x_col;
+	float	y_col;
 	float	x_step;
 	float	y_step;
 	float	distance_to_horizontal;
@@ -88,8 +91,8 @@ typedef struct s_game
 	mlx_image_t	*image;
 	t_minimap	minimap;
 	mlx_image_t	*mini_img;
-	mlx_texture_t	*no_texture;
-	mlx_image_t	*no_img;
+	mlx_texture_t	*no_txtr;
+	mlx_image_t		*no_img;
 	t_player	p;
 	char		**map;
 	int			map_width;
@@ -122,6 +125,7 @@ void	move_player(t_game *game);
 void	render_walls(t_game *game);
 int		wall_collision(t_game *game, float x, float y);
 void	minimap(t_game *game);
+int		get_rgba(int r, int g, int b, int a);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);
