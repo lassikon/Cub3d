@@ -22,6 +22,7 @@ SRCS	:= 	cub3d.c \
 			tokenize.c \
 			errors.c \
 			frees.c \
+			minimap.c
 			
 OBJS	:= ${SRCS:.c=.o}
 
