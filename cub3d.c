@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/08 15:49:44 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:14:45 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,65 +42,22 @@ void	find_char(t_game *game)
 	}
 }
 
-/*segfaults on 7row below by 8col*/
 void	init_game(t_game *game, t_scene *scene)
 {
-	//char	*map;
-
-	//map = "11111111\n10000001\n10001001\n10000001\n10000001\n10000001\n10000001\n11111111";
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
 	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game->mini_img = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
 	game->distance_to_projection_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
-	/* game->p.x = 6 * TILE_SIZE + TILE_SIZE / 2;
-	game->p.y = 6 * TILE_SIZE + TILE_SIZE / 2;
-	game->p.angle = 0.0f; */
-	// game->p.angle = M_PI / 2;
-	//game->map = ft_split(map, '\n');
-
 	game->map = scene->map;
 	find_char(game);
 	// game->no_txtr = mlx_load_png("textures/blacknwhite.png");
 	// game->no_txtr = mlx_load_png("textures/checker.png");
-	game->no_txtr = mlx_load_png("textures/wall.png");
+	game->no_txtr = mlx_load_png("textures/tile_wall.png");
 	game->no_img = mlx_texture_to_image(game->mlx, game->no_txtr);
 	printf("image width: %d\n", game->no_img->width);
 	printf("image height: %d\n", game->no_img->height);
 	// mlx_resize_image(game->no_img, 512, 512);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
-
-	// uint32_t nwidth = 60;
-	// uint32_t nheight = 321;
-
-	// uint32_t* origin = (uint32_t*)game->no_img->pixels;
-	// float wstep = (float)game->no_img->width / nwidth;
-	// float hstep = (float)game->no_img->height / nheight;
-
-	// uint8_t* tempbuff = calloc(nwidth * nheight, 4);
-	
-	// game->no_img->pixels = tempbuff;
-
-	// uint32_t* destin = (uint32_t*)game->no_img->pixels;
-	// for (uint32_t j = 0; j < nheight; j++)
-	// 	for (uint32_t i = 0; i < nwidth; i++)
-	// 		destin[j * nwidth + i] = origin[(uint32_t)(j * hstep) * game->no_img->width + (uint32_t)(i * wstep)];
-	// (*(uint32_t*)&game->no_img->width) = nwidth;
-	// (*(uint32_t*)&game->no_img->height) = nheight;
-
-
-    // for (uint32_t y = 0; y < (uint32_t)game->no_img->height; y++)
-    // {
-    // 	for (uint32_t x = 0; x < (uint32_t)game->no_img->width; x++)
-    //     {
-    //         uint8_t* pixelstart = &game->no_img->pixels[(uint32_t)(y  * game->no_img->width + x) * 4];
-    //         uint8_t red = pixelstart[0];     // Red component
-    //         uint8_t green = pixelstart[1];   // Green component
-    //         uint8_t blue = pixelstart[2];    // Blue component
-    //         uint8_t alpha = pixelstart[3];
-    //         int color = get_rgba(red, green, blue, alpha);
-    //         mlx_put_pixel(game->image, x, y, color);
-    //     }
-    // }
 	game->map_width = scene->map_width * TILE_SIZE;
 	game->map_height = scene->map_height * TILE_SIZE;
 	mlx_image_to_window(game->mlx, game->mini_img, SCREEN_WIDTH - MINIMAP_SIZE, 0);

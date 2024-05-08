@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/08 15:47:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:26:44 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	ray.distance *= cos(da);
 	height = (int)(TILE_SIZE / ray.distance * game->distance_to_projection_plane);
 	float ty_step = (float)game->no_img->height / height;
-	// float ty_off = 0;
 	float ty = 0;
 	if (height > SCREEN_HEIGHT)
 	{
@@ -40,12 +39,6 @@ void	draw_column(t_game *game, t_ray ray, int column)
 		height = SCREEN_HEIGHT;
 	}
 	y = SCREEN_HEIGHT / 2 - height / 2;
-	// if (ray.distance_to_horizontal == ray.distance_to_vertical)
-	// 	color = 0x00FF00FF; //red
-	// else if (ray.distance_to_horizontal < ray.distance_to_vertical)
-	// 	color = 0x0000FFFF;
-	// else
-	// color = 0x00FF00FF;
 	float tx = (float)(game->no_img->width / TILE_SIZE) * ray.col;
 	uint8_t *pixelstart;
 	uint8_t red;
@@ -55,15 +48,17 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	while (y < SCREEN_HEIGHT / 2 + height / 2)
 	{
 		pixelstart = &game->no_img->pixels[(int)ty * game->no_img->width * 4 + (int)tx * 4];
-        red = pixelstart[0];     // Red component
-        green = pixelstart[1];   // Green component
-        blue = pixelstart[2];    // Blue component
-        alpha = pixelstart[3];
-        color = get_rgba(red, green, blue, alpha);
-		mlx_put_pixel(game->image, column, y, color);
+		if (pixelstart[3] != 0)
+		{
+        	red = pixelstart[0];     // Red component
+       		green = pixelstart[1];   // Green component
+        	blue = pixelstart[2];    // Blue component
+       		alpha = pixelstart[3];
+        	color = get_rgba(red, green, blue, alpha);
+			mlx_put_pixel(game->image, column, y, color);
+		}
 		y++;
 		ty += ty_step;
-		// ty++;
 	}
 }
 
