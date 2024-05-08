@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/07 15:55:23 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/08 11:58:41 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,20 @@ typedef struct s_scene
 	t_list	*tokens;
 }			t_scene;
 
+typedef enum e_side
+{
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+}	t_side;
+
 typedef struct  ray_s
 {
 	float	x;
 	float	y;
-	float	x_col;
-	float	y_col;
+	float	col;
+	t_side	wall_side;
 	float	x_step;
 	float	y_step;
 	float	distance_to_horizontal;

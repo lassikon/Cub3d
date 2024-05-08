@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/07 15:52:53 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/08 12:07:36 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
         }
     } */
 
-int get_rgba(int r, int g, int b, int a)
+int	get_rgba(int r, int g, int b, int a)
 {
     return (r << 24 | g << 16 | b << 8 | a);
 }
@@ -47,36 +47,36 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	ray.distance *= cos(da);
 	height = (int)(TILE_SIZE / ray.distance * game->distance_to_projection_plane);
 	
-	float ty_step = (float)game->no_img->height / height;
-	float ty_off = 0;
+	// float ty_step = (float)game->no_img->height / height;
+	// float ty_off = 0;
 	if (height > SCREEN_HEIGHT)
 	{
 		height = SCREEN_HEIGHT;
-		ty_off = (height - SCREEN_HEIGHT) / 2;
+		// ty_off = (height - SCREEN_HEIGHT) / 2;
 	}
 	y = SCREEN_HEIGHT / 2 - height / 2;
-	// if (ray.distance_to_horizontal == ray.distance_to_vertical)
-	// 	color = 0x00FF0000; //red
-	// else if (ray.distance_to_horizontal < ray.distance_to_vertical)
-	// 	color = 0x0000FFFF;
-	// else
-	// color = 0x00FF00FF;
-	float ty = ty_off * ty_step;
-	float tx = (int)(ray.x_col) % game->no_img->width;
+	if (ray.distance_to_horizontal == ray.distance_to_vertical)
+		color = 0x00FF00FF; //red
+	else if (ray.distance_to_horizontal < ray.distance_to_vertical)
+		color = 0x0000FFFF;
+	else
+	color = 0x00FF00FF;
+	// float ty = ty_off * ty_step;
+	// float tx = (int)(ray.x_col) % game->no_img->width;
 	
 
 
 	while (y < SCREEN_HEIGHT / 2 + height / 2)
 	{
-		uint8_t* pixelstart = &game->no_img->pixels[(uint32_t)(ty * game->no_img->width + (uint32_t)tx) * 4];
-        uint8_t red = pixelstart[0];     // Red component
-        uint8_t green = pixelstart[1];   // Green component
-        uint8_t blue = pixelstart[2];    // Blue component
-        uint8_t alpha = pixelstart[3];
-        color = get_rgba(red, green, blue, alpha);
+		// uint8_t* pixelstart = &game->no_img->pixels[(uint32_t)(ty * game->no_img->width + (uint32_t)tx) * 4];
+        // uint8_t red = pixelstart[0];     // Red component
+        // uint8_t green = pixelstart[1];   // Green component
+        // uint8_t blue = pixelstart[2];    // Blue component
+        // uint8_t alpha = pixelstart[3];
+        // color = get_rgba(red, green, blue, alpha);
 		mlx_put_pixel(game->image, column, y, color);
 		y++;
-		ty += ty_step;
+		// ty += ty_step;
 	}
 }
 
@@ -173,20 +173,37 @@ void	vertical_intersection(t_game *game, t_ray *ray)
 void	cast_ray(t_game *game, t_ray *ray)
 {
 	horizontal_intersection(game, ray);
-	ray->x_col = ray->x;
-	ray->y_col = ray->y;
+	if (ray->angle < PI)
+	{
+		ray->wall_side = NORTH;
+		ray->col = (int)(ray->x / TILE_SIZE) * TILE_SIZE + TILE_SIZE - ray->x;
+	}
+	else
+	{
+		ray->wall_side = SOUTH;
+		ray->col = ray->x - (int)(ray->x / TILE_SIZE) * TILE_SIZE;
+	}
 	vertical_intersection(game, ray);
 	if (ray->distance_to_horizontal <= ray->distance_to_vertical)
 		ray->distance = ray->distance_to_horizontal;
 	else
 	{
 		ray->distance = ray->distance_to_vertical;
-		ray->x_col = ray->x;
-		ray->y_col = ray->y;
+		ray->col = ray->y;
+		if (ray->angle < PI / 2 || ray->angle > 3 * PI / 2)
+		{
+			ray->wall_side = WEST;
+			ray->col = ray->y - (int)(ray->y / TILE_SIZE) * TILE_SIZE;
+		}
+		else
+		{
+			ray->wall_side = EAST;
+			ray->col = (int)(ray->y / TILE_SIZE) * TILE_SIZE + TILE_SIZE - ray->y;
+		}
 	}
 }
 
-void init_ray(t_ray *ray)
+void	init_ray(t_ray *ray)
 {
 	ray->x = 0;
 	ray->y = 0;
