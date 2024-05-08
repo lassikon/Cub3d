@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/08 12:07:36 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:29:57 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void	draw_column(t_game *game, t_ray ray, int column)
 		da -= 2 * PI;
 	ray.distance *= cos(da);
 	height = (int)(TILE_SIZE / ray.distance * game->distance_to_projection_plane);
-	
-	// float ty_step = (float)game->no_img->height / height;
+	float ty_step = (float)game->no_img->height / height;
 	// float ty_off = 0;
 	if (height > SCREEN_HEIGHT)
 	{
@@ -55,28 +54,31 @@ void	draw_column(t_game *game, t_ray ray, int column)
 		// ty_off = (height - SCREEN_HEIGHT) / 2;
 	}
 	y = SCREEN_HEIGHT / 2 - height / 2;
-	if (ray.distance_to_horizontal == ray.distance_to_vertical)
-		color = 0x00FF00FF; //red
-	else if (ray.distance_to_horizontal < ray.distance_to_vertical)
-		color = 0x0000FFFF;
-	else
-	color = 0x00FF00FF;
-	// float ty = ty_off * ty_step;
-	// float tx = (int)(ray.x_col) % game->no_img->width;
-	
-
-
+	// if (ray.distance_to_horizontal == ray.distance_to_vertical)
+	// 	color = 0x00FF00FF; //red
+	// else if (ray.distance_to_horizontal < ray.distance_to_vertical)
+	// 	color = 0x0000FFFF;
+	// else
+	// color = 0x00FF00FF;
+	float ty = 0;
+	float tx = (float)(game->no_img->width / TILE_SIZE) * ray.col;
+	uint8_t *pixelstart;
+	uint8_t red;
+	uint8_t green;
+	uint8_t blue;
+	uint8_t alpha;
 	while (y < SCREEN_HEIGHT / 2 + height / 2)
 	{
-		// uint8_t* pixelstart = &game->no_img->pixels[(uint32_t)(ty * game->no_img->width + (uint32_t)tx) * 4];
-        // uint8_t red = pixelstart[0];     // Red component
-        // uint8_t green = pixelstart[1];   // Green component
-        // uint8_t blue = pixelstart[2];    // Blue component
-        // uint8_t alpha = pixelstart[3];
-        // color = get_rgba(red, green, blue, alpha);
+		pixelstart = &game->no_img->pixels[(int)ty * game->no_img->width * 4 + (int)tx * 4];
+        red = pixelstart[0];     // Red component
+        green = pixelstart[1];   // Green component
+        blue = pixelstart[2];    // Blue component
+        alpha = pixelstart[3];
+        color = get_rgba(red, green, blue, alpha);
 		mlx_put_pixel(game->image, column, y, color);
 		y++;
-		// ty += ty_step;
+		ty += ty_step;
+		// ty++;
 	}
 }
 
