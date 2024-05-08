@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/08 15:29:32 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:49:44 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	init_game(t_game *game, t_scene *scene)
 	game->map = scene->map;
 	find_char(game);
 	// game->no_txtr = mlx_load_png("textures/blacknwhite.png");
-	game->no_txtr = mlx_load_png("textures/checker.png");
-	// game->no_txtr = mlx_load_png("textures/wall.png");
+	// game->no_txtr = mlx_load_png("textures/checker.png");
+	game->no_txtr = mlx_load_png("textures/wall.png");
 	game->no_img = mlx_texture_to_image(game->mlx, game->no_txtr);
 	printf("image width: %d\n", game->no_img->width);
 	printf("image height: %d\n", game->no_img->height);

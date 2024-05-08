@@ -6,30 +6,15 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/08 15:29:57 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:47:40 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/* 	int x, y;
-    for (y = 0; y < (int)game->no_txtr->height; y++)
-    {
-        for (x = 0; x < (int)game->no_txtr->width; x++)
-        {
-            uint8_t* pixelstart = &game->no_txtr->pixels[(y * game->no_txtr->width + x) * 4];
-            uint8_t red = pixelstart[0];     // Red component
-            uint8_t green = pixelstart[1];   // Green component
-            uint8_t blue = pixelstart[2];    // Blue component
-            uint8_t alpha = pixelstart[3];
-            int color = get_rgba(red, green, blue, alpha);
-            mlx_put_pixel(game->image, x, y, color);
-        }
-    } */
-
 int	get_rgba(int r, int g, int b, int a)
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	return (r << 24 | g << 16 | b << 8 | a);
 }
 
 void	draw_column(t_game *game, t_ray ray, int column)
@@ -48,10 +33,11 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	height = (int)(TILE_SIZE / ray.distance * game->distance_to_projection_plane);
 	float ty_step = (float)game->no_img->height / height;
 	// float ty_off = 0;
+	float ty = 0;
 	if (height > SCREEN_HEIGHT)
 	{
+		ty += (height - SCREEN_HEIGHT) / 2 * ty_step;
 		height = SCREEN_HEIGHT;
-		// ty_off = (height - SCREEN_HEIGHT) / 2;
 	}
 	y = SCREEN_HEIGHT / 2 - height / 2;
 	// if (ray.distance_to_horizontal == ray.distance_to_vertical)
@@ -60,7 +46,6 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	// 	color = 0x0000FFFF;
 	// else
 	// color = 0x00FF00FF;
-	float ty = 0;
 	float tx = (float)(game->no_img->width / TILE_SIZE) * ray.col;
 	uint8_t *pixelstart;
 	uint8_t red;
