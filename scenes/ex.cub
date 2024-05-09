@@ -1,22 +1,22 @@
-NO                 ./path_to_the_north_texture
+NO                 textures/tile_wall.png
 
 
 
 
 
-SO           ./path_to_the_south_texture
+SO           textures/tile_wall.png
 
 
 
 
-WE              ./path_to_the_west_texture
+WE              textures/tile_wall.png
 
 
 
 
 
 
-EA        ./path_to_the_east_texture
+EA        textures/tile_wall.png
 
 F 220,100,0
 

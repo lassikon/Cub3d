@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 10:35:12 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:11:09 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ typedef struct s_scene
 	char	*so_texture;
 	char	*we_texture;
 	char	*ea_texture;
+	mlx_texture_t *north_tex;
+	mlx_texture_t *south_tex;
+	mlx_texture_t *east_tex;
+	mlx_texture_t *west_tex;
+	mlx_texture_t *door_tex;
 	int		floor_color[3];
 	int		ceiling_color[3];
 	char	**map;
@@ -78,7 +83,7 @@ typedef enum e_side
 	WEST,
 }	t_side;
 
-typedef struct  ray_s
+typedef struct ray_s
 {
 	float	x;
 	float	y;
@@ -86,13 +91,18 @@ typedef struct  ray_s
 	t_side	wall_side;
 	float	x_step;
 	float	y_step;
+	float	ty;
+	float	tx;
+	float	ty_step;
+	uint8_t	*pixel;
+	int		column;
 	float	distance_to_horizontal;
 	float	distance_to_vertical;
-	int		collision;
+	int		height;
 	int		wall_direction;
 	float	distance;
 	float	angle;
-} t_ray;
+}	t_ray;
 
 typedef struct s_game
 {
@@ -102,11 +112,16 @@ typedef struct s_game
 	mlx_image_t	*mini_img;
 	mlx_texture_t	*no_txtr;
 	mlx_image_t		*no_img;
+	mlx_image_t	*north_img;
+	mlx_image_t	*south_img;
+	mlx_image_t	*east_img;
+	mlx_image_t	*west_img;
+	mlx_image_t	*door_img;
 	t_player	p;
 	char		**map;
 	int			map_width;
 	int			map_height;
-	float		distance_to_projection_plane;
+	float		dist_to_proj_plane;
 	float		vertical_center;
 	int			frame_count;
 } t_game;
@@ -133,9 +148,8 @@ typedef struct s_error_entry
 
 void	move_player(t_game *game);
 void	render_walls(t_game *game);
-int		wall_collision(t_game *game, float x, float y);
 void	minimap(t_game *game);
-int		get_rgba(int r, int g, int b, int a);
+void	cast_ray(t_game *game, t_ray *ray);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);

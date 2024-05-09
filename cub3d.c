@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 10:35:46 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:03:29 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,34 @@ void	find_char(t_game *game)
 	}
 }
 
+void	init_textures(t_game *game, t_scene *scene)
+{
+	scene->north_tex = mlx_load_png(scene->no_texture);
+	scene->south_tex = mlx_load_png(scene->so_texture);
+	scene->east_tex = mlx_load_png(scene->ea_texture);
+	scene->west_tex = mlx_load_png(scene->we_texture);
+	scene->door_tex = mlx_load_png("textures/stone_wall.png");
+	game->north_img = mlx_texture_to_image(game->mlx, scene->north_tex);
+	game->south_img = mlx_texture_to_image(game->mlx, scene->south_tex);
+	game->east_img = mlx_texture_to_image(game->mlx, scene->east_tex);
+	game->west_img = mlx_texture_to_image(game->mlx, scene->west_tex);
+	game->door_img = mlx_texture_to_image(game->mlx, scene->door_tex);
+}
+
 void	init_game(t_game *game, t_scene *scene)
 {
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
 	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game->mini_img = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
-	game->distance_to_projection_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
+	game->dist_to_proj_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
 	game->vertical_center = SCREEN_HEIGHT / 2;
-	printf("distance to projection plane: %f\n", game->distance_to_projection_plane);
 	game->map = scene->map;
 	find_char(game);
 	// game->no_txtr = mlx_load_png("textures/blacknwhite.png");
 	// game->no_txtr = mlx_load_png("textures/checker.png");
-	game->no_txtr = mlx_load_png("textures/tile_wall.png");
-	game->no_img = mlx_texture_to_image(game->mlx, game->no_txtr);
-	printf("image width: %d\n", game->no_img->width);
-	printf("image height: %d\n", game->no_img->height);
-	// mlx_resize_image(game->no_img, 512, 512);
+	// game->no_txtr = mlx_load_png("textures/tile_wall.png");
+	// game->no_img = mlx_texture_to_image(game->mlx, game->no_txtr);
+	init_textures(game, scene);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
 	game->map_width = scene->map_width * TILE_SIZE;
 	game->map_height = scene->map_height * TILE_SIZE;
