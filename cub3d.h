@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/08 11:58:41 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 09:46:45 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@
 # define ROTATION_SPEED (PI / 60) // 3 degrees
 # define MINIMAP_SIZE 256
 # define COLL_OFFSET 16
+# define MAX_DEPTH 64000
 
-# define MAP_CHARS " 01NSEW"
+# define MAP_CHARS " 01DNSEW"
 
 typedef struct s_player
 {

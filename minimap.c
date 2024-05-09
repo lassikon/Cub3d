@@ -6,13 +6,11 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 10:16:45 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/07 15:28:48 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 10:29:53 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-#define BPP sizeof(int32_t)
 
 void	minimap_rays(t_game *game, t_minimap *m)
 {
@@ -20,29 +18,35 @@ void	minimap_rays(t_game *game, t_minimap *m)
 	float	y;
 	float	angle;
 	int		angle_steps;
+	int		ray_length;
 
 	angle = game->p.angle - FOV / 2;
 	if (angle < 0)
 		angle += PI * 2;
 	angle_steps = 0;
-	while (angle_steps < 150)
+	while (angle_steps < 100)
 	{
 		m->x = MINIMAP_SIZE / 2;
 		m->y = MINIMAP_SIZE / 2;
-		while (1)
+		ray_length = 0;
+		while (ray_length < 128)
 		{
 			mlx_put_pixel(game->mini_img, (int)m->x, (int)m->y, 0xA0A0A0FF);
 			m->x += cos(angle) * 0.5f;
 			m->y += sin(angle) * 0.5f;
-			if (m->x < 0 || m->x >= MINIMAP_SIZE || m->y < 0 || m->y >= MINIMAP_SIZE)
+			ray_length++;
+			if (m->x < 0 || m->x > MINIMAP_SIZE || m->y < 0 || m->y > MINIMAP_SIZE)
 				break ;
 			x = game->p.x + (m->x - MINIMAP_SIZE / 2) * 4;
 			y = game->p.y + (m->y - MINIMAP_SIZE / 2) * 4;
-			if (game->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
+			if (x < 0 || x > game->map_width || y < 0 || y > game->map_height)
+				break ;
+			if (!game->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)]
+				|| game->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '1')
 				break ;
 		}
 		angle_steps++;
-		angle += FOV / 150;
+		angle += FOV / 100;
 		if (angle > PI * 2)
 			angle -= PI * 2;
 	}

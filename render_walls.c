@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/08 16:26:44 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 09:49:35 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	draw_column(t_game *game, t_ray ray, int column)
 	if (da > 2 * PI)
 		da -= 2 * PI;
 	ray.distance *= cos(da);
+	if (ray.distance == MAX_DEPTH)
+		return ;
 	height = (int)(TILE_SIZE / ray.distance * game->distance_to_projection_plane);
 	float ty_step = (float)game->no_img->height / height;
 	float ty = 0;
@@ -79,7 +81,7 @@ int	wall_collision(t_game *game, float ray_x, float ray_y)
 float	get_distance(t_game *game, float dx, float dy)
 {
 	if (dx < 0 || dx > game->map_width || (dy < 0 || dy > game->map_height))
-		return (INT_MAX);
+		return (MAX_DEPTH);
 	return (sqrt(((game->p.x - dx) * (game->p.x - dx)) + ((game->p.y - dy) * (game->p.y - dy))));
 }
 
@@ -87,7 +89,7 @@ void	horizontal_intersection(t_game *game, t_ray *ray)
 {
 	if (ray->angle == 0 || ray->angle == PI)
 	{
-		ray->distance_to_horizontal = INT_MAX;
+		ray->distance_to_horizontal = MAX_DEPTH;
 		return ;
 	}
 	else if (ray->angle > PI)
@@ -105,14 +107,14 @@ void	horizontal_intersection(t_game *game, t_ray *ray)
 		ray->x_step = TILE_SIZE / (tanf(ray->angle));
 	}
 	ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
-	if (ray->distance_to_horizontal == INT_MAX)
+	if (ray->distance_to_horizontal == MAX_DEPTH)
 		return ;
 	while (wall_collision(game, ray->x, ray->y) == 0)
 	{
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
 		ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
-		if (ray->distance_to_horizontal == INT_MAX)
+		if (ray->distance_to_horizontal == MAX_DEPTH)
 			return ;
 	}
 }
@@ -121,7 +123,7 @@ void	vertical_intersection(t_game *game, t_ray *ray)
 {
 	if (ray->angle == PI / 2 || ray->angle == 3 * PI / 2)
 	{
-		ray->distance_to_vertical = INT_MAX;
+		ray->distance_to_vertical = MAX_DEPTH;
 		return ;
 	}
 	else if (ray->angle > PI / 2 && ray->angle < 3 * PI / 2)
@@ -139,14 +141,14 @@ void	vertical_intersection(t_game *game, t_ray *ray)
 		ray->y_step = TILE_SIZE * tanf(ray->angle);
 	}
 	ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
-	if (ray->distance_to_vertical == INT_MAX)
+	if (ray->distance_to_vertical == MAX_DEPTH)
 		return ;
 	while (wall_collision(game, ray->x, ray->y) == 0)
 	{
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
 		ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
-		if (ray->distance_to_vertical == INT_MAX)
+		if (ray->distance_to_vertical == MAX_DEPTH)
 			return ;
 	}
 }

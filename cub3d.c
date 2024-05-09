@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/08 16:14:45 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 09:43:59 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	init_game(t_game *game, t_scene *scene)
 	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game->mini_img = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
 	game->distance_to_projection_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
+	printf("distance to projection plane: %f\n", game->distance_to_projection_plane);
 	game->map = scene->map;
 	find_char(game);
 	// game->no_txtr = mlx_load_png("textures/blacknwhite.png");
