@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 09:46:45 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 10:35:12 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ typedef struct s_game
 	int			map_width;
 	int			map_height;
 	float		distance_to_projection_plane;
+	float		vertical_center;
 	int			frame_count;
 } t_game;
 

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 09:49:35 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 11:11:49 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,19 @@ void	draw_column(t_game *game, t_ray ray, int column)
 		ty += (height - SCREEN_HEIGHT) / 2 * ty_step;
 		height = SCREEN_HEIGHT;
 	}
-	y = SCREEN_HEIGHT / 2 - height / 2;
+	y = game->vertical_center - height / 2;
+	if (y < 0)
+	{
+		ty += -y * ty_step;
+		y = 0;
+	}
 	float tx = (float)(game->no_img->width / TILE_SIZE) * ray.col;
 	uint8_t *pixelstart;
 	uint8_t red;
 	uint8_t green;
 	uint8_t blue;
 	uint8_t alpha;
-	while (y < SCREEN_HEIGHT / 2 + height / 2)
+	while (y < game->vertical_center + height / 2 && y < SCREEN_HEIGHT)
 	{
 		pixelstart = &game->no_img->pixels[(int)ty * game->no_img->width * 4 + (int)tx * 4];
 		if (pixelstart[3] != 0)
@@ -61,6 +66,8 @@ void	draw_column(t_game *game, t_ray ray, int column)
 		}
 		y++;
 		ty += ty_step;
+		if (ty >= game->no_img->height)
+			break ;
 	}
 }
 
