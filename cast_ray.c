@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 13:08:00 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:24:45 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ static void	vertical_intersection(t_game *game, t_ray *ray)
 			return ;
 	}
 }
-
 
 void	cast_ray(t_game *game, t_ray *ray)
 {

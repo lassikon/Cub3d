@@ -23,7 +23,8 @@ SRCS	:= 	cub3d.c \
 			errors.c \
 			frees.c \
 			minimap.c \
-			cast_ray.c
+			cast_ray.c \
+			move_mouse.c
 			
 OBJS	:= ${SRCS:.c=.o}
 

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 13:03:29 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:33:11 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,6 @@ void	init_game(t_game *game, t_scene *scene)
 	game->vertical_center = SCREEN_HEIGHT / 2;
 	game->map = scene->map;
 	find_char(game);
-	// game->no_txtr = mlx_load_png("textures/blacknwhite.png");
-	// game->no_txtr = mlx_load_png("textures/checker.png");
-	// game->no_txtr = mlx_load_png("textures/tile_wall.png");
-	// game->no_img = mlx_texture_to_image(game->mlx, game->no_txtr);
 	init_textures(game, scene);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
 	game->map_width = scene->map_width * TILE_SIZE;
@@ -76,6 +72,8 @@ void	init_game(t_game *game, t_scene *scene)
 	mlx_image_to_window(game->mlx, game->mini_img, SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	mlx_set_instance_depth(&game->image->instances[0], 0);
 	mlx_set_instance_depth(&game->mini_img->instances[0], 1);
+	mlx_set_mouse_pos(game->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
 }
 
 void	game_loop(void *param)
@@ -85,6 +83,7 @@ void	game_loop(void *param)
 	game = (t_game *)param;
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
+	move_mouse(game);
 	render_walls(game);
 	minimap(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))

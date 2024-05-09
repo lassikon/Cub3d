@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 13:11:09 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/09 16:40:47 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 # define MINIMAP_SIZE 256
 # define COLL_OFFSET 16
 # define MAX_DEPTH 64000
+# define MOUSE_SENSITIVITY 500
+# define LOOK_UP_AND_DOWN 0
 
 # define MAP_CHARS " 01DNSEW"
 
@@ -147,6 +149,7 @@ typedef struct s_error_entry
 }	t_error_entry;
 
 void	move_player(t_game *game);
+void	move_mouse(t_game *game);
 void	render_walls(t_game *game);
 void	minimap(t_game *game);
 void	cast_ray(t_game *game, t_ray *ray);
