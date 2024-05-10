@@ -6,22 +6,32 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 14:24:45 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/10 10:44:43 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	wall_collision(t_game *game, float ray_x, float ray_y)
+void	door_collision(t_game *game, t_ray *ray)
+{
+	if (ray->x < 0 || ray->x >= game->map_width
+		|| ray->y < 0 || ray->y >= game->map_height)
+		return ;
+	ray->door = 0;
+	if (game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] == 'D')
+		ray->door = 1;
+}
+
+static int	wall_collision(t_game *game, t_ray *ray)
 {
 	int	x;
 	int	y;
 
-	y = (int)ray_y;
-	x = (int)ray_x;
+	y = (int)ray->y;
+	x = (int)ray->x;
 	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
 		return (1);
-	if (!game->map[y / TILE_SIZE][x / TILE_SIZE]
+	if (game->map[y / TILE_SIZE][x / TILE_SIZE] == 'D'
 		|| game->map[y / TILE_SIZE][x / TILE_SIZE] == '1')
 		return (1);
 	return (0);
@@ -38,10 +48,7 @@ static float	get_distance(t_game *game, float dx, float dy)
 static void	horizontal_intersection(t_game *game, t_ray *ray)
 {
 	if (ray->angle == 0 || ray->angle == PI)
-	{
-		ray->distance_to_horizontal = MAX_DEPTH;
 		return ;
-	}
 	else if (ray->angle > PI)
 	{
 		ray->y = (int)(game->p.y / TILE_SIZE) * TILE_SIZE - 0.0001;
@@ -56,26 +63,25 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 		ray->y_step = TILE_SIZE;
 		ray->x_step = TILE_SIZE / (tanf(ray->angle));
 	}
-	ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
-	if (ray->distance_to_horizontal == MAX_DEPTH)
-		return ;
-	while (wall_collision(game, ray->x, ray->y) == 0)
+	while (wall_collision(game, ray) == 0)
 	{
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
-		ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
-		if (ray->distance_to_horizontal == MAX_DEPTH)
+		if (ray->x < 0 || ray->x >= game->map_width 
+			|| ray->y < 0 || ray->y >= game->map_height)
+		{
+			ray->distance_to_horizontal = MAX_DEPTH;
 			return ;
+		}
 	}
+	ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
+	return ;
 }
 
 static void	vertical_intersection(t_game *game, t_ray *ray)
 {
 	if (ray->angle == PI / 2 || ray->angle == 3 * PI / 2)
-	{
-		ray->distance_to_vertical = MAX_DEPTH;
 		return ;
-	}
 	else if (ray->angle > PI / 2 && ray->angle < 3 * PI / 2)
 	{
 		ray->x = (int)(game->p.x / TILE_SIZE) * TILE_SIZE - 0.0001;
@@ -90,17 +96,19 @@ static void	vertical_intersection(t_game *game, t_ray *ray)
 		ray->x_step = TILE_SIZE;
 		ray->y_step = TILE_SIZE * tanf(ray->angle);
 	}
-	ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
-	if (ray->distance_to_vertical == MAX_DEPTH)
-		return ;
-	while (wall_collision(game, ray->x, ray->y) == 0)
+	while (wall_collision(game, ray) == 0)
 	{
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
-		ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
-		if (ray->distance_to_vertical == MAX_DEPTH)
+		if (ray->x < 0 || ray->x >= game->map_width 
+			|| ray->y < 0 || ray->y >= game->map_height)
+		{
+			ray->distance_to_vertical = MAX_DEPTH;
 			return ;
+		}
 	}
+	ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
+	return ;
 }
 
 void	cast_ray(t_game *game, t_ray *ray)
@@ -116,11 +124,13 @@ void	cast_ray(t_game *game, t_ray *ray)
 		ray->wall_side = SOUTH;
 		ray->col = ray->x - (int)(ray->x / TILE_SIZE) * TILE_SIZE;
 	}
+	door_collision(game, ray);
 	vertical_intersection(game, ray);
 	if (ray->distance_to_horizontal <= ray->distance_to_vertical)
 		ray->distance = ray->distance_to_horizontal;
 	else
 	{
+		door_collision(game, ray);
 		ray->distance = ray->distance_to_vertical;
 		ray->col = ray->y;
 		if (ray->angle < PI / 2 || ray->angle > 3 * PI / 2)

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 16:40:47 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:20:27 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@
 # define COLL_OFFSET 16
 # define MAX_DEPTH 64000
 # define MOUSE_SENSITIVITY 500
-# define LOOK_UP_AND_DOWN 0
+# define LOOK_UP_AND_DOWN 1
 
-# define MAP_CHARS " 01DNSEW"
+# define MAP_CHARS " 01DONSEW"
 
 typedef struct s_player
 {
@@ -102,6 +102,7 @@ typedef struct ray_s
 	float	distance_to_vertical;
 	int		height;
 	int		wall_direction;
+	int		door;
 	float	distance;
 	float	angle;
 }	t_ray;
@@ -126,6 +127,7 @@ typedef struct s_game
 	float		dist_to_proj_plane;
 	float		vertical_center;
 	int			frame_count;
+	int			door_opening;
 } t_game;
 
 /*error*/

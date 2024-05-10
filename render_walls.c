@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 13:10:38 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/10 10:39:07 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,15 @@ static void	render_column(t_game *game, t_ray *ray)
 {
 	fishbowl_correction(ray, game->p.angle);
 	ray->height = (int)(TILE_SIZE / ray->distance * game->dist_to_proj_plane);
-	if (ray->wall_side == NORTH)
+	if (ray->door == 1)
+		draw_column(game, ray, game->door_img);
+	else if (ray->wall_side == NORTH)
 		draw_column(game, ray, game->north_img);
-	if (ray->wall_side == SOUTH)
+	else if (ray->wall_side == SOUTH)
 		draw_column(game, ray, game->south_img);
-	if (ray->wall_side == EAST)
+	else if (ray->wall_side == EAST)
 		draw_column(game, ray, game->east_img);
-	if (ray->wall_side == WEST)
+	else if (ray->wall_side == WEST)
 		draw_column(game, ray, game->west_img);
 }
 
@@ -91,6 +93,8 @@ void	render_walls(t_game *game)
 			ray.angle += 2 * PI;
 		else if (ray.angle > 2 * PI)
 			ray.angle -= 2 * PI;
+		ray.distance_to_horizontal = MAX_DEPTH;
+		ray.distance_to_vertical = MAX_DEPTH;
 		cast_ray(game, &ray);
 		if (ray.distance < MAX_DEPTH)
 			render_column(game, &ray);

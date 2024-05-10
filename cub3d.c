@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 16:33:11 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:44:07 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,17 @@ void	init_textures(t_game *game, t_scene *scene)
 	scene->south_tex = mlx_load_png(scene->so_texture);
 	scene->east_tex = mlx_load_png(scene->ea_texture);
 	scene->west_tex = mlx_load_png(scene->we_texture);
-	scene->door_tex = mlx_load_png("textures/stone_wall.png");
+	scene->door_tex = mlx_load_png("textures/checker.png");
 	game->north_img = mlx_texture_to_image(game->mlx, scene->north_tex);
 	game->south_img = mlx_texture_to_image(game->mlx, scene->south_tex);
 	game->east_img = mlx_texture_to_image(game->mlx, scene->east_tex);
 	game->west_img = mlx_texture_to_image(game->mlx, scene->west_tex);
 	game->door_img = mlx_texture_to_image(game->mlx, scene->door_tex);
+	mlx_delete_texture(scene->north_tex);
+	mlx_delete_texture(scene->south_tex);
+	mlx_delete_texture(scene->east_tex);
+	mlx_delete_texture(scene->west_tex);
+	mlx_delete_texture(scene->door_tex);
 }
 
 void	init_game(t_game *game, t_scene *scene)
@@ -72,8 +77,41 @@ void	init_game(t_game *game, t_scene *scene)
 	mlx_image_to_window(game->mlx, game->mini_img, SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	mlx_set_instance_depth(&game->image->instances[0], 0);
 	mlx_set_instance_depth(&game->mini_img->instances[0], 1);
-	mlx_set_mouse_pos(game->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
+	// mlx_set_mouse_pos(game->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	// mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
+}
+
+int	player_too_close(t_game *game, int x, int y)
+{
+	if (game->p.x > x * TILE_SIZE - COLL_OFFSET
+		&& game->p.x < x * TILE_SIZE + TILE_SIZE + COLL_OFFSET)
+	{
+		if (game->p.y > y * TILE_SIZE - COLL_OFFSET
+			&& game->p.y < y * TILE_SIZE + TILE_SIZE + COLL_OFFSET)
+			return (1);
+	}
+	return (0);
+}
+
+void	operate_door(mlx_key_data_t data, void *param)
+{
+	int	x;
+	int	y;
+	t_game	*game;
+
+	game = (t_game *)param;
+	if (data.key == MLX_KEY_SPACE && data.action == MLX_PRESS)
+	{
+		x = (int)(game->p.x + cos(game->p.angle) * TILE_SIZE) / TILE_SIZE;
+		y = (int)(game->p.y + sin(game->p.angle) * TILE_SIZE) / TILE_SIZE;
+		if (game->map[y][x] == 'D')
+			game->map[y][x] = 'O';
+		else if (game->map[y][x] == 'O')
+		{
+			if (!player_too_close(game, x, y))
+				game->map[y][x] = 'D';
+		}
+	}
 }
 
 void	game_loop(void *param)
@@ -83,7 +121,7 @@ void	game_loop(void *param)
 	game = (t_game *)param;
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
-	move_mouse(game);
+	// move_mouse(game);
 	render_walls(game);
 	minimap(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
@@ -99,6 +137,7 @@ int	main(int argc, char **argv)
 	parse(&scene, argc, argv);
 	init_game(&game, &scene);
 	mlx_loop_hook(game.mlx, game_loop, &game);
+	mlx_key_hook(game.mlx, operate_door, &game);
 	mlx_loop(game.mlx);
 	printf("Average FPS: %f\n", game.frame_count / mlx_get_time());
 	mlx_terminate(game.mlx);
