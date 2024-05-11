@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 13:11:09 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/11 07:25:13 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define SCREEN_WIDTH 1024
 # define SCREEN_HEIGHT 768
 # define TILE_SIZE 64
+# define WALL_HEIGHT 64
 # define PI 3.14159265359
 # define FOV 1.0471975512 // 60 degrees
 # define MOVE_SPEED 4
@@ -38,14 +39,16 @@
 # define MINIMAP_SIZE 256
 # define COLL_OFFSET 16
 # define MAX_DEPTH 64000
+# define P_HEIGHT 32
 
-# define MAP_CHARS " 01DNSEW"
+# define MAP_CHARS "1 0DNSEW" //1 = wall, 0 = empty space, D = door, NSEW = player start
 
 typedef struct s_player
 {
 	float	x;
 	float	y;
 	float	angle;
+	int		height;
 }	t_player;
 
 typedef struct s_minimap
@@ -104,6 +107,12 @@ typedef struct ray_s
 	float	angle;
 }	t_ray;
 
+typedef struct s_render
+{
+	int	bottom_wall;
+	int top_wall;
+}		t_render;
+
 typedef struct s_game
 {
 	mlx_t		*mlx;
@@ -118,6 +127,7 @@ typedef struct s_game
 	mlx_image_t	*west_img;
 	mlx_image_t	*door_img;
 	t_player	p;
+	t_render	render;
 	char		**map;
 	int			map_width;
 	int			map_height;

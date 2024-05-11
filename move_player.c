@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 10:42:49 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/11 07:07:40 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,4 +135,18 @@ void	move_player(t_game *game)
 		game->vertical_center += 20;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_DOWN) && game->vertical_center > 0)
 		game->vertical_center -= 20;
+	if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE) && game->p.height < WALL_HEIGHT)
+	{
+		game->p.height += 1;
+		if (game->p.height > WALL_HEIGHT - 1)
+			game->p.height = WALL_HEIGHT - 1;
+		//printf("game->p.height++: %d\n", game->p.height);
+	}
+	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL) && game->p.height > 0)
+	{
+		game->p.height -= 1;
+		if (game->p.height < 1)
+			game->p.height = 1;
+		//printf("game->p.height--: %d\n", game->p.height);
+	}
 }

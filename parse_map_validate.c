@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map_validate.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 10:12:32 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/06 10:10:03 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/10 22:30:44 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,16 @@
 
 static void	check_zero(char **map, int row, int col, size_t row_max)
 {
-	if (row - 1 >= 0 && (map[row - 1][col] == '0'
-		|| map[row - 1][col] == 'N' || map[row - 1][col] == 'S'
-		|| map[row - 1][col] == 'W' || map[row - 1][col] == 'E'))
+	if (row - 1 >= 0 && (ft_strchr((MAP_CHARS + 2), map[row - 1][col]) != NULL))
 		map[row - 1][col] = 'V';
-	if (row + 1 <= (int)row_max && (map[row + 1][col] == '0'
-		|| map[row + 1][col] == 'N' || map[row + 1][col] == 'S'
-		|| map[row + 1][col] == 'W' || map[row + 1][col] == 'E'))
+	if (row + 1 <= (int)row_max
+		&& (ft_strchr((MAP_CHARS + 2), map[row + 1][col]) != NULL))
 		map[row + 1][col] = 'V';
-	if (col - 1 >= 0 && (map[row][col - 1] == '0'
-		|| map[row][col - 1] == 'N' || map[row][col - 1] == 'S'
-		|| map[row][col - 1] == 'W' || map[row][col - 1] == 'E'))
+	if (col - 1 >= 0 && (ft_strchr((MAP_CHARS + 2), map[row][col - 1]) != NULL))
 		map[row][col - 1] = 'V';
-	if (map[row][col + 1] == '0' || map[row][col + 1] == 'N'
-		|| map[row][col + 1] == 'S' || map[row][col + 1] == 'W'
-		|| map[row][col + 1] == 'E')
-		map[row][col + 1] = 'V';
+	if (map[row][col +1])
+		if ((ft_strchr((MAP_CHARS + 2), map[row][col + 1]) != NULL))
+			map[row][col + 1] = 'V';
 }
 
 static void	fill_map(char **map, int row, int col)
