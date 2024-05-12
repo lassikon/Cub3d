@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/11 07:25:13 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/12 19:21:43 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define MAX_DEPTH 64000
 # define P_HEIGHT 32
 
-# define MAP_CHARS "1 0DNSEW" //1 = wall, 0 = empty space, D = door, NSEW = player start
+# define MAP_CHARS "1 0DONSEW" //1 = wall, 0 = empty space, D = door, NSEW = player start
 
 typedef struct s_player
 {
@@ -103,6 +103,7 @@ typedef struct ray_s
 	float	distance_to_vertical;
 	int		height;
 	int		wall_direction;
+	int		door;
 	float	distance;
 	float	angle;
 }	t_ray;

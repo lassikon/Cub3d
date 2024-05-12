@@ -6,11 +6,21 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/09 13:08:00 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/12 19:24:43 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	door_collision(t_game *game, t_ray *ray)
+{
+	if (ray->x < 0 || ray->x >= game->map_width
+		|| ray->y < 0 || ray->y >= game->map_height)
+		return ;
+	ray->door = 0;
+	if (game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] == 'D')
+		ray->door = 1;
+}
 
 static int	wall_collision(t_game *game, float ray_x, float ray_y)
 {
@@ -21,7 +31,7 @@ static int	wall_collision(t_game *game, float ray_x, float ray_y)
 	x = (int)ray_x;
 	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
 		return (1);
-	if (!game->map[y / TILE_SIZE][x / TILE_SIZE]
+	if (game->map[y / TILE_SIZE][x / TILE_SIZE] == 'D'
 		|| game->map[y / TILE_SIZE][x / TILE_SIZE] == '1')
 		return (1);
 	return (0);
@@ -117,11 +127,13 @@ void	cast_ray(t_game *game, t_ray *ray)
 		ray->wall_side = SOUTH;
 		ray->col = ray->x - (int)(ray->x / TILE_SIZE) * TILE_SIZE;
 	}
+	door_collision(game, ray);
 	vertical_intersection(game, ray);
 	if (ray->distance_to_horizontal <= ray->distance_to_vertical)
 		ray->distance = ray->distance_to_horizontal;
 	else
 	{
+		door_collision(game, ray);
 		ray->distance = ray->distance_to_vertical;
 		ray->col = ray->y;
 		if (ray->angle < PI / 2 || ray->angle > 3 * PI / 2)

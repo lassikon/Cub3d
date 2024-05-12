@@ -1,7 +1,7 @@
-NO textures/tile_wall.png
-SO textures/tile_wall.png
-WE textures/tile_wall.png
-EA textures/tile_wall.png
+NO textures/checker.png
+SO textures/checker.png
+WE textures/checker.png
+EA textures/checker.png
 
 F 220,100,0
 C 225,30,0

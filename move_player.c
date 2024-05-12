@@ -3,41 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/11 07:07:40 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/12 19:25:18 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/* int	player_collision(t_game *game, int x, int y)
-{
-	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
-		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET)/ TILE_SIZE] == '1')
-		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1')
-		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1')
-		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1')
-		return (1);
-	return (0);
-} */
-
 int	player_x_collision(t_game *game, int x, int y)
 {
 	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
 		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1')
+	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1'
+		|| game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == 'D')
 		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1')
+	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1'
+		|| game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == 'D')
 		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1')
+	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1'
+		|| game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == 'D')
 		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1')
+	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1'
+		|| game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == 'D')
 		return (1);
 	return (0);
 }
@@ -46,13 +35,17 @@ int	player_y_collision(t_game *game, int x, int y)
 {
 	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
 		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1')
+	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1'
+		|| game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == 'D')
 		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1')
+	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1'
+		|| game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == 'D')
 		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1')
+	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1'
+		|| game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == 'D')
 		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1')
+	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1'
+		|| game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == 'D')
 		return (1);
 	return (0);
 }
