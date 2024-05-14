@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/06 10:33:14 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:07:00 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ static void	parse_texture(t_scene *scene, t_list **lst_iter)
 		scene->we_texture = substr_guard(scene, lst_iter);
 	else if (t_type == EA)
 		scene->ea_texture = substr_guard(scene, lst_iter);
+	else if (t_type == DR)
+		scene->dr_texture = substr_guard(scene, lst_iter);
 }
 
 void	extract_data(t_scene *scene)
@@ -111,7 +113,8 @@ void	extract_data(t_scene *scene)
 	while (lst_iter)
 	{
 		t_type = ((t_token *)(lst_iter)->content)->type;
-		if (t_type == NO || t_type == SO || t_type == WE || t_type == EA)
+		if (t_type == NO || t_type == SO || t_type == WE
+			|| t_type == EA || t_type == DR)
 			parse_texture(scene, &lst_iter);
 		else if (t_type == F)
 			parse_color(scene, &lst_iter, scene->floor_color);
@@ -122,5 +125,7 @@ void	extract_data(t_scene *scene)
 		if (lst_iter)
 			lst_iter = lst_iter->next;
 	}
+	if (scene->map_height > 500 || scene->map_width > 500)
+		error_handler(scene, MAP_BIG_ERR);
 	is_valid(scene);
 }

@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/14 10:10:05 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/14 10:42:51 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static t_type	get_type(char *line)
 		return (F);
 	else if (ft_strncmp(line, "C", 1) == 0)
 		return (C);
+	else if (ft_strncmp(line, "DR", 2) == 0)
+		return (DR);
 	else
 		return (MAP);
 }
@@ -118,7 +120,8 @@ void	tokenize(t_scene *scene, char *line)
 		else if (ft_strncmp(&line[i], "NO ", 3) == 0
 			|| ft_strncmp(&line[i], "SO ", 3) == 0
 			|| ft_strncmp(&line[i], "WE ", 3) == 0
-			|| ft_strncmp(&line[i], "EA ", 3) == 0)
+			|| ft_strncmp(&line[i], "EA ", 3) == 0
+			|| ft_strncmp(&line[i], "DR ", 2) == 0)
 			take_textures(scene, line, &i);
 		else if (ft_strncmp(&line[i], "F ", 2) == 0)
 			take_fc(scene, line, F, &i);

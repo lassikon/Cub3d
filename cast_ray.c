@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cast_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/12 19:24:43 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:05:21 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 	}
 	else if (ray->angle > PI)
 	{
-		ray->y = (int)(game->p.y / TILE_SIZE) * TILE_SIZE - 0.0001;
+		ray->y = (int)(game->p.y / TILE_SIZE) * TILE_SIZE - 0.001;
 		ray->x = game->p.x + ((game->p.y - ray->y) / (-1 * tanf(ray->angle)));
 		ray->y_step = -TILE_SIZE;
 		ray->x_step = TILE_SIZE / (-1 * tanf(ray->angle));
@@ -88,7 +88,7 @@ static void	vertical_intersection(t_game *game, t_ray *ray)
 	}
 	else if (ray->angle > PI / 2 && ray->angle < 3 * PI / 2)
 	{
-		ray->x = (int)(game->p.x / TILE_SIZE) * TILE_SIZE - 0.0001;
+		ray->x = (int)(game->p.x / TILE_SIZE) * TILE_SIZE - 0.001;
 		ray->y = game->p.y + ((game->p.x - ray->x) * (-1 * tanf(ray->angle)));
 		ray->x_step = -TILE_SIZE;
 		ray->y_step = TILE_SIZE * (-1 * tanf(ray->angle));
@@ -129,7 +129,7 @@ void	cast_ray(t_game *game, t_ray *ray)
 	}
 	door_collision(game, ray);
 	vertical_intersection(game, ray);
-	if (ray->distance_to_horizontal <= ray->distance_to_vertical)
+	if (ray->distance_to_horizontal < ray->distance_to_vertical)
 		ray->distance = ray->distance_to_horizontal;
 	else
 	{
@@ -147,4 +147,5 @@ void	cast_ray(t_game *game, t_ray *ray)
 			ray->col = (int)(ray->y / TILE_SIZE) * TILE_SIZE + TILE_SIZE - ray->y;
 		}
 	}
+
 }

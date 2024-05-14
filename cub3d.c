@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/12 19:18:42 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:21:29 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,19 @@ void	init_textures(t_game *game, t_scene *scene)
 	scene->south_tex = mlx_load_png(scene->so_texture);
 	scene->east_tex = mlx_load_png(scene->ea_texture);
 	scene->west_tex = mlx_load_png(scene->we_texture);
-	scene->door_tex = mlx_load_png("textures/stone_wall.png");
 	game->north_img = mlx_texture_to_image(game->mlx, scene->north_tex);
 	game->south_img = mlx_texture_to_image(game->mlx, scene->south_tex);
 	game->east_img = mlx_texture_to_image(game->mlx, scene->east_tex);
 	game->west_img = mlx_texture_to_image(game->mlx, scene->west_tex);
-	game->door_img = mlx_texture_to_image(game->mlx, scene->door_tex);
+	if (scene->dr_texture)
+	{
+		scene->door_tex = mlx_load_png(scene->dr_texture);
+		game->door_img = mlx_texture_to_image(game->mlx, scene->door_tex);
+	}
+	scene->floor_tex = mlx_load_png("textures/checker.png");
+	scene->ceiling_tex = mlx_load_png("textures/checker.png");
+	game->floor_img = mlx_texture_to_image(game->mlx, scene->floor_tex);
+	game->ceiling_img = mlx_texture_to_image(game->mlx, scene->ceiling_tex);
 }
 
 void	init_game(t_game *game, t_scene *scene)

@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/14 10:11:37 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:01:33 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,33 @@ static void	syntax_error(t_scene *scene, char *line, int *flag)
 
 	i = 0;
 	invalid = 0;
+	if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
+		|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1)
+		error_handler(scene, SCENE_FORMAT_ERR);
 	if (line != NULL)
 	{
 		while (line[i] && line[i] != '\n')
 		{
 			if (ft_strchr(MAP_CHARS, line[i]) == NULL)
 				invalid = 1;
+			if (ft_strchr("NSWE", line[i]) != NULL)
+				flag[6]++;
 			i++;
 		}
-	}
-	if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
-		|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1 || invalid)
-	{
-		if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
-			|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1)
-			error_handler(scene, SCENE_FORMAT_ERR);
-		else
+		if (invalid)
 			error_handler(scene, INVALID_MAP_ERR);
 	}
+	if (flag[6] != 1 && line == NULL)
+		error_handler(scene, INVALID_PLAYER_ERR);
 }
 
 static void	scene_syntax(t_scene *scene)
 {
-	int		flag[6];
+	int		flag[7];
 	t_list	*tmp;
 
 	tmp = scene->tokens;
-	ft_memset(flag, 0, 6 * sizeof(int));
+	ft_memset(flag, 0, 7 * sizeof(int));
 	while (tmp)
 	{
 		if (((t_token *)tmp->content)->type == NO)
@@ -73,6 +73,10 @@ static void	init_scene(t_scene *scene)
 	scene->so_texture = NULL;
 	scene->we_texture = NULL;
 	scene->ea_texture = NULL;
+	scene->dr_texture = NULL;
+	scene->dr_texture = NULL;
+	scene->fl_texture = NULL;
+	scene->cl_texture = NULL;
 	ft_memset(scene->floor_color, -1, 3);
 	ft_memset(scene->ceiling_color, -1, 3);
 	scene->map = NULL;

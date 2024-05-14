@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:14:58 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/05 13:48:27 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/14 15:08:01 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,18 @@ void	init_entry(t_error_entry *errors)
 	errors[4] = (t_error_entry){"Error\nInvalid scene format\n", SCENE_FORMAT_ERR};
 	errors[5] = (t_error_entry){"Error\nFound invalid map characters\n", INVALID_MAP_ERR};
 	errors[6] = (t_error_entry){"Error\nMap is not closed\n", MAP_NOT_CLOSED_ERR};
+	errors[7] = (t_error_entry){"Error\nInvalid player\n", INVALID_PLAYER_ERR};
+	errors[8] = (t_error_entry){"Error\nMap too big\n", MAP_BIG_ERR};
 }
 
 void	error_handler(t_scene *scene, t_err_code code)
 {
-	t_error_entry	errors[7];
+	t_error_entry	errors[9];
 	int				i;
 
 	init_entry(errors);
 	i = 0;
-	while (i < 7)
+	while (i < 9)
 	{
 		if (errors[i].code == code)
 		{

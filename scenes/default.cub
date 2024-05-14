@@ -2,6 +2,7 @@ NO textures/tile_wall.png
 SO textures/tile_wall.png
 WE textures/tile_wall.png
 EA textures/tile_wall.png
+DR textures/stone_wall.png
 
 F 220,100,0
 C 225,30,0

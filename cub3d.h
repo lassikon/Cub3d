@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/14 09:40:00 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:08:23 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include "MLX42/include/glad/glad.h"
 
 # define SCREEN_WIDTH 1024
-# define SCREEN_HEIGHT 768
+# define SCREEN_HEIGHT 576
 # define TILE_SIZE 64
 # define WALL_HEIGHT 64
 # define PI 3.14159265359
@@ -61,22 +61,28 @@ typedef struct s_minimap
 
 typedef struct s_scene
 {
-	char	*no_texture;
-	char	*so_texture;
-	char	*we_texture;
-	char	*ea_texture;
-	mlx_texture_t *north_tex;
-	mlx_texture_t *south_tex;
-	mlx_texture_t *east_tex;
-	mlx_texture_t *west_tex;
-	mlx_texture_t *door_tex;
-	int		floor_color[3];
-	int		ceiling_color[3];
-	char	**map;
-	int		map_width;
-	int		map_height;
+	char			*no_texture;
+	char			*so_texture;
+	char			*we_texture;
+	char			*ea_texture;
+	char			*dr_texture;
+	char			*fl_texture;
+	char			*cl_texture;
+	int				floor_color[3];
+	int				ceiling_color[3];
+	char			**map;
+	int				map_width;
+	int				map_height;
+	mlx_texture_t	*north_tex;
+	mlx_texture_t	*south_tex;
+	mlx_texture_t	*east_tex;
+	mlx_texture_t	*west_tex;
+	mlx_texture_t	*door_tex;
+	mlx_texture_t	*floor_tex;
+	mlx_texture_t	*ceiling_tex;
 	t_list	*tokens;
 }			t_scene;
+
 
 typedef enum e_side
 {
@@ -110,33 +116,35 @@ typedef struct ray_s
 
 typedef struct s_render
 {
-	int	bottom_wall;
-	int	top_wall;
-	float brightness;
+	int		bottom_wall;
+	int		top_wall;
+	float 	brightness;
 }		t_render;
 
 typedef struct s_game
 {
-	mlx_t		*mlx;
-	mlx_image_t	*image;
-	t_minimap	minimap;
-	mlx_image_t	*mini_img;
+	mlx_t			*mlx;
+	mlx_image_t		*image;
+	t_minimap		minimap;
+	mlx_image_t		*mini_img;
 	mlx_texture_t	*no_txtr;
 	mlx_image_t		*no_img;
-	mlx_image_t	*north_img;
-	mlx_image_t	*south_img;
-	mlx_image_t	*east_img;
-	mlx_image_t	*west_img;
-	mlx_image_t	*door_img;
-	t_player	p;
-	t_render	render;
-	char		**map;
-	int			map_width;
-	int			map_height;
-	float		dist_to_proj_plane;
-	float		vertical_center;
-	int			frame_count;
-} t_game;
+	mlx_image_t		*north_img;
+	mlx_image_t		*south_img;
+	mlx_image_t		*east_img;
+	mlx_image_t		*west_img;
+	mlx_image_t		*floor_img;
+	mlx_image_t		*ceiling_img;
+	mlx_image_t		*door_img;
+	t_player		p;
+	t_render		render;
+	char			**map;
+	int				map_width;
+	int				map_height;
+	float			dist_to_proj_plane;
+	float			vertical_center;
+	int				frame_count;
+}					t_game;
 
 /*error*/
 
@@ -150,6 +158,8 @@ typedef enum e_err_code
 	SCENE_FORMAT_ERR,
 	INVALID_MAP_ERR,
 	MAP_NOT_CLOSED_ERR,
+	INVALID_PLAYER_ERR,
+	MAP_BIG_ERR,
 }	t_err_code;
 
 typedef struct s_error_entry
