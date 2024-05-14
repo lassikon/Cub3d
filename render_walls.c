@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/12 19:37:07 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/14 10:35:06 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ void	draw_door(t_game *game, t_ray *ray, mlx_image_t *img)
 	{
 		ray->ty += -game->render.top_wall * ray->ty_step;
 		game->render.top_wall = 0;
+		ray->height = SCREEN_HEIGHT;
 	}
+
 	ray->tx = (float)(img->width / TILE_SIZE) * ray->col;
 /* 	ray->tx = ((int)ray->tx % img->width);
 	ray->ty = ((int)ray->ty % img->height); */
@@ -60,6 +62,12 @@ void	draw_door(t_game *game, t_ray *ray, mlx_image_t *img)
 	}
 }
 
+/* brightness level
+	E|W = 180
+	N|S = 130
+	FL = 150
+	CL = 100 */
+
 static void	draw_column(t_game *game, t_ray *ray, mlx_image_t *img)
 {
 	int		y;
@@ -72,16 +80,23 @@ static void	draw_column(t_game *game, t_ray *ray, mlx_image_t *img)
 	{
 		ray->ty += -game->render.top_wall * ray->ty_step;
 		game->render.top_wall = 0;
+		ray->height = SCREEN_HEIGHT;
 	}
 	ray->tx = (float)(img->width / TILE_SIZE) * ray->col;
-/* 	ray->tx = ((int)ray->tx % img->width);
-	ray->ty = ((int)ray->ty % img->height); */
+	//ray->tx = ((int)ray->tx % img->width);
+	//ray->ty = ((int)ray->ty % img->height);
+	if (ray->wall_side == EAST || ray->wall_side == WEST)
+		game->render.brightness = 180 / ray->distance;
+	else
+		game->render.brightness = 130 / ray->distance;
+	if (game->render.brightness > 1)
+		game->render.brightness = 1;
 	while (y < ray->height)
 	{
 		ray->pixel = &img->pixels[(int)ray->ty * img->width * 4 + (int)ray->tx * 4];
 		if (ray->pixel[3] != 0)
 		{
-			color = get_rgba(ray->pixel[0], ray->pixel[1], ray->pixel[2], ray->pixel[3]);
+			color = get_rgba(ray->pixel[0]*game->render.brightness, ray->pixel[1]*game->render.brightness, ray->pixel[2]*game->render.brightness, ray->pixel[3]);
 			mlx_put_pixel(game->image, ray->column, game->render.top_wall + y, color);
 		}
 		y++;
@@ -93,42 +108,12 @@ static void	draw_column(t_game *game, t_ray *ray, mlx_image_t *img)
 	y = (int)game->render.bottom_wall;
 	while (y < SCREEN_HEIGHT)
 	{
-		float fy = y - game->vertical_center;
-		if (fy != 0)
-		{
-			float ratio = game->p.height / fy;
-			ray->tx = game->p.x  + cos(ray->angle)*ratio*game->dist_to_proj_plane/fishbowl(ray->angle, game->p.angle);
-			ray->ty = game->p.y + sin(ray->angle)*ratio*game->dist_to_proj_plane/fishbowl(ray->angle, game->p.angle);
-			//ray->tx = fmod(ray->tx, TILE_SIZE); // Wrap texture coordinates around the tile size
-			//ray->ty = fmod(ray->ty, TILE_SIZE);
-			if (ray->tx < 0)
-				ray->tx += TILE_SIZE; // Ensure positive texture coordinates
-			if (ray->ty < 0)
-				ray->ty += TILE_SIZE;
-			ray->tx = ray->tx - (int)(ray->tx / TILE_SIZE) * TILE_SIZE;
-			ray->ty = ray->ty - (int)(ray->ty / TILE_SIZE) * TILE_SIZE;
-			ray->tx = (float)img->width / TILE_SIZE * ray->tx;
-			ray->ty = (float)img->height / TILE_SIZE * ray->ty;
-			ray->tx = ((int)ray->tx % img->width);
-			ray->ty = ((int)ray->ty % img->height);
-			ray->pixel = &img->pixels[(int)ray->ty * img->width * 4 + (int)ray->tx * 4];
-			if (ray->pixel[3] != 0)
-			{
-				color = get_rgba(ray->pixel[0], ray->pixel[1], ray->pixel[2], ray->pixel[3]);
-				mlx_put_pixel(game->image, ray->column, y, color);
-			}
-			y++;
-		}
-	}
-	/*draw ceiling*/
-	y = (int)game->render.top_wall;
-	while (y >= 0)
-	{
-		float ratio = (WALL_HEIGHT - game->p.height) / (game->vertical_center - y);
+		float ratio = game->p.height / (y - game->vertical_center);
 		ray->tx = game->p.x  + cos(ray->angle)*ratio*game->dist_to_proj_plane/fishbowl(ray->angle, game->p.angle);
 		ray->ty = game->p.y + sin(ray->angle)*ratio*game->dist_to_proj_plane/fishbowl(ray->angle, game->p.angle);
- 		//ray->tx = fmod(ray->tx, TILE_SIZE); // Wrap texture coordinates around the tile size
-		//ray->ty = fmod(ray->ty, TILE_SIZE); 
+		game->render.brightness = 150 / (ratio*game->dist_to_proj_plane/fishbowl(ray->angle, game->p.angle));
+		if (game->render.brightness > 1)
+			game->render.brightness = 1;
 		if (ray->tx < 0)
 			ray->tx += TILE_SIZE; // Ensure positive texture coordinates
 		if (ray->ty < 0)
@@ -142,7 +127,35 @@ static void	draw_column(t_game *game, t_ray *ray, mlx_image_t *img)
 		ray->pixel = &img->pixels[(int)ray->ty * img->width * 4 + (int)ray->tx * 4];
 		if (ray->pixel[3] != 0)
 		{
-			color = get_rgba(ray->pixel[0], ray->pixel[1], ray->pixel[2], ray->pixel[3]);
+			color = get_rgba(ray->pixel[0]*game->render.brightness, ray->pixel[1]*game->render.brightness, ray->pixel[2]*game->render.brightness, ray->pixel[3]);
+			mlx_put_pixel(game->image, ray->column, y, color);
+		}
+		y++;
+	}
+	/*draw ceiling*/
+	y = (int)game->render.top_wall;
+	while (y >= 0)
+	{
+		float ratio = (WALL_HEIGHT - game->p.height) / (game->vertical_center - y);
+		ray->tx = game->p.x  + cos(ray->angle)*ratio*game->dist_to_proj_plane/fishbowl(ray->angle, game->p.angle);
+		ray->ty = game->p.y + sin(ray->angle)*ratio*game->dist_to_proj_plane/fishbowl(ray->angle, game->p.angle);
+		game->render.brightness = 100 / (ratio*game->dist_to_proj_plane/fishbowl(ray->angle, game->p.angle));
+		if (game->render.brightness > 1)
+			game->render.brightness = 1;
+		if (ray->tx < 0)
+			ray->tx += TILE_SIZE; // Ensure positive texture coordinates
+		if (ray->ty < 0)
+			ray->ty += TILE_SIZE;
+		ray->tx = ray->tx - (int)(ray->tx / TILE_SIZE) * TILE_SIZE;
+		ray->ty = ray->ty - (int)(ray->ty / TILE_SIZE) * TILE_SIZE;
+		ray->tx = (float)img->width / TILE_SIZE * ray->tx;
+		ray->ty = (float)img->height / TILE_SIZE * ray->ty;
+		ray->tx = ((int)ray->tx % img->width);
+		ray->ty = ((int)ray->ty % img->height);
+		ray->pixel = &img->pixels[(int)ray->ty * img->width * 4 + (int)ray->tx * 4];
+		if (ray->pixel[3] != 0)
+		{
+			color = get_rgba(ray->pixel[0]*game->render.brightness, ray->pixel[1]*game->render.brightness, ray->pixel[2]*game->render.brightness, ray->pixel[3]);
 			mlx_put_pixel(game->image, ray->column, y, color);
 		}
 		y--;

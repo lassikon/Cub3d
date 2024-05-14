@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/06 10:06:28 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/14 10:11:37 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,15 @@ static void	call_gnl(t_scene *scene, int map_fd)
 void	parse(t_scene *scene, int argc, char **argv)
 {
 	int		map_fd;
+	char	*ext;
 
 	init_scene(scene);
 	if (argc != 2)
 		error_handler(scene, ARG_ERR);
 	if (ft_strlen(argv[1]) < 4)
 		error_handler(scene, FILE_EXT_ERR);
-	if (ft_strlen(ft_strnstr(argv[1], ".cub", ft_strlen(argv[1]))) != 4)
+	ext = ft_strnstr(argv[1], ".cub", ft_strlen(argv[1]));
+	if (ext == NULL || ft_strlen(ext) != 4)
 		error_handler(scene, FILE_EXT_ERR);
 	map_fd = open(argv[1], O_RDONLY);
 	if (map_fd < 0)

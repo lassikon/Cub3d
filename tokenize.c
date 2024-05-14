@@ -3,26 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/05 14:48:40 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/14 10:10:05 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	take_textures(t_scene *scene, char *line, t_type type, size_t *iter)
+static t_type	get_type(char *line)
+{
+	if (ft_strncmp(line, "NO", 2) == 0)
+		return (NO);
+	else if (ft_strncmp(line, "SO", 2) == 0)
+		return (SO);
+	else if (ft_strncmp(line, "WE", 2) == 0)
+		return (WE);
+	else if (ft_strncmp(line, "EA", 2) == 0)
+		return (EA);
+	else if (ft_strncmp(line, "F", 1) == 0)
+		return (F);
+	else if (ft_strncmp(line, "C", 1) == 0)
+		return (C);
+	else
+		return (MAP);
+}
+
+static void	take_textures(t_scene *scene, char *line, size_t *iter)
 {
 	t_token	token;
 	t_token	*tokenp;
 	t_list	*new;
 
 	token.line = line;
+	token.type = get_type(&line[*iter]);
 	*iter += 2;
 	while (line[*iter] == ' ')
 		*iter += 1;
-	token.type = type;
 	token.location.start = *iter;
 	token.location.len = 0;
 	while (line[*iter] != '\n' && line[*iter] != '\0')
@@ -97,17 +115,14 @@ void	tokenize(t_scene *scene, char *line)
 	{
 		if (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
 			i++;
-		else if (line[i] == 'N' && line[i + 1] == 'O' && line[i + 2] == ' ')
-			take_textures(scene, line, NO, &i);
-		else if (line[i] == 'S' && line[i + 1] == 'O' && line[i + 2] == ' ')
-			take_textures(scene, line, SO, &i);
-		else if (line[i] == 'W' && line[i + 1] == 'E' && line[i + 2] == ' ')
-			take_textures(scene, line, WE, &i);
-		else if (line[i] == 'E' && line[i + 1] == 'A' && line[i + 2] == ' ')
-			take_textures(scene, line, EA, &i);
-		else if (line[i] == 'F' && line[i + 1] == ' ')
+		else if (ft_strncmp(&line[i], "NO ", 3) == 0
+			|| ft_strncmp(&line[i], "SO ", 3) == 0
+			|| ft_strncmp(&line[i], "WE ", 3) == 0
+			|| ft_strncmp(&line[i], "EA ", 3) == 0)
+			take_textures(scene, line, &i);
+		else if (ft_strncmp(&line[i], "F ", 2) == 0)
 			take_fc(scene, line, F, &i);
-		else if (line[i] == 'C' && line[i + 1] == ' ')
+		else if (ft_strncmp(&line[i], "C ", 2) == 0)
 			take_fc(scene, line, C, &i);
 		else
 			take_map(scene, line, MAP, &i);

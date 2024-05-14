@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/12 19:21:43 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/14 09:40:00 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,8 @@ typedef struct ray_s
 typedef struct s_render
 {
 	int	bottom_wall;
-	int top_wall;
+	int	top_wall;
+	float brightness;
 }		t_render;
 
 typedef struct s_game

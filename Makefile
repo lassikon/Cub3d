@@ -1,11 +1,12 @@
 NAME		:= cub3d
 CC			:= cc
-#MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/" # Janrau
+MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/" # Janrau
 #MLXFLAGS	:= -Iinclude -lglfw -L"/Users/lkonttin/.brew/opt/glfw/lib/" # Lassi
-MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
-CFLAGS		:= -Wall -Wextra -Werror #-g -fsanitize=address
+#MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
+CFLAGS		:= -Wall -Wextra -Werror -g -fsanitize=address
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
+OBJ_DIR		:= obj/
 
 HEADERS	:= -I ./include -I $(MLX_DIR)/include -I $(LIBFT)/include
 MLX42	:= $(MLX_DIR)/build/libmlx42.a
@@ -24,7 +25,7 @@ SRCS	:= 	cub3d.c \
 			minimap.c \
 			cast_ray.c
 			
-OBJS	:= ${SRCS:.c=.o}
+OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})
 
 all: $(NAME)
 
@@ -34,7 +35,8 @@ $(MLX42):
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
-%.o: %.c
+$(OBJ_DIR)%.o: %.c
+	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(LIBFT) $(OBJS) $(MLX42)
@@ -43,6 +45,7 @@ $(NAME): $(LIBFT) $(OBJS) $(MLX42)
 clean:
 	@make -C $(LIBFT_DIR) clean
 	@rm -rf $(OBJS)
+	@rm -rf $(OBJ_DIR)
 	@rm -rf $(MLX_DIR)/build
 
 fclean: clean

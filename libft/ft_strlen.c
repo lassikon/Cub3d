@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 12:30:00 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/03 12:18:35 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/14 10:10:24 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
-	if (!s)
-		return (0);
 	i = 0;
 	while (s[i] != '\0')
 		i++;
