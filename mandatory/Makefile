@@ -3,15 +3,17 @@ CC			:= cc
 #MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/" # Janrau
 MLXFLAGS	:= -Iinclude -lglfw -L"/Users/lkonttin/.brew/opt/glfw/lib/" # Lassi
 #MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
-CFLAGS		:= -Wall -Wextra -Werror -O3  #-g -fsanitize=address
-MLX_DIR		:= ./MLX42
-LIBFT_DIR	:= ./libft
+CFLAGS		:= -Wall -Wextra -Werror #-g -fsanitize=address
+MLX_DIR		:= ../MLX42
+LIBFT_DIR	:= ../libft
 OBJ_DIR		:= obj/
 
 HEADERS	:= -I ./include -I $(MLX_DIR)/include -I $(LIBFT)/include
 MLX42	:= $(MLX_DIR)/build/libmlx42.a
 LIBFT	:= $(LIBFT_DIR)/libft.a
 SRCS	:= 	cub3d.c \
+			init_game.c \
+			init_textures.c \
 			move_player.c \
 			render_walls.c \
 			gnl_chk.c \
@@ -22,7 +24,6 @@ SRCS	:= 	cub3d.c \
 			tokenize.c \
 			errors.c \
 			frees.c \
-			minimap.c \
 			cast_ray.c
 			
 OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})
