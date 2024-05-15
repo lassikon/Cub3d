@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/14 10:42:51 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/15 08:37:02 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,24 @@
 
 static t_type	get_type(char *line)
 {
-	if (ft_strncmp(line, "NO", 2) == 0)
+	if (ft_strncmp(line, "NO ", 3) == 0)
 		return (NO);
-	else if (ft_strncmp(line, "SO", 2) == 0)
+	else if (ft_strncmp(line, "SO ", 3) == 0)
 		return (SO);
-	else if (ft_strncmp(line, "WE", 2) == 0)
+	else if (ft_strncmp(line, "WE ", 3) == 0)
 		return (WE);
-	else if (ft_strncmp(line, "EA", 2) == 0)
+	else if (ft_strncmp(line, "EA ", 3) == 0)
 		return (EA);
-	else if (ft_strncmp(line, "F", 1) == 0)
+	else if (ft_strncmp(line, "F ", 2) == 0)
 		return (F);
-	else if (ft_strncmp(line, "C", 1) == 0)
+	else if (ft_strncmp(line, "C ", 2) == 0)
 		return (C);
-	else if (ft_strncmp(line, "DR", 2) == 0)
+	else if (ft_strncmp(line, "DR ", 3) == 0)
 		return (DR);
+	else if (ft_strncmp(line, "FL ", 3) == 0)
+		return (FL);
+	else if (ft_strncmp(line, "CL ", 3) == 0)
+		return (CL);
 	else
 		return (MAP);
 }
@@ -121,7 +125,9 @@ void	tokenize(t_scene *scene, char *line)
 			|| ft_strncmp(&line[i], "SO ", 3) == 0
 			|| ft_strncmp(&line[i], "WE ", 3) == 0
 			|| ft_strncmp(&line[i], "EA ", 3) == 0
-			|| ft_strncmp(&line[i], "DR ", 2) == 0)
+			|| ft_strncmp(&line[i], "DR ", 2) == 0
+			|| ft_strncmp(&line[i], "FL ", 3) == 0
+			|| ft_strncmp(&line[i], "CL ", 3) == 0)
 			take_textures(scene, line, &i);
 		else if (ft_strncmp(&line[i], "F ", 2) == 0)
 			take_fc(scene, line, F, &i);

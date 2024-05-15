@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/14 15:08:23 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/15 15:03:29 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define COLL_OFFSET 16
 # define MAX_DEPTH 64000
 # define P_HEIGHT 32
+
 
 # define MAP_CHARS "1 0DONSEW" //1 = wall, 0 = empty space, D = door, NSEW = player start
 
@@ -80,8 +81,8 @@ typedef struct s_scene
 	mlx_texture_t	*door_tex;
 	mlx_texture_t	*floor_tex;
 	mlx_texture_t	*ceiling_tex;
-	t_list	*tokens;
-}			t_scene;
+	t_list			*tokens;
+}					t_scene;
 
 
 typedef enum e_side
@@ -112,14 +113,28 @@ typedef struct ray_s
 	int		door;
 	float	distance;
 	float	angle;
-}	t_ray;
+}			t_ray;
 
 typedef struct s_render
 {
 	int		bottom_wall;
 	int		top_wall;
-	float 	brightness;
-}		t_render;
+	float	brightness;
+}			t_render;
+
+typedef struct s_math
+{
+	float		sin[SCREEN_WIDTH * 6];
+	float		cos[SCREEN_WIDTH * 6];
+	float		tan[SCREEN_WIDTH * 6];
+	float		fishcos[360];
+	float		ifishcos[360];
+	float		isin[SCREEN_WIDTH * 6];
+	float		icos[SCREEN_WIDTH * 6];
+	float		itan[SCREEN_WIDTH * 6];
+	float		trig_it;
+	float		fish_it;
+}				t_math;
 
 typedef struct s_game
 {
@@ -127,8 +142,6 @@ typedef struct s_game
 	mlx_image_t		*image;
 	t_minimap		minimap;
 	mlx_image_t		*mini_img;
-	mlx_texture_t	*no_txtr;
-	mlx_image_t		*no_img;
 	mlx_image_t		*north_img;
 	mlx_image_t		*south_img;
 	mlx_image_t		*east_img;
@@ -138,11 +151,15 @@ typedef struct s_game
 	mlx_image_t		*door_img;
 	t_player		p;
 	t_render		render;
+	t_math			math;
 	char			**map;
+	int				*floor_color;
+	int				*ceiling_color;
 	int				map_width;
 	int				map_height;
 	float			dist_to_proj_plane;
 	float			vertical_center;
+	float			angle_step;
 	int				frame_count;
 }					t_game;
 
@@ -172,6 +189,7 @@ void	move_player(t_game *game);
 void	render_walls(t_game *game);
 void	minimap(t_game *game);
 void	cast_ray(t_game *game, t_ray *ray);
+int		get_rgba(int red, int green, int blue, int alpha);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);

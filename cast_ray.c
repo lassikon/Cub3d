@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/14 15:05:21 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/15 13:53:08 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 	else if (ray->angle > PI)
 	{
 		ray->y = (int)(game->p.y / TILE_SIZE) * TILE_SIZE - 0.001;
-		ray->x = game->p.x + ((game->p.y - ray->y) / (-1 * tanf(ray->angle)));
+		ray->x = game->p.x + ((game->p.y - ray->y) * (-1 * game->math.itan[(int)(ray->angle * game->math.trig_it)]));
 		ray->y_step = -TILE_SIZE;
-		ray->x_step = TILE_SIZE / (-1 * tanf(ray->angle));
+		ray->x_step = TILE_SIZE / (-1 * game->math.tan[(int)(ray->angle * game->math.trig_it)]);
 	}
 	else
 	{
 		ray->y = (int)(game->p.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
-		ray->x = game->p.x + ((ray->y - game->p.y) / tanf(ray->angle));
+		ray->x = game->p.x + ((ray->y - game->p.y) * game->math.itan[(int)(ray->angle * game->math.trig_it)]);
 		ray->y_step = TILE_SIZE;
-		ray->x_step = TILE_SIZE / (tanf(ray->angle));
+		ray->x_step = TILE_SIZE * game->math.itan[(int)(ray->angle * game->math.trig_it)];
 	}
 	ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
 	if (ray->distance_to_horizontal == MAX_DEPTH)
@@ -89,16 +89,16 @@ static void	vertical_intersection(t_game *game, t_ray *ray)
 	else if (ray->angle > PI / 2 && ray->angle < 3 * PI / 2)
 	{
 		ray->x = (int)(game->p.x / TILE_SIZE) * TILE_SIZE - 0.001;
-		ray->y = game->p.y + ((game->p.x - ray->x) * (-1 * tanf(ray->angle)));
+		ray->y = game->p.y + ((game->p.x - ray->x) * (-1 * game->math.tan[(int)(ray->angle * game->math.trig_it)]));
 		ray->x_step = -TILE_SIZE;
-		ray->y_step = TILE_SIZE * (-1 * tanf(ray->angle));
+		ray->y_step = TILE_SIZE * (-1 * game->math.tan[(int)(ray->angle * game->math.trig_it)]);
 	}
 	else if (ray->angle < PI / 2 || ray->angle > 3 * PI / 2)
 	{
 		ray->x = (int)(game->p.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
-		ray->y = game->p.y + ((ray->x - game->p.x) * tanf(ray->angle));
+		ray->y = game->p.y + ((ray->x - game->p.x) * game->math.tan[(int)(ray->angle * game->math.trig_it)]);
 		ray->x_step = TILE_SIZE;
-		ray->y_step = TILE_SIZE * tanf(ray->angle);
+		ray->y_step = TILE_SIZE * game->math.tan[(int)(ray->angle * game->math.trig_it)];
 	}
 	ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
 	if (ray->distance_to_vertical == MAX_DEPTH)

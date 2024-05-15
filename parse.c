@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/14 15:01:33 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/15 08:42:37 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ static void	call_gnl(t_scene *scene, int map_fd)
 	{
 		if (gnl_chk(&line, map_fd) == -1)
 			error_handler(scene, MALLOC_ERR);
-		//line = get_next_line(map_fd);
 		if (line == NULL)
 			break ;
 		i = 0;
@@ -108,7 +107,6 @@ static void	call_gnl(t_scene *scene, int map_fd)
 	}
 	scene_syntax(scene);
 	extract_data(scene);
-	//free_scene(scene);
 }
 
 void	parse(t_scene *scene, int argc, char **argv)

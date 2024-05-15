@@ -6,11 +6,13 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/14 15:21:29 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/15 15:03:52 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+
 
 void	find_char(t_game *game)
 {
@@ -52,15 +54,73 @@ void	init_textures(t_game *game, t_scene *scene)
 	game->south_img = mlx_texture_to_image(game->mlx, scene->south_tex);
 	game->east_img = mlx_texture_to_image(game->mlx, scene->east_tex);
 	game->west_img = mlx_texture_to_image(game->mlx, scene->west_tex);
+	game->door_img = NULL;
+	game->floor_img = NULL;
+	game->ceiling_img = NULL;
 	if (scene->dr_texture)
 	{
 		scene->door_tex = mlx_load_png(scene->dr_texture);
 		game->door_img = mlx_texture_to_image(game->mlx, scene->door_tex);
 	}
-	scene->floor_tex = mlx_load_png("textures/checker.png");
-	scene->ceiling_tex = mlx_load_png("textures/checker.png");
-	game->floor_img = mlx_texture_to_image(game->mlx, scene->floor_tex);
-	game->ceiling_img = mlx_texture_to_image(game->mlx, scene->ceiling_tex);
+	if (scene->fl_texture)
+	{
+		scene->floor_tex = mlx_load_png(scene->fl_texture);
+		game->floor_img = mlx_texture_to_image(game->mlx, scene->floor_tex);
+	}
+	if (scene->cl_texture)
+	{
+		scene->ceiling_tex = mlx_load_png(scene->cl_texture);
+		game->ceiling_img = mlx_texture_to_image(game->mlx, scene->ceiling_tex);
+	}
+}
+
+void	fill_math_table(t_game *game)
+{
+	float	angle;
+	int		i;
+
+	i = 0;
+	angle = 0;
+	while (i < SCREEN_WIDTH * 6)
+	{
+		game->math.sin[i] = sinf(angle) + .0001;
+		game->math.cos[i] = cosf(angle) + .0001;
+		game->math.tan[i] = tanf(angle) + .0001;
+		game->math.isin[i] = 1 / game->math.sin[i];
+		game->math.icos[i] = 1 / game->math.cos[i];
+		game->math.itan[i] = 1 / game->math.tan[i];
+		angle += game->angle_step;
+		i++;
+	}
+}
+
+void	init_math_tables(t_game *game)
+{
+	float	angle;
+	float	fish_step;
+	int		i;
+
+	ft_bzero(game->math.sin, SCREEN_WIDTH * sizeof(float) * 6);
+	ft_bzero(game->math.cos, SCREEN_WIDTH * sizeof(float) * 6);
+	ft_bzero(game->math.tan, SCREEN_WIDTH * sizeof(float) * 6);
+	ft_bzero(game->math.isin, SCREEN_WIDTH * sizeof(float) * 6);
+	ft_bzero(game->math.icos, SCREEN_WIDTH * sizeof(float) * 6);
+	ft_bzero(game->math.itan, SCREEN_WIDTH * sizeof(float) * 6);
+	ft_bzero(game->math.fishcos, 360 * sizeof(float));
+	ft_bzero(game->math.ifishcos, 360 * sizeof(float));
+	fill_math_table(game);
+	i = 0;
+	fish_step = FOV / 60;
+	angle = 0;
+	while (i < 360)
+	{
+		game->math.fishcos[i] = cos(angle);
+		game->math.ifishcos[i] = 1 / game->math.fishcos[i];
+		angle += fish_step;
+		i++;
+	}
+	game->math.trig_it = 1 / game->angle_step;
+	game->math.fish_it = 1 / fish_step;
 }
 
 void	init_game(t_game *game, t_scene *scene)
@@ -71,13 +131,17 @@ void	init_game(t_game *game, t_scene *scene)
 	game->dist_to_proj_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
 	game->p.height = 32;
 	game->vertical_center = SCREEN_HEIGHT / 2;
+	game->angle_step = FOV / SCREEN_WIDTH;
 	game->map = scene->map;
+	game->floor_color = scene->floor_color;
+	game->ceiling_color = scene->ceiling_color;
+	printf("floor color: %d %d %d\n", game->floor_color[0], game->floor_color[1], game->floor_color[2]);
+	printf("scene color: %d %d %d\n", scene->floor_color[0], scene->floor_color[1], scene->floor_color[2]);
+	printf("ceiling color: %d %d %d\n", game->ceiling_color[0], game->ceiling_color[1], game->ceiling_color[2]);
+	printf("scene color: %d %d %d\n", scene->ceiling_color[0], scene->ceiling_color[1], scene->ceiling_color[2]);
 	find_char(game);
-	// game->no_txtr = mlx_load_png("textures/blacknwhite.png");
-	// game->no_txtr = mlx_load_png("textures/checker.png");
-	// game->no_txtr = mlx_load_png("textures/tile_wall.png");
-	// game->no_img = mlx_texture_to_image(game->mlx, game->no_txtr);
 	init_textures(game, scene);
+	init_math_tables(game);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
 	game->map_width = scene->map_width * TILE_SIZE;
 	game->map_height = scene->map_height * TILE_SIZE;

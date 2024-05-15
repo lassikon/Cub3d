@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/12 19:25:18 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:24:20 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,9 @@ void	move_player(t_game *game)
 		if (game->p.angle > 2 * PI)
 			game->p.angle -= 2 * PI;
 	}
-	if (mlx_is_key_down(game->mlx, MLX_KEY_UP) && game->vertical_center < SCREEN_HEIGHT)
+	if (mlx_is_key_down(game->mlx, MLX_KEY_UP) && game->vertical_center < SCREEN_HEIGHT - 20)
 		game->vertical_center += 20;
-	if (mlx_is_key_down(game->mlx, MLX_KEY_DOWN) && game->vertical_center > 0)
+	if (mlx_is_key_down(game->mlx, MLX_KEY_DOWN) && game->vertical_center > 20)
 		game->vertical_center -= 20;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE) && game->p.height < WALL_HEIGHT)
 	{

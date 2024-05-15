@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/14 15:07:00 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/15 08:43:22 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,10 @@ static void	parse_texture(t_scene *scene, t_list **lst_iter)
 		scene->ea_texture = substr_guard(scene, lst_iter);
 	else if (t_type == DR)
 		scene->dr_texture = substr_guard(scene, lst_iter);
+	else if (t_type == FL)
+		scene->fl_texture = substr_guard(scene, lst_iter);
+	else if (t_type == CL)
+		scene->cl_texture = substr_guard(scene, lst_iter);
 }
 
 void	extract_data(t_scene *scene)
@@ -114,7 +118,7 @@ void	extract_data(t_scene *scene)
 	{
 		t_type = ((t_token *)(lst_iter)->content)->type;
 		if (t_type == NO || t_type == SO || t_type == WE
-			|| t_type == EA || t_type == DR)
+			|| t_type == EA || t_type == DR || t_type == FL || t_type == CL)
 			parse_texture(scene, &lst_iter);
 		else if (t_type == F)
 			parse_color(scene, &lst_iter, scene->floor_color);
