@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/16 14:43:59 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/16 20:16:50 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,40 +142,28 @@ void	init_sprites(t_game *game)
 	int		i;
 	char	buffer[100];
 
-	/*idle*/
-	game->sprite.hk53_idle_tx = mlx_load_png("sprites/hk53/hk53_idle.1.png");
-	game->sprite.hk53_idle_img = mlx_texture_to_image(game->mlx, game->sprite.hk53_idle_tx);
-	mlx_resize_image(game->sprite.hk53_idle_img, SCREEN_WIDTH, SCREEN_HEIGHT);
-	mlx_image_to_window(game->mlx, game->sprite.hk53_idle_img, 0, 0);
-	mlx_set_instance_depth(&game->sprite.hk53_idle_img->instances[0], 2);
-	game->sprite.hk53_idle_img->enabled = false;
 	i = 0;
 	/*fire*/
-	while (i < 13)
+	while (i < 14)
 	{
-		get_texture_name(game, buffer, "sprites/hk53/hk53_fire.", i + 1);
+		get_texture_name(game, buffer, "sprites/hk53/hk53_fire.", i);
 		game->sprite.hk53_fire_tx[i] = mlx_load_png(buffer);
 		game->sprite.hk53_fire_img[i] = mlx_texture_to_image(game->mlx, game->sprite.hk53_fire_tx[i]);
 		mlx_resize_image(game->sprite.hk53_fire_img[i], SCREEN_WIDTH, SCREEN_HEIGHT);
 		i++;
 	}
 	i = 0;
-	while (i < 13)
+	while (i < 14)
 	{
 		mlx_image_to_window(game->mlx, game->sprite.hk53_fire_img[i], 0, 0);
-		mlx_set_instance_depth(&game->sprite.hk53_fire_img[i]->instances[0], 3 + i);
+		mlx_set_instance_depth(&game->sprite.hk53_fire_img[i]->instances[0], 2 + i);
 		game->sprite.hk53_fire_img[i]->enabled = false;
 		i++;
 	}
-	/*mid idle*/
-	game->sprite.hk35_aim_idle_tx = mlx_load_png("sprites/hk53/hk53_aimidle.1.png");
-	game->sprite.hk35_aim_idle_img = mlx_texture_to_image(game->mlx, game->sprite.hk35_aim_idle_tx);
-	mlx_resize_image(game->sprite.hk35_aim_idle_img, SCREEN_WIDTH, SCREEN_HEIGHT);
-	mlx_image_to_window(game->mlx, game->sprite.hk35_aim_idle_img, 0, 0);
-	game->sprite.hk35_aim_idle_img->enabled = false;
+
 	/*aim mid*/
 	i = 0;
-	while (i < 11)
+	while (i < 12)
 	{
 		get_texture_name(game, buffer, "sprites/hk53/hk53_aim.", i + 1);
 		game->sprite.hk53_aim_mid_tx[i] = mlx_load_png(buffer);
@@ -184,7 +172,7 @@ void	init_sprites(t_game *game)
 		i++;
 	}
 	i = 0;
-	while (i < 11)
+	while (i < 12)
 	{
 		mlx_image_to_window(game->mlx, game->sprite.hk53_aim_mid_img[i], 0, 0);
 		mlx_set_instance_depth(&game->sprite.hk53_aim_mid_img[i]->instances[0], 3 + i);
@@ -195,7 +183,7 @@ void	init_sprites(t_game *game)
 	i = 0;
 	while (i < 13)
 	{
-		get_texture_name(game, buffer, "sprites/hk53/hk53_fire.", i + 1);
+		get_texture_name(game, buffer, "sprites/hk53/hk53_aimfire.", i + 1);
 		game->sprite.hk53_fire_mid_tx[i] = mlx_load_png(buffer);
 		game->sprite.hk53_fire_mid_img[i] = mlx_texture_to_image(game->mlx, game->sprite.hk53_fire_mid_tx[i]);
 		mlx_resize_image(game->sprite.hk53_fire_mid_img[i], SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -223,7 +211,8 @@ void	init_game(t_game *game, t_scene *scene)
 	game->map = scene->map;
 	game->floor_color = scene->floor_color;
 	game->ceiling_color = scene->ceiling_color;
-	game->weapon_aim = 0;
+	game->sprite.weapon_aim = -1;
+	game->sprite.weapon_fire = -1;
 	find_char(game);
 	init_textures(game, scene);
 	init_sprites(game);

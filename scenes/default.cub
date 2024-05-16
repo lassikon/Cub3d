@@ -3,8 +3,7 @@ SO textures/tile_wall.png
 WE textures/tile_wall.png
 EA textures/tile_wall.png
 DR textures/stone_wall.png
-CL textures/floor.png
-FL textures/floor.png
+
 
 
 F 220,100,0

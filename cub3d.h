@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/16 14:10:47 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/16 20:17:48 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,18 +138,23 @@ typedef struct s_math
 	float		fish_it;
 }				t_math;
 
+typedef enum s_weapon_state
+{
+	IDLE,
+	AIM,
+}	t_weapon_state;
+
 typedef struct s_sprite
 {
-	mlx_texture_t	*hk53_idle_tx;
-	mlx_texture_t	*hk53_fire_tx[13];
-	mlx_image_t		*hk53_idle_img;
-	mlx_image_t		*hk53_fire_img[13];
-	mlx_texture_t	*hk35_aim_idle_tx;
-	mlx_texture_t	*hk53_aim_mid_tx[11];
+	mlx_texture_t	*hk53_fire_tx[14];
+	mlx_image_t		*hk53_fire_img[14];
+	mlx_texture_t	*hk53_aim_mid_tx[12];
 	mlx_texture_t	*hk53_fire_mid_tx[13];
-	mlx_image_t		*hk35_aim_idle_img;
-	mlx_image_t		*hk53_aim_mid_img[11];
+	mlx_image_t		*hk53_aim_mid_img[12];
 	mlx_image_t		*hk53_fire_mid_img[13];
+	int				weapon_aim;
+	size_t			weapon_fire;
+	t_weapon_state	weapon_state;
 }					t_sprite;
 
 typedef struct s_game
@@ -177,8 +182,7 @@ typedef struct s_game
 	float			dist_to_proj_plane;
 	float			vertical_center;
 	float			angle_step;
-	int				frame_count;
-	int				weapon_aim;
+	double			frame_count;
 }					t_game;
 
 /*error*/

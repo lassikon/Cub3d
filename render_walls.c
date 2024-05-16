@@ -3,59 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/16 13:24:45 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/16 21:04:56 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void    render_ceiling(t_game *game)
+void	render_ceiling(t_game *game)
 {
-    int    x;
-    int    y;
-    int    color;
+	int		x;
+	int		y;
+	int		color;
+	float	b;
 
-    y = 0;
-  
-    while (y <= game->vertical_center)
-    {
-        x = 0;
-		color = get_rgba(game->ceiling_color[0], game->ceiling_color[1],
-            game->ceiling_color[2], 255);
-        while (x < SCREEN_WIDTH)
-        {
-            mlx_put_pixel(game->image, x, y, color);
-            x++;
-        }
-        y++;
-    }
-}
+	y = 0;
 
-void    render_floor(t_game *game)
-{
-    int    x;
-    int    y;
-    int    color;
-
-    y = SCREEN_HEIGHT - 1;
-    while (y > game->vertical_center)
-    {
-		float b = (y - game->vertical_center) / (float)game->vertical_center;
+	while (y <= game->vertical_center)
+	{
+		b = (game->vertical_center + 1) / (y + (float)game->vertical_center);
+		if (b > 1)
+			b = 1;
 		if (b < 0)
 			b = 0;
-   		color = get_rgba(game->floor_color[0]*b, game->floor_color[1]*b,
-        	game->floor_color[2]*b, 255);
-        x = 0;
-        while (x < SCREEN_WIDTH)
-        {
-            mlx_put_pixel(game->image, x, y, color);
-            x++;
-        }
-        y--;
-    }
+		x = 0;
+		color = get_rgba(game->ceiling_color[0] * b, game->ceiling_color[1] * b, \
+			game->ceiling_color[2] * b, 255);
+		while (x < SCREEN_WIDTH)
+		{
+			mlx_put_pixel(game->image, x, y, color);
+			x++;
+		}
+		y++;
+	}
+}
+
+void	render_floor(t_game *game)
+{
+	int		x;
+	int		y;
+	int		color;
+	float	b;
+
+	y = game->vertical_center;
+	while (y < SCREEN_HEIGHT)
+	{
+		b = (y - game->vertical_center + 150) / SCREEN_HEIGHT;
+		if (b > 1)
+			b = 1;
+		if (b < 0)
+			b = 0;
+		color = get_rgba(game->floor_color[0] * b, game->floor_color[1] * b, \
+			game->floor_color[2] * b, 255);
+		x = 0;
+		while (x < SCREEN_WIDTH)
+		{
+			mlx_put_pixel(game->image, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }
 
 int	get_rgba(int red, int green, int blue, int alpha)
@@ -242,8 +251,8 @@ static void	render_column(t_game *game, t_ray *ray)
 	else if (ray->wall_side == WEST && ray->door == 0)
 		img = game->west_img;
 	draw_wall(game, ray, img);
-	draw_floor(game, ray, game->floor_img);
-	draw_ceiling(game, ray, game->ceiling_img);
+	//draw_floor(game, ray, game->floor_img);
+	//draw_ceiling(game, ray, game->ceiling_img);
 }
 
 void	render_walls(t_game *game)
