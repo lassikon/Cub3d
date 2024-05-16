@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 13:53:08 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/16 11:34:41 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 		ray->y = (int)(game->p.y / TILE_SIZE) * TILE_SIZE - 0.001;
 		ray->x = game->p.x + ((game->p.y - ray->y) * (-1 * game->math.itan[(int)(ray->angle * game->math.trig_it)]));
 		ray->y_step = -TILE_SIZE;
-		ray->x_step = TILE_SIZE / (-1 * game->math.tan[(int)(ray->angle * game->math.trig_it)]);
+		ray->x_step = TILE_SIZE * (-1 * game->math.itan[(int)(ray->angle * game->math.trig_it)]);
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:03:52 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/16 14:43:59 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,101 @@ void	init_math_tables(t_game *game)
 	angle = 0;
 	while (i < 360)
 	{
-		game->math.fishcos[i] = cos(angle);
+		game->math.fishcos[i] = cos(angle) + .0001;
 		game->math.ifishcos[i] = 1 / game->math.fishcos[i];
 		angle += fish_step;
 		i++;
 	}
 	game->math.trig_it = 1 / game->angle_step;
 	game->math.fish_it = 1 / fish_step;
+}
+
+void	get_texture_name(t_game *game, char *buffer, char *path, int i)
+{
+	char	*frame;
+
+	(void)game;
+	ft_memset(buffer, 0, 100);
+	frame = ft_itoa(i);
+	if (!frame)
+		exit(1);
+	ft_strlcpy(buffer, path, ft_strlen(path) + 1);
+	ft_strlcat(buffer, frame, ft_strlen(buffer) + ft_strlen(frame) + 1);
+	ft_strlcat(buffer, ".png", ft_strlen(buffer) + 5);
+}
+
+void	init_sprites(t_game *game)
+{
+	int		i;
+	char	buffer[100];
+
+	/*idle*/
+	game->sprite.hk53_idle_tx = mlx_load_png("sprites/hk53/hk53_idle.1.png");
+	game->sprite.hk53_idle_img = mlx_texture_to_image(game->mlx, game->sprite.hk53_idle_tx);
+	mlx_resize_image(game->sprite.hk53_idle_img, SCREEN_WIDTH, SCREEN_HEIGHT);
+	mlx_image_to_window(game->mlx, game->sprite.hk53_idle_img, 0, 0);
+	mlx_set_instance_depth(&game->sprite.hk53_idle_img->instances[0], 2);
+	game->sprite.hk53_idle_img->enabled = false;
+	i = 0;
+	/*fire*/
+	while (i < 13)
+	{
+		get_texture_name(game, buffer, "sprites/hk53/hk53_fire.", i + 1);
+		game->sprite.hk53_fire_tx[i] = mlx_load_png(buffer);
+		game->sprite.hk53_fire_img[i] = mlx_texture_to_image(game->mlx, game->sprite.hk53_fire_tx[i]);
+		mlx_resize_image(game->sprite.hk53_fire_img[i], SCREEN_WIDTH, SCREEN_HEIGHT);
+		i++;
+	}
+	i = 0;
+	while (i < 13)
+	{
+		mlx_image_to_window(game->mlx, game->sprite.hk53_fire_img[i], 0, 0);
+		mlx_set_instance_depth(&game->sprite.hk53_fire_img[i]->instances[0], 3 + i);
+		game->sprite.hk53_fire_img[i]->enabled = false;
+		i++;
+	}
+	/*mid idle*/
+	game->sprite.hk35_aim_idle_tx = mlx_load_png("sprites/hk53/hk53_aimidle.1.png");
+	game->sprite.hk35_aim_idle_img = mlx_texture_to_image(game->mlx, game->sprite.hk35_aim_idle_tx);
+	mlx_resize_image(game->sprite.hk35_aim_idle_img, SCREEN_WIDTH, SCREEN_HEIGHT);
+	mlx_image_to_window(game->mlx, game->sprite.hk35_aim_idle_img, 0, 0);
+	game->sprite.hk35_aim_idle_img->enabled = false;
+	/*aim mid*/
+	i = 0;
+	while (i < 11)
+	{
+		get_texture_name(game, buffer, "sprites/hk53/hk53_aim.", i + 1);
+		game->sprite.hk53_aim_mid_tx[i] = mlx_load_png(buffer);
+		game->sprite.hk53_aim_mid_img[i] = mlx_texture_to_image(game->mlx, game->sprite.hk53_aim_mid_tx[i]);
+		mlx_resize_image(game->sprite.hk53_aim_mid_img[i], SCREEN_WIDTH, SCREEN_HEIGHT);
+		i++;
+	}
+	i = 0;
+	while (i < 11)
+	{
+		mlx_image_to_window(game->mlx, game->sprite.hk53_aim_mid_img[i], 0, 0);
+		mlx_set_instance_depth(&game->sprite.hk53_aim_mid_img[i]->instances[0], 3 + i);
+		game->sprite.hk53_aim_mid_img[i]->enabled = false;
+		i++;
+	}
+	/*mid fire*/
+	i = 0;
+	while (i < 13)
+	{
+		get_texture_name(game, buffer, "sprites/hk53/hk53_fire.", i + 1);
+		game->sprite.hk53_fire_mid_tx[i] = mlx_load_png(buffer);
+		game->sprite.hk53_fire_mid_img[i] = mlx_texture_to_image(game->mlx, game->sprite.hk53_fire_mid_tx[i]);
+		mlx_resize_image(game->sprite.hk53_fire_mid_img[i], SCREEN_WIDTH, SCREEN_HEIGHT);
+		i++;
+	}
+	i = 0;
+	while (i < 13)
+	{
+		mlx_image_to_window(game->mlx, game->sprite.hk53_fire_mid_img[i], 0, 0);
+		mlx_set_instance_depth(&game->sprite.hk53_fire_mid_img[i]->instances[0], 3 + i);
+		game->sprite.hk53_fire_mid_img[i]->enabled = false;
+		i++;
+	}
 }
 
 void	init_game(t_game *game, t_scene *scene)
@@ -135,12 +223,10 @@ void	init_game(t_game *game, t_scene *scene)
 	game->map = scene->map;
 	game->floor_color = scene->floor_color;
 	game->ceiling_color = scene->ceiling_color;
-	printf("floor color: %d %d %d\n", game->floor_color[0], game->floor_color[1], game->floor_color[2]);
-	printf("scene color: %d %d %d\n", scene->floor_color[0], scene->floor_color[1], scene->floor_color[2]);
-	printf("ceiling color: %d %d %d\n", game->ceiling_color[0], game->ceiling_color[1], game->ceiling_color[2]);
-	printf("scene color: %d %d %d\n", scene->ceiling_color[0], scene->ceiling_color[1], scene->ceiling_color[2]);
+	game->weapon_aim = 0;
 	find_char(game);
 	init_textures(game, scene);
+	init_sprites(game);
 	init_math_tables(game);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
 	game->map_width = scene->map_width * TILE_SIZE;
@@ -148,6 +234,7 @@ void	init_game(t_game *game, t_scene *scene)
 	mlx_image_to_window(game->mlx, game->mini_img, SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	mlx_set_instance_depth(&game->image->instances[0], 0);
 	mlx_set_instance_depth(&game->mini_img->instances[0], 1);
+	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
 }
 
 int	player_too_close(t_game *game, int x, int y)
@@ -183,6 +270,7 @@ void	operate_door(mlx_key_data_t data, void *param)
 	}
 }
 
+
 void	game_loop(void *param)
 {
 	t_game	*game;
@@ -192,6 +280,8 @@ void	game_loop(void *param)
 	move_player(game);
 	render_walls(game);
 	minimap(game);
+	move_mouse(game);
+	weapons(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
 	game->frame_count++;

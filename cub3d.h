@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:03:29 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/16 14:10:47 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
 # define COLL_OFFSET 16
 # define MAX_DEPTH 64000
 # define P_HEIGHT 32
+# define MOUSE_SENSITIVITY 500
+# define LOOK_UP_AND_DOWN 1
 
 
 # define MAP_CHARS "1 0DONSEW" //1 = wall, 0 = empty space, D = door, NSEW = player start
@@ -136,6 +138,20 @@ typedef struct s_math
 	float		fish_it;
 }				t_math;
 
+typedef struct s_sprite
+{
+	mlx_texture_t	*hk53_idle_tx;
+	mlx_texture_t	*hk53_fire_tx[13];
+	mlx_image_t		*hk53_idle_img;
+	mlx_image_t		*hk53_fire_img[13];
+	mlx_texture_t	*hk35_aim_idle_tx;
+	mlx_texture_t	*hk53_aim_mid_tx[11];
+	mlx_texture_t	*hk53_fire_mid_tx[13];
+	mlx_image_t		*hk35_aim_idle_img;
+	mlx_image_t		*hk53_aim_mid_img[11];
+	mlx_image_t		*hk53_fire_mid_img[13];
+}					t_sprite;
+
 typedef struct s_game
 {
 	mlx_t			*mlx;
@@ -152,6 +168,7 @@ typedef struct s_game
 	t_player		p;
 	t_render		render;
 	t_math			math;
+	t_sprite		sprite;
 	char			**map;
 	int				*floor_color;
 	int				*ceiling_color;
@@ -161,6 +178,7 @@ typedef struct s_game
 	float			vertical_center;
 	float			angle_step;
 	int				frame_count;
+	int				weapon_aim;
 }					t_game;
 
 /*error*/
@@ -186,6 +204,8 @@ typedef struct s_error_entry
 }	t_error_entry;
 
 void	move_player(t_game *game);
+void	move_mouse(t_game *game);
+void	weapons(t_game *game);
 void	render_walls(t_game *game);
 void	minimap(t_game *game);
 void	cast_ray(t_game *game, t_ray *ray);

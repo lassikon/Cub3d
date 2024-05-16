@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:25:11 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/16 13:24:45 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ static void	draw_wall(t_game *game, t_ray *ray, mlx_image_t *img)
 	ray->ty = fmod(ray->ty, img->height);
 	while (row < ray->height)
 	{
+		if (game->render.top_wall + ray->height > SCREEN_HEIGHT)
+			ray->height = SCREEN_HEIGHT - game->render.top_wall;
 		put_texture_pixel(game, ray, img, game->render.top_wall + row);
 		row++;
 		ray->ty += ray->ty_step;
@@ -128,6 +130,8 @@ void	get_floor_ray_x_y(t_game *game, t_ray *ray, int row)
 	int		fishtable;
 	int		trigtable;
 
+	if (row - game->vertical_center <= 0)
+		return ;
 	ratio = game->p.height / (row - game->vertical_center);
 	fishtable = (int)(fabs(game->p.angle - ray->angle) * game->math.fish_it);
 	trigtable = (int)(ray->angle * game->math.trig_it);
@@ -174,6 +178,8 @@ void	get_ceiling_ray_x_y(t_game *game, t_ray *ray, int row)
 	int		fishtable;
 	int		trigtable;
 
+	if (game->vertical_center - row <= 0)
+		return ;
 	ratio = (WALL_HEIGHT - game->p.height) / (game->vertical_center - row);
 	fishtable = (int)(fabs(game->p.angle - ray->angle) * game->math.fish_it);
 	trigtable = (int)(ray->angle * game->math.trig_it);
