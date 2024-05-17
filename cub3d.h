@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/16 20:17:48 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/17 16:56:14 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@
 # define P_HEIGHT 32
 # define MOUSE_SENSITIVITY 500
 # define LOOK_UP_AND_DOWN 1
+# define DOOR_SPEED 1
 
 
-# define MAP_CHARS "1 0DONSEW" //1 = wall, 0 = empty space, D = door, NSEW = player start
+# define MAP_CHARS "1 023NSEW" //1 = wall, 0 = empty space, 2 = closed door, 3 = open door, NSEW = player
 
 typedef struct s_player
 {
@@ -112,7 +113,16 @@ typedef struct ray_s
 	float	distance_to_vertical;
 	int		height;
 	int		wall_direction;
+	int		v_door_state;
+	int		h_door_state;
 	int		door;
+	int		door_state;
+	float	door_distance;
+	float	door_h_dist;
+	float	door_v_dist;
+	float	door_h_col;
+	float	door_v_col;
+	float	door_col;
 	float	distance;
 	float	angle;
 }			t_ray;
@@ -183,6 +193,8 @@ typedef struct s_game
 	float			vertical_center;
 	float			angle_step;
 	double			frame_count;
+	int				door_opening;
+	int				door_closing;
 }					t_game;
 
 /*error*/
@@ -214,6 +226,8 @@ void	render_walls(t_game *game);
 void	minimap(t_game *game);
 void	cast_ray(t_game *game, t_ray *ray);
 int		get_rgba(int red, int green, int blue, int alpha);
+void	operate_door(mlx_key_data_t data, void *param);
+void	animate_door(t_game *game);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);

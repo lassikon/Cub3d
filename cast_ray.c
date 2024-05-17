@@ -3,23 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   cast_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/16 11:34:41 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/17 16:15:09 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	door_collision(t_game *game, t_ray *ray)
+int	moving_door_collision(t_game *game, t_ray *ray)
 {
 	if (ray->x < 0 || ray->x >= game->map_width
 		|| ray->y < 0 || ray->y >= game->map_height)
-		return ;
+		return (0);
+	if (game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] >= 'a'
+		&& game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] <= 'm')
+		return (game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] - 'a' + 1);
+	else if (game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] >= 'n'
+		&& game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] <= 'z')
+		return (game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] - 'n' + 1);
+	return (0);
+}
+
+int	closed_door_collision(t_game *game, t_ray *ray)
+{
+	if (ray->x < 0 || ray->x >= game->map_width
+		|| ray->y < 0 || ray->y >= game->map_height)
+		return (0);
 	ray->door = 0;
-	if (game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] == 'D')
-		ray->door = 1;
+	if (game->map[(int)(ray->y / TILE_SIZE)][(int)(ray->x / TILE_SIZE)] == '2')
+		return (1);
+	return (0);
 }
 
 static int	wall_collision(t_game *game, float ray_x, float ray_y)
@@ -31,8 +46,8 @@ static int	wall_collision(t_game *game, float ray_x, float ray_y)
 	x = (int)ray_x;
 	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
 		return (1);
-	if (game->map[y / TILE_SIZE][x / TILE_SIZE] == 'D'
-		|| game->map[y / TILE_SIZE][x / TILE_SIZE] == '1')
+	if (game->map[y / TILE_SIZE][x / TILE_SIZE] == '1'
+		|| game->map[y / TILE_SIZE][x / TILE_SIZE] == '2')
 		return (1);
 	return (0);
 }
@@ -47,6 +62,8 @@ static float	get_distance(t_game *game, float dx, float dy)
 
 static void	horizontal_intersection(t_game *game, t_ray *ray)
 {
+	ray->h_door_state = 0;
+	ray->door_h_dist = MAX_DEPTH;
 	if (ray->angle == 0 || ray->angle == PI)
 	{
 		ray->distance_to_horizontal = MAX_DEPTH;
@@ -67,6 +84,16 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 		ray->x_step = TILE_SIZE * game->math.itan[(int)(ray->angle * game->math.trig_it)];
 	}
 	ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
+	if (game->door_opening || game->door_closing)
+	{
+		ray->h_door_state = moving_door_collision(game, ray);
+		if (ray->h_door_state > 0)
+			ray->door_h_dist = ray->distance_to_horizontal;
+		if (ray->angle > PI)
+			ray->door_h_col = ray->x - (int)(ray->x / TILE_SIZE) * TILE_SIZE;
+		else
+			ray->door_h_col = (int)(ray->x / TILE_SIZE) * TILE_SIZE + TILE_SIZE - ray->x;
+	}
 	if (ray->distance_to_horizontal == MAX_DEPTH)
 		return ;
 	while (wall_collision(game, ray->x, ray->y) == 0)
@@ -74,6 +101,16 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
 		ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
+		if ((game->door_opening || game->door_closing) && ray->h_door_state == 0)
+		{
+			ray->h_door_state = moving_door_collision(game, ray);
+			if (ray->h_door_state > 0)
+				ray->door_h_dist = ray->distance_to_horizontal;
+			if (ray->angle > PI)
+				ray->door_h_col = ray->x - (int)(ray->x / TILE_SIZE) * TILE_SIZE;
+			else
+				ray->door_h_col = (int)(ray->x / TILE_SIZE) * TILE_SIZE + TILE_SIZE - ray->x;
+		}
 		if (ray->distance_to_horizontal == MAX_DEPTH)
 			return ;
 	}
@@ -81,6 +118,8 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 
 static void	vertical_intersection(t_game *game, t_ray *ray)
 {
+	ray->v_door_state = 0;
+	ray->door_v_dist = MAX_DEPTH;
 	if (ray->angle == PI / 2 || ray->angle == 3 * PI / 2)
 	{
 		ray->distance_to_vertical = MAX_DEPTH;
@@ -101,6 +140,16 @@ static void	vertical_intersection(t_game *game, t_ray *ray)
 		ray->y_step = TILE_SIZE * game->math.tan[(int)(ray->angle * game->math.trig_it)];
 	}
 	ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
+	if (game->door_opening || game->door_closing)
+	{
+		ray->v_door_state = moving_door_collision(game, ray);
+		if (ray->v_door_state > 0)
+			ray->door_v_dist = ray->distance_to_vertical;
+		if (ray->angle < PI / 2 || ray->angle > 3 * PI / 2)
+			ray->door_v_col = ray->y - (int)(ray->y / TILE_SIZE) * TILE_SIZE;
+		else
+			ray->door_v_col = (int)(ray->y / TILE_SIZE) * TILE_SIZE + TILE_SIZE - ray->y;
+	}
 	if (ray->distance_to_vertical == MAX_DEPTH)
 		return ;
 	while (wall_collision(game, ray->x, ray->y) == 0)
@@ -108,14 +157,26 @@ static void	vertical_intersection(t_game *game, t_ray *ray)
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
 		ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
+		if ((game->door_opening || game->door_closing) && ray->v_door_state == 0)
+		{
+			ray->v_door_state = moving_door_collision(game, ray);
+			if (ray->v_door_state > 0)
+				ray->door_v_dist = ray->distance_to_vertical;
+			if (ray->angle < PI / 2 || ray->angle > 3 * PI / 2)
+				ray->door_v_col = ray->y - (int)(ray->y / TILE_SIZE) * TILE_SIZE;
+			else
+				ray->door_v_col = (int)(ray->y / TILE_SIZE) * TILE_SIZE + TILE_SIZE - ray->y;
+		}
 		if (ray->distance_to_vertical == MAX_DEPTH)
 			return ;
 	}
 }
 
-
 void	cast_ray(t_game *game, t_ray *ray)
 {
+	ray->door = 0;
+	ray->door_state = 0;
+	ray->door_col = 0;
 	horizontal_intersection(game, ray);
 	if (ray->angle < PI)
 	{
@@ -127,13 +188,13 @@ void	cast_ray(t_game *game, t_ray *ray)
 		ray->wall_side = SOUTH;
 		ray->col = ray->x - (int)(ray->x / TILE_SIZE) * TILE_SIZE;
 	}
-	door_collision(game, ray);
+	if (closed_door_collision(game, ray))
+		ray->door = 1;
 	vertical_intersection(game, ray);
 	if (ray->distance_to_horizontal < ray->distance_to_vertical)
 		ray->distance = ray->distance_to_horizontal;
 	else
 	{
-		door_collision(game, ray);
 		ray->distance = ray->distance_to_vertical;
 		ray->col = ray->y;
 		if (ray->angle < PI / 2 || ray->angle > 3 * PI / 2)
@@ -146,6 +207,19 @@ void	cast_ray(t_game *game, t_ray *ray)
 			ray->wall_side = EAST;
 			ray->col = (int)(ray->y / TILE_SIZE) * TILE_SIZE + TILE_SIZE - ray->y;
 		}
+		if (closed_door_collision(game, ray))
+			ray->door = 1;
 	}
-
+	if (ray->h_door_state > 0 && ray->door_h_dist < ray->door_v_dist)
+	{
+		ray->door_distance = ray->door_h_dist;
+		ray->door_state = ray->h_door_state;
+		ray->door_col = ray->door_h_col;
+	}
+	if (ray->v_door_state > 0 && ray->door_v_dist < ray->door_h_dist)
+	{
+		ray->door_distance = ray->door_v_dist;
+		ray->door_state = ray->v_door_state;
+		ray->door_col = ray->door_v_col;
+	}
 }

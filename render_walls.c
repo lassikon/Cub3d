@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/16 21:04:56 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/17 16:16:18 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,8 +251,51 @@ static void	render_column(t_game *game, t_ray *ray)
 	else if (ray->wall_side == WEST && ray->door == 0)
 		img = game->west_img;
 	draw_wall(game, ray, img);
-	//draw_floor(game, ray, game->floor_img);
-	//draw_ceiling(game, ray, game->ceiling_img);
+	draw_floor(game, ray, game->floor_img);
+	draw_ceiling(game, ray, game->ceiling_img);
+}
+
+void	draw_moving_door(t_game *game, t_ray *ray)
+{
+	int	row;
+
+	row = 0;
+	ray->ty = 0;
+	ray->ty_step = (float)game->door_img->height / ray->height;
+	if (game->render.top_wall < 0)
+	{
+		ray->ty += -game->render.top_wall * ray->ty_step;
+		game->render.top_wall = 0;
+		ray->height = SCREEN_HEIGHT;
+	}
+	ray->tx = (float)(game->door_img->width / TILE_SIZE) * (ray->door_col + 5 * ray->door_state);
+	if (ray->tx >= game->door_img->width)
+		return ;
+	game->render.brightness = 1;
+	ray->tx = fmod(ray->tx, game->door_img->width);
+	ray->ty = fmod(ray->ty, game->door_img->height);
+	while (row < ray->height)
+	{
+		put_texture_pixel(game, ray, game->door_img, game->render.top_wall + row);
+		row++;
+		ray->ty += ray->ty_step;
+		if (ray->ty >= game->door_img->height)
+			break ;
+	}
+}
+
+void	render_moving_door(t_game *game, t_ray *ray)
+{
+	float		ratio;
+	int			fishtable;
+
+	fishtable = (int)(fabs(game->p.angle - ray->angle) * game->math.fish_it);
+	ray->door_distance *= game->math.fishcos[fishtable];
+	ratio = game->dist_to_proj_plane / ray->door_distance;
+	game->render.bottom_wall = (ratio * game->p.height) + game->vertical_center;
+	ray->height = (game->dist_to_proj_plane * WALL_HEIGHT) / ray->door_distance;
+	game->render.top_wall = game->render.bottom_wall - (int)ray->height;
+	draw_moving_door(game, ray);
 }
 
 void	render_walls(t_game *game)
@@ -276,6 +319,8 @@ void	render_walls(t_game *game)
 		cast_ray(game, &ray);
 		if (ray.distance < MAX_DEPTH)
 			render_column(game, &ray);
+		if (ray.door_state && ray.door_distance < ray.distance)
+			render_moving_door(game, &ray);
 		ray.column++;
 		ray.angle += angle_step;
 	}

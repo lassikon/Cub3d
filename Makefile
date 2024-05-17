@@ -1,8 +1,8 @@
 NAME		:= cub3d
 CC			:= cc
 #MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/" # Janrau
-#MLXFLAGS	:= -Iinclude -lglfw -L"/Users/lkonttin/.brew/opt/glfw/lib/" # Lassi
-MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
+MLXFLAGS	:= -Iinclude -lglfw -L"/Users/lkonttin/.brew/opt/glfw/lib/" # Lassi
+#MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
 CFLAGS		:= -Wall -Wextra -Werror -O3  #-g -fsanitize=address
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
@@ -25,6 +25,7 @@ SRCS	:= 	cub3d.c \
 			minimap.c \
 			cast_ray.c \
 			move_mouse.c \
+			operate_door.c
 			
 OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})
 
