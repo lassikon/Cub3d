@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_mouse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:44:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/16 19:48:34 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/17 17:32:48 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 void	weapons(t_game *game)
 {
 	int	i;
-	int flag;
+	int	flag;
 
 	i = 0;
 	flag = 0;
 	if (game->sprite.weapon_aim == -1)
 		game->sprite.weapon_state = IDLE;
+	else if (game->sprite.weapon_aim == 11)
+		game->sprite.weapon_state = AIM;
+	else
+		game->sprite.weapon_state = ANIMATING;
 	while (i < 14)
 	{
 		game->sprite.hk53_fire_img[i]->enabled = false;
@@ -32,7 +36,8 @@ void	weapons(t_game *game)
 		game->sprite.hk53_fire_mid_img[i]->enabled = false;
 		i++;
 	}
-	if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
+
+	if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT) && game->sprite.weapon_state != ANIMATING)
 	{
 		game->sprite.weapon_fire++;
 		flag = 1;
@@ -63,10 +68,10 @@ void	weapons(t_game *game)
 		if (game->sprite.weapon_aim >= 0)
 			game->sprite.weapon_aim--;
 	}
-	if (game->sprite.weapon_aim >= 0 && !mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
+	if (game->sprite.weapon_aim >= 0)
 		game->sprite.hk53_aim_mid_img[game->sprite.weapon_aim]->enabled = true;
-
-	/*reload*/
+	if (flag)
+		game->sprite.hk53_aim_mid_img[11]->enabled = false;
 }
 
 static void	move_x(float *angle, int x)
