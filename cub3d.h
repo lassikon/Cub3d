@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/17 13:11:35 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/17 13:24:46 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ typedef struct ray_s
 	float	door_distance;
 	float	door_h_dist;
 	float	door_v_dist;
+	float	door_h_col;
+	float	door_v_col;
 	float	door_col;
 	float	angle;
 }			t_ray;
