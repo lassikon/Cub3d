@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:33:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/16 10:13:39 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ typedef enum e_err_code
 	SCENE_FORMAT_ERR,
 	INVALID_MAP_ERR,
 	MAP_NOT_CLOSED_ERR,
+	INVALID_PLAYER_ERR,
+	MAP_BIG_ERR,
 }	t_err_code;
 
 typedef struct s_error_entry

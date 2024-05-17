@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:03:52 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/17 10:41:41 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,39 +148,8 @@ void	init_game(t_game *game, t_scene *scene)
 	mlx_image_to_window(game->mlx, game->mini_img, SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	mlx_set_instance_depth(&game->image->instances[0], 0);
 	mlx_set_instance_depth(&game->mini_img->instances[0], 1);
-}
-
-int	player_too_close(t_game *game, int x, int y)
-{
-	if (game->p.x > x * TILE_SIZE - COLL_OFFSET
-		&& game->p.x < x * TILE_SIZE + TILE_SIZE + COLL_OFFSET)
-	{
-		if (game->p.y > y * TILE_SIZE - COLL_OFFSET
-			&& game->p.y < y * TILE_SIZE + TILE_SIZE + COLL_OFFSET)
-			return (1);
-	}
-	return (0);
-}
-
-void	operate_door(mlx_key_data_t data, void *param)
-{
-	int	x;
-	int	y;
-	t_game	*game;
-
-	game = (t_game *)param;
-	if (data.key == MLX_KEY_E && data.action == MLX_PRESS)
-	{
-		x = (int)(game->p.x + cos(game->p.angle) * TILE_SIZE) / TILE_SIZE;
-		y = (int)(game->p.y + sin(game->p.angle) * TILE_SIZE) / TILE_SIZE;
-		if (game->map[y][x] == 'D')
-			game->map[y][x] = 'O';
-		else if (game->map[y][x] == 'O')
-		{
-			if (!player_too_close(game, x, y))
-				game->map[y][x] = 'D';
-		}
-	}
+	game->door_opening = 0;
+	game->door_closing = 0;
 }
 
 void	game_loop(void *param)
@@ -191,6 +160,7 @@ void	game_loop(void *param)
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
 	render_walls(game);
+	animate_door(game);
 	minimap(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);

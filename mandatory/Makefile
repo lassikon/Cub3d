@@ -1,4 +1,4 @@
-NAME		:= cub3d
+NAME		:= cub3D
 CC			:= cc
 #MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/" # Janrau
 MLXFLAGS	:= -Iinclude -lglfw -L"/Users/lkonttin/.brew/opt/glfw/lib/" # Lassi

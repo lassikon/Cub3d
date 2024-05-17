@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/06 10:33:14 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/16 10:19:13 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,7 @@ void	extract_data(t_scene *scene)
 		if (lst_iter)
 			lst_iter = lst_iter->next;
 	}
+	if (scene->map_height > 500 || scene->map_width > 500)
+		error_handler(scene, MAP_BIG_ERR);
 	is_valid(scene);
 }

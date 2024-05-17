@@ -3,7 +3,7 @@ CC			:= cc
 #MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/" # Janrau
 MLXFLAGS	:= -Iinclude -lglfw -L"/Users/lkonttin/.brew/opt/glfw/lib/" # Lassi
 #MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
-CFLAGS		:= -Wall -Wextra -Werror -O3  #-g -fsanitize=address
+CFLAGS		:= -Wall -Wextra -Werror -O3  -g -fsanitize=address
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
 OBJ_DIR		:= obj/
@@ -23,7 +23,9 @@ SRCS	:= 	cub3d.c \
 			errors.c \
 			frees.c \
 			minimap.c \
-			cast_ray.c
+			cast_ray.c \
+			animate_door.c \
+
 			
 OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})
 

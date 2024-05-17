@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:42:54 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/04 10:53:56 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/15 08:35:39 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ typedef enum e_type
 	EA,
 	F,
 	C,
+	DR,
+	FL,
+	CL,
 	MAP
 }	t_type;
 

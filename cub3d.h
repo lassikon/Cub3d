@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:03:29 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/17 13:11:35 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define COLL_OFFSET 16
 # define MAX_DEPTH 64000
 # define P_HEIGHT 32
+# define DOOR_SPEED 5
 
 
 # define MAP_CHARS "1 0DONSEW" //1 = wall, 0 = empty space, D = door, NSEW = player start
@@ -110,8 +111,15 @@ typedef struct ray_s
 	float	distance_to_vertical;
 	int		height;
 	int		wall_direction;
+	int		v_door_state;
+	int		h_door_state;
 	int		door;
+	int		door_state;
 	float	distance;
+	float	door_distance;
+	float	door_h_dist;
+	float	door_v_dist;
+	float	door_col;
 	float	angle;
 }			t_ray;
 
@@ -161,6 +169,8 @@ typedef struct s_game
 	float			vertical_center;
 	float			angle_step;
 	int				frame_count;
+	int				door_opening;
+	int				door_closing;
 }					t_game;
 
 /*error*/
@@ -190,6 +200,8 @@ void	render_walls(t_game *game);
 void	minimap(t_game *game);
 void	cast_ray(t_game *game, t_ray *ray);
 int		get_rgba(int red, int green, int blue, int alpha);
+void	operate_door(mlx_key_data_t data, void *param);
+void	animate_door(t_game *game);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);

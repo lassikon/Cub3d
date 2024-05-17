@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/14 10:11:37 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/16 10:23:15 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,33 @@ static void	syntax_error(t_scene *scene, char *line, int *flag)
 
 	i = 0;
 	invalid = 0;
+	if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
+		|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1)
+		error_handler(scene, SCENE_FORMAT_ERR);
 	if (line != NULL)
 	{
 		while (line[i] && line[i] != '\n')
 		{
 			if (ft_strchr(MAP_CHARS, line[i]) == NULL)
 				invalid = 1;
+			if (ft_strchr("NSWE", line[i]) != NULL)
+				flag[6]++;
 			i++;
 		}
-	}
-	if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
-		|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1 || invalid)
-	{
-		if (flag[5] != 1 || flag[4] != 1 || flag[3] != 1
-			|| flag[2] != 1 || flag[1] != 1 || flag[0] != 1)
-			error_handler(scene, SCENE_FORMAT_ERR);
-		else
+		if (invalid)
 			error_handler(scene, INVALID_MAP_ERR);
 	}
+	if (flag[6] != 1 && line == NULL)
+		error_handler(scene, INVALID_PLAYER_ERR);
 }
 
 static void	scene_syntax(t_scene *scene)
 {
-	int		flag[6];
+	int		flag[7];
 	t_list	*tmp;
 
 	tmp = scene->tokens;
-	ft_memset(flag, 0, 6 * sizeof(int));
+	ft_memset(flag, 0, 7 * sizeof(int));
 	while (tmp)
 	{
 		if (((t_token *)tmp->content)->type == NO)
@@ -85,13 +85,14 @@ static void	call_gnl(t_scene *scene, int map_fd)
 {
 	char	*line;
 	int		i;
+	int		row_count;
 
+	row_count = 0;
 	line = NULL;
 	while (1)
 	{
 		if (gnl_chk(&line, map_fd) == -1)
 			error_handler(scene, MALLOC_ERR);
-		//line = get_next_line(map_fd);
 		if (line == NULL)
 			break ;
 		i = 0;
@@ -99,12 +100,14 @@ static void	call_gnl(t_scene *scene, int map_fd)
 			i++;
 		if (line[i] == '\0')
 			free(line);
+		if (ft_strlen(line) > 500 || row_count > 500)
+			error_handler(scene, MAP_BIG_ERR);
 		else
 			tokenize(scene, line);
+		row_count++;
 	}
 	scene_syntax(scene);
 	extract_data(scene);
-	//free_scene(scene);
 }
 
 void	parse(t_scene *scene, int argc, char **argv)
