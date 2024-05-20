@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 15:23:38 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:39:42 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ void	find_char(t_game *game)
 					game->p.angle = PI;
 				if (game->map[i][j] == 'E')
 					game->p.angle = 0;
+				if (game->map[i][j] == '*')
+				{
+					game->e.x = j * TILE_SIZE + TILE_SIZE / 2;
+					game->e.y = i * TILE_SIZE + TILE_SIZE / 2;
+				}
 				game->p.x = j * TILE_SIZE + TILE_SIZE / 2;
 				game->p.y = i * TILE_SIZE + TILE_SIZE / 2;
 			}
