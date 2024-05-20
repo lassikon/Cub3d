@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:09:09 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/17 16:09:30 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 10:44:06 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	operate_door(mlx_key_data_t data, void *param)
 		}
 		else if (game->map[y][x] == '3')
 		{
+			if (player_too_close(game, x, y))
+				return ;
 			game->map[y][x] = 'z';
 			game->door_closing = 1;
 		}

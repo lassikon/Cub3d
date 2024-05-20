@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/16 12:31:43 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/20 10:35:51 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,13 @@ int	player_x_collision(t_game *game, int x, int y)
 {
 	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
 		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1'
-		|| game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == 'D')
+	if (ft_strchr(COL_CHARS, game->map[y / TILE][(x + COLL_OFFSET) / TILE]))
 		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1'
-		|| game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == 'D')
+	if (ft_strchr(COL_CHARS, game->map[y / TILE][(x - COLL_OFFSET) / TILE]))
 		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1'
-		|| game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == 'D')
+	if (ft_strchr(COL_CHARS, game->map[(y + COLL_OFFSET) / TILE][(x + COLL_OFFSET) / TILE]))
 		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1'
-		|| game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == 'D')
+	if (ft_strchr(COL_CHARS, game->map[(y - COLL_OFFSET) / TILE][(x - COLL_OFFSET) / TILE]))
 		return (1);
 	return (0);
 }
@@ -35,17 +31,13 @@ int	player_y_collision(t_game *game, int x, int y)
 {
 	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
 		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1'
-		|| game->map[(y + COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == 'D')
+	if (ft_strchr(COL_CHARS, game->map[(y + COLL_OFFSET) / TILE][x / TILE]))
 		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == '1'
-		|| game->map[(y - COLL_OFFSET) / TILE_SIZE][(x + COLL_OFFSET) / TILE_SIZE] == 'D')
+	if (ft_strchr(COL_CHARS, game->map[(y - COLL_OFFSET) / TILE][x / TILE]))
 		return (1);
-	if (game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1'
-		|| game->map[(y + COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == 'D')
+	if (ft_strchr(COL_CHARS, game->map[(y + COLL_OFFSET) / TILE][(x + COLL_OFFSET) / TILE]))
 		return (1);
-	if (game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == '1'
-		|| game->map[(y - COLL_OFFSET) / TILE_SIZE][(x - COLL_OFFSET) / TILE_SIZE] == 'D')
+	if (ft_strchr(COL_CHARS, game->map[(y - COLL_OFFSET) / TILE][(x - COLL_OFFSET) / TILE]))
 		return (1);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/17 17:33:41 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/20 10:32:31 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define SCREEN_WIDTH 1024
 # define SCREEN_HEIGHT 576
 # define TILE_SIZE 64
+# define TILE 64
 # define WALL_HEIGHT 64
 # define PI 3.14159265359
 # define FOV 1.0471975512 // 60 degrees
@@ -46,6 +47,17 @@
 
 
 # define MAP_CHARS "1 023NSEW" //1 = wall, 0 = empty space, 2 = closed door, 3 = open door, NSEW = player
+# define COL_CHARS "12abcdefghijklmnopqrstuvwxyz"
+
+# define GREY2 0x808080FF
+# define GREY 0x404040FF
+# define RED 0xFF0000FF
+# define BROWN 0x8B4513FF
+# define DARK_BROWN 0x5A2B1DFF
+# define OLIVE 0x808000FF
+# define BLACK 0x000000FF
+# define LIGHT_GREY 0xD3D3D3FF
+# define WHITE 0xFFFFFFFF
 
 typedef struct s_player
 {
@@ -59,6 +71,8 @@ typedef struct s_minimap
 {
 	float		x;
 	float		y;
+	float		map_x;
+	float		map_y;
 	int			color;
 	mlx_image_t	*image;
 }	t_minimap;
@@ -172,7 +186,7 @@ typedef struct s_game
 {
 	mlx_t			*mlx;
 	mlx_image_t		*image;
-	t_minimap		minimap;
+	t_minimap		mini;
 	mlx_image_t		*mini_img;
 	mlx_image_t		*north_img;
 	mlx_image_t		*south_img;
