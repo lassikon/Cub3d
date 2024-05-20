@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/17 16:55:01 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:23:38 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,13 +199,32 @@ void	init_sprites(t_game *game)
 	}
 }
 
+void	init_jump_height_table(t_game *game)
+{
+	int		i;
+	int		speed;
+	int		height;
+
+	speed = 6;
+	height = TILE / 2;
+	i = 0;
+	while (i < 13)
+	{
+		game->p.jump_height[i] = (int)height;
+		height += speed;
+		speed -= 1;
+		i++;
+	}
+	game->p.jump_height[13] = TILE / 2;
+}
+
 void	init_game(t_game *game, t_scene *scene)
 {
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
 	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game->mini_img = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
 	game->dist_to_proj_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
-	game->p.height = 32;
+	game->p.height = TILE / 2;
 	game->vertical_center = SCREEN_HEIGHT / 2;
 	game->angle_step = FOV / SCREEN_WIDTH;
 	game->map = scene->map;
@@ -213,6 +232,7 @@ void	init_game(t_game *game, t_scene *scene)
 	game->ceiling_color = scene->ceiling_color;
 	game->sprite.weapon_aim = -1;
 	game->sprite.weapon_fire = -1;
+	game->p.jumping = 0;
 	find_char(game);
 	init_textures(game, scene);
 	init_sprites(game);
@@ -228,7 +248,9 @@ void	init_game(t_game *game, t_scene *scene)
 	mlx_resize_image(game->south_img, 512, 512);
 	mlx_resize_image(game->east_img, 512, 512);
 	mlx_resize_image(game->west_img, 512, 512);
-	mlx_resize_image(game->door_img, 512, 512);
+	if (game->door_img)
+		mlx_resize_image(game->door_img, 512, 512);
+	init_jump_height_table(game);
 }
 
 void	game_loop(void *param)

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 10:32:31 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:21:17 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@
 # define LOOK_UP_AND_DOWN 1
 # define DOOR_SPEED 1
 
-
 # define MAP_CHARS "1 023NSEW" //1 = wall, 0 = empty space, 2 = closed door, 3 = open door, NSEW = player
 # define COL_CHARS "12abcdefghijklmnopqrstuvwxyz"
 
@@ -65,6 +64,8 @@ typedef struct s_player
 	float	y;
 	float	angle;
 	int		height;
+	int		jumping;
+	int		jump_height[14];
 }	t_player;
 
 typedef struct s_minimap
@@ -100,7 +101,6 @@ typedef struct s_scene
 	mlx_texture_t	*ceiling_tex;
 	t_list			*tokens;
 }					t_scene;
-
 
 typedef enum e_side
 {
@@ -235,6 +235,7 @@ typedef struct s_error_entry
 }	t_error_entry;
 
 void	move_player(t_game *game);
+void	move_player_vertical(t_game *game);
 void	move_mouse(t_game *game);
 void	weapons(t_game *game);
 void	render_walls(t_game *game);

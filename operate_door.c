@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:09:09 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 10:44:06 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:12:40 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,10 @@ void	animate_door(t_game *game)
 		while (x < game->map_width / TILE_SIZE)
 		{
 			if (game->map[y][x] && ft_strchr("abcdefghijklm", game->map[y][x]))
-			{
-				printf("%c\n", game->map[y][x]);
 				update_opening_door_state(game, x, y);
-			}
-			else if (game->map[y][x] && ft_strchr("nopqrstuvwxyz", game->map[y][x]))
-			{
-				printf("%c\n", game->map[y][x]);
+			else if (game->map[y][x]
+				&& ft_strchr("nopqrstuvwxyz", game->map[y][x]))
 				update_closing_door_state(game, x, y);
-			}
 			x++;
 		}
 		y++;

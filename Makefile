@@ -12,6 +12,7 @@ MLX42	:= $(MLX_DIR)/build/libmlx42.a
 LIBFT	:= $(LIBFT_DIR)/libft.a
 SRCS	:= 	cub3d.c \
 			move_player.c \
+			move_player_vertical.c \
 			render_walls.c \
 			gnl_chk.c \
 			parse.c \
