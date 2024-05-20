@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:09:09 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 14:12:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:54:12 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void	animate_door(t_game *game)
 		return ;
 	}
 	y = 0;
-	while (y < game->map_height / TILE_SIZE)
+	while (y < game->map_height / TILE)
 	{
 		x = 0;
-		while (x < game->map_width / TILE_SIZE)
+		while (x < game->map_width / TILE)
 		{
 			if (game->map[y][x] && ft_strchr("abcdefghijklm", game->map[y][x]))
 				update_opening_door_state(game, x, y);
@@ -67,11 +67,11 @@ void	animate_door(t_game *game)
 
 int	player_too_close(t_game *game, int x, int y)
 {
-	if (game->p.x > x * TILE_SIZE - COLL_OFFSET
-		&& game->p.x < x * TILE_SIZE + TILE_SIZE + COLL_OFFSET)
+	if (game->p.x > x * TILE - C_BUF
+		&& game->p.x < x * TILE + TILE + C_BUF)
 	{
-		if (game->p.y > y * TILE_SIZE - COLL_OFFSET
-			&& game->p.y < y * TILE_SIZE + TILE_SIZE + COLL_OFFSET)
+		if (game->p.y > y * TILE - C_BUF
+			&& game->p.y < y * TILE + TILE + C_BUF)
 			return (1);
 	}
 	return (0);
@@ -86,8 +86,8 @@ void	operate_door(mlx_key_data_t data, void *param)
 	game = (t_game *)param;
 	if (data.key == MLX_KEY_E && data.action == MLX_PRESS)
 	{
-		x = (int)(game->p.x + cos(game->p.angle) * TILE_SIZE) / TILE_SIZE;
-		y = (int)(game->p.y + sin(game->p.angle) * TILE_SIZE) / TILE_SIZE;
+		x = (int)(game->p.x + cos(game->p.angle) * TILE) / TILE;
+		y = (int)(game->p.y + sin(game->p.angle) * TILE) / TILE;
 		if (game->map[y][x] == '2')
 		{
 			game->map[y][x] = 'a';

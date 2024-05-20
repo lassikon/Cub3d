@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 15:39:44 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:53:04 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define STRAFE_SPEED 2
 # define ROTATION_SPEED (PI / 60) // 3 degrees
 # define MINIMAP_SIZE 256
-# define COLL_OFFSET 16
+# define C_BUF 16
 # define MAX_DEPTH 64000
 # define P_HEIGHT 32
 # define MOUSE_SENSITIVITY 500
@@ -47,7 +47,7 @@
 
 
 # define MAP_CHARS "1 023NSEW*" //1 = wall, 0 = empty space, 2 = closed door, 3 = open door, NSEW = player
-# define COL_CHARS "12abcdefghijklmnopqrstuvwxyz"
+# define C_CHARS "12abcdefghijklmnopqrstuvwxyz"
 
 # define GREY2 0x808080FF
 # define GREY 0x404040FF

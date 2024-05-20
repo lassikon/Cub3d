@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 15:39:42 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:55:14 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ void	find_char(t_game *game)
 					game->p.angle = 0;
 				if (game->map[i][j] == '*')
 				{
-					game->e.x = j * TILE_SIZE + TILE_SIZE / 2;
-					game->e.y = i * TILE_SIZE + TILE_SIZE / 2;
+					game->e.x = j * TILE + TILE / 2;
+					game->e.y = i * TILE + TILE / 2;
 				}
-				game->p.x = j * TILE_SIZE + TILE_SIZE / 2;
-				game->p.y = i * TILE_SIZE + TILE_SIZE / 2;
+				game->p.x = j * TILE + TILE / 2;
+				game->p.y = i * TILE + TILE / 2;
 			}
 			j++;
 		}
@@ -243,8 +243,8 @@ void	init_game(t_game *game, t_scene *scene)
 	init_sprites(game);
 	init_math_tables(game);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
-	game->map_width = scene->map_width * TILE_SIZE;
-	game->map_height = scene->map_height * TILE_SIZE;
+	game->map_width = scene->map_width * TILE;
+	game->map_height = scene->map_height * TILE;
 	mlx_image_to_window(game->mlx, game->mini_img, SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	mlx_set_instance_depth(&game->image->instances[0], 0);
 	mlx_set_instance_depth(&game->mini_img->instances[0], 1);
