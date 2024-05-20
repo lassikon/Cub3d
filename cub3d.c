@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/17 16:55:01 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:50:27 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ void	find_char(t_game *game)
 					game->p.angle = PI;
 				if (game->map[i][j] == 'E')
 					game->p.angle = 0;
+				if (game->map[i][j] == '*')
+				{
+					game->e.x = j * TILE_SIZE + TILE_SIZE / 2;
+					game->e.y = i * TILE_SIZE + TILE_SIZE / 2;
+				}
 				game->p.x = j * TILE_SIZE + TILE_SIZE / 2;
 				game->p.y = i * TILE_SIZE + TILE_SIZE / 2;
 			}

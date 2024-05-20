@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 10:32:31 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:59:59 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define DOOR_SPEED 1
 
 
-# define MAP_CHARS "1 023NSEW" //1 = wall, 0 = empty space, 2 = closed door, 3 = open door, NSEW = player
+# define MAP_CHARS "1 023NSEW*" //1 = wall, 0 = empty space, 2 = closed door, 3 = open door, NSEW = player
 # define COL_CHARS "12abcdefghijklmnopqrstuvwxyz"
 
 # define GREY2 0x808080FF
@@ -66,6 +66,16 @@ typedef struct s_player
 	float	angle;
 	int		height;
 }	t_player;
+
+typedef struct s_enemy
+{
+	float	x;
+	float	y;
+	float	angle;
+	int		height;
+	mlx_texture_t	*tx;
+	mlx_image_t		*img;
+}	t_enemy;
 
 typedef struct s_minimap
 {
@@ -139,6 +149,10 @@ typedef struct ray_s
 	float	door_col;
 	float	distance;
 	float	angle;
+
+	float	dist_h_e;
+	float	dist_v_e;
+	float	enemy_dist;
 }			t_ray;
 
 typedef struct s_render
@@ -196,6 +210,7 @@ typedef struct s_game
 	mlx_image_t		*ceiling_img;
 	mlx_image_t		*door_img;
 	t_player		p;
+	t_enemy			e;
 	t_render		render;
 	t_math			math;
 	t_sprite		sprite;

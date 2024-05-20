@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/17 16:16:18 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:12:31 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,6 +298,37 @@ void	render_moving_door(t_game *game, t_ray *ray)
 	draw_moving_door(game, ray);
 }
 
+void	render_enemy(t_game *game, t_ray *ray)
+{
+	int		row;
+	int		color;
+	float	ratio;
+	int		fishtable;
+
+	row = 0;
+	if (ray->dist_h_e < ray->dist_v_e)
+		ray->enemy_dist = ray->dist_h_e;
+	else
+		ray->enemy_dist = ray->dist_v_e;
+	//printf("enemy_dist: %f\n", ray->enemy_dist);
+	fishtable = (int)(fabs(game->p.angle - ray->angle) * game->math.fish_it);
+	ray->enemy_dist *= game->math.fishcos[fishtable];
+	ratio = game->dist_to_proj_plane / ray->enemy_dist;
+	game->render.bottom_wall = (ratio * game->p.height) + game->vertical_center;
+	ray->height = (game->dist_to_proj_plane * WALL_HEIGHT) / ray->enemy_dist;
+	game->render.top_wall = game->render.bottom_wall - (int)ray->height;
+	if (game->render.top_wall < 0)
+	{
+		ray->height += game->render.top_wall;
+		game->render.top_wall = 0;
+	}
+	while (row < ray->height)
+	{
+		color = get_rgba(255, 255, 0, 255);
+		mlx_put_pixel(game->image, ray->column, game->render.top_wall + row, color);
+		row++;
+	}
+}
 void	render_walls(t_game *game)
 {
 	t_ray	ray;
@@ -321,6 +352,8 @@ void	render_walls(t_game *game)
 			render_column(game, &ray);
 		if (ray.door_state && ray.door_distance < ray.distance)
 			render_moving_door(game, &ray);
+		if (ray.dist_h_e < MAX_DEPTH || ray.dist_v_e < MAX_DEPTH)
+			render_enemy(game, &ray);
 		ray.column++;
 		ray.angle += angle_step;
 	}
