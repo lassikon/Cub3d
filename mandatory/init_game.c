@@ -6,11 +6,23 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:06:50 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:27:47 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:13:04 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static void	player_orientation(t_game *game, char c)
+{
+	if (c == 'N')
+		game->p.angle = 3 * PI / 2;
+	if (c == 'S')
+		game->p.angle = PI / 2;
+	if (c == 'W')
+		game->p.angle = PI;
+	if (c == 'E')
+		game->p.angle = 0;
+}
 
 void	player_starting_position(t_game *game)
 {
@@ -25,14 +37,7 @@ void	player_starting_position(t_game *game)
 		{
 			if (ft_strchr("NSWE", game->map[i][j]) != NULL)
 			{
-				if (game->map[i][j] == 'N')
-					game->p.angle = 3 * PI / 2;
-				if (game->map[i][j] == 'S')
-					game->p.angle = PI / 2;
-				if (game->map[i][j] == 'W')
-					game->p.angle = PI;
-				if (game->map[i][j] == 'E')
-					game->p.angle = 0;
+				player_orientation(game, game->map[i][j]);
 				game->p.x = j * TILE + TILE / 2;
 				game->p.y = i * TILE + TILE / 2;
 			}

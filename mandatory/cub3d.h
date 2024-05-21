@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 15:33:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:18:48 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,20 @@ typedef struct s_player
 
 typedef struct s_scene
 {
-	char	*no_texture;
-	char	*so_texture;
-	char	*we_texture;
-	char	*ea_texture;
-	mlx_texture_t *north_tex;
-	mlx_texture_t *south_tex;
-	mlx_texture_t *east_tex;
-	mlx_texture_t *west_tex;
-	int		floor_color[3];
-	int		ceiling_color[3];
-	char	**map;
-	int		map_width;
-	int		map_height;
-	t_list	*tokens;
+	char			*no_texture;
+	char			*so_texture;
+	char			*we_texture;
+	char			*ea_texture;
+	mlx_texture_t	*north_tex;
+	mlx_texture_t	*south_tex;
+	mlx_texture_t	*east_tex;
+	mlx_texture_t	*west_tex;
+	int				floor_color[3];
+	int				ceiling_color[3];
+	char			**map;
+	int				map_width;
+	int				map_height;
+	t_list			*tokens;
 }			t_scene;
 
 typedef enum e_side
@@ -101,9 +101,9 @@ typedef struct ray_s
 
 typedef struct s_render
 {
-	int	bottom_wall;
-	int	top_wall;
-	float brightness;
+	int		bottom_wall;
+	int		top_wall;
+	float	brightness;
 }		t_render;
 
 typedef struct s_game
@@ -124,7 +124,7 @@ typedef struct s_game
 	float		dist_to_proj_plane;
 	float		vertical_center;
 	int			frame_count;
-} t_game;
+}	t_game;
 
 /*error*/
 
@@ -138,6 +138,8 @@ typedef enum e_err_code
 	SCENE_FORMAT_ERR,
 	INVALID_MAP_ERR,
 	MAP_NOT_CLOSED_ERR,
+	INVALID_PLAYER_ERR,
+	MAP_BIG_ERR,
 }	t_err_code;
 
 typedef struct s_error_entry
@@ -149,8 +151,10 @@ typedef struct s_error_entry
 void	init_game(t_game *game, t_scene *scene);
 void	init_textures(t_game *game, t_scene *scene);
 void	move_player(t_game *game);
-void	render_walls(t_game *game);
+void	render(t_game *game);
 void	cast_ray(t_game *game, t_ray *ray);
+void	render_wall_column(t_game *game, t_ray *ray);
+int		get_rgba(int red, int green, int blue, int alpha);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);
@@ -169,9 +173,5 @@ void	free_lst(t_list **head);
 void	free_scene(t_scene *scene);
 void	error_handler(t_scene *scene, t_err_code code);
 void	mlx_error_exit(t_game *game, t_scene *scene);
-
-/*debug*/
-void	print_array(char **array);
-void	print_list(t_list *head);
 
 #endif

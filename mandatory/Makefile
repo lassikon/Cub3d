@@ -15,7 +15,6 @@ SRCS	:= 	cub3d.c \
 			init_game.c \
 			init_textures.c \
 			move_player.c \
-			render_walls.c \
 			gnl_chk.c \
 			parse.c \
 			parse_map.c \
@@ -24,7 +23,9 @@ SRCS	:= 	cub3d.c \
 			tokenize.c \
 			errors.c \
 			frees.c \
-			cast_ray.c
+			cast_ray.c \
+			render_walls.c \
+			render.c
 			
 OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})
 

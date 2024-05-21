@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 14:25:52 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/15 14:52:46 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:06:25 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 void	delete_textures(t_scene *scene)
 {
-	mlx_delete_texture(scene->north_tex);
-	mlx_delete_texture(scene->south_tex);
-	mlx_delete_texture(scene->east_tex);
-	mlx_delete_texture(scene->west_tex);
+	if (scene->north_tex)
+		mlx_delete_texture(scene->north_tex);
+	if (scene->south_tex)
+		mlx_delete_texture(scene->south_tex);
+	if (scene->east_tex)
+		mlx_delete_texture(scene->east_tex);
+	if (scene->west_tex)
+		mlx_delete_texture(scene->west_tex);
 }
 
 void	textures_to_images(t_game *game, t_scene *scene)
@@ -43,8 +47,8 @@ void	textures_to_images(t_game *game, t_scene *scene)
 	game->west_img = mlx_texture_to_image(game->mlx, scene->west_tex);
 	if (game->west_img == NULL)
 	{
-		mlx_error_exit(game, scene);
 		delete_textures(scene);
+		mlx_error_exit(game, scene);
 	}
 	delete_textures(scene);
 }
@@ -57,22 +61,19 @@ void	init_textures(t_game *game, t_scene *scene)
 	scene->south_tex = mlx_load_png(scene->so_texture);
 	if (scene->south_tex == NULL)
 	{
-		mlx_delete_texture(scene->north_tex);
+		delete_textures(scene);
 		mlx_error_exit(game, scene);
 	}
 	scene->east_tex = mlx_load_png(scene->ea_texture);
 	if (scene->east_tex == NULL)
 	{
-		mlx_delete_texture(scene->north_tex);
-		mlx_delete_texture(scene->south_tex);
+		delete_textures(scene);
 		mlx_error_exit(game, scene);
 	}
 	scene->west_tex = mlx_load_png(scene->we_texture);
 	if (scene->west_tex == NULL)
 	{
-		mlx_delete_texture(scene->north_tex);
-		mlx_delete_texture(scene->south_tex);
-		mlx_delete_texture(scene->east_tex);
+		delete_textures(scene);
 		mlx_error_exit(game, scene);
 	}
 	textures_to_images(game, scene);

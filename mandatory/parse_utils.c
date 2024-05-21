@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/06 10:08:47 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/21 14:07:17 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,35 +30,6 @@ size_t	ft_arrlen(char **arr)
 	while (arr[i] != NULL)
 		i++;
 	return (i);
-}
-
-void	print_array(char **array)
-{
-	size_t	i;
-
-	i = 0;
-	while (array[i] != NULL)
-	{
-		printf("map: %s\n", array[i]);
-		i++;
-	}
-}
-
-void print_list(t_list *head)
-{
-	t_list	*tmp;
-	t_token	*token;
-
-	tmp = head;
-	while (tmp)
-	{
-		token = (t_token *)tmp->content;
-		printf("line: %s\n", token->line);
-		printf("type: %d\n", token->type);
-		printf("start: %zu\n", token->location.start);
-		printf("len: %zu\n", token->location.len);
-		tmp = tmp->next;
-	}
 }
 
 char	*substr_guard(t_scene *scene, t_list **head)
