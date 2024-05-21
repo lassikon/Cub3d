@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 15:02:31 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/21 10:10:11 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,8 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 	{
 		if (enemy_collision(game, ray->x, ray->y))
 		{
-			ray->x += (ray->x_step / 2);
-			ray->y += (ray->y_step / 2);
-			if (enemy_collision(game, ray->x, ray->y))
-				ray->dist_h_e = get_distance(game, ray->x, ray->y);
-			printf("enemy_dist H: %f\n", ray->enemy_dist);
+			ray->enemy_col = ray->x - (int)(ray->x / TILE_SIZE) * TILE_SIZE;
+			ray->dist_h_e = get_distance(game, ray->x, ray->y);
 		}
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
@@ -178,11 +175,8 @@ static void	vertical_intersection(t_game *game, t_ray *ray)
 	{
 		if (enemy_collision(game, ray->x, ray->y))
 		{
-			ray->x += (ray->x_step / 2);
-			ray->y += (ray->y_step / 2);
-			if (enemy_collision(game, ray->x, ray->y))
-				ray->dist_v_e = get_distance(game, ray->x, ray->y);
-			printf("enemy_dist V: %f\n", ray->enemy_dist);
+			ray->enemy_col = ray->y - (int)(ray->y / TILE_SIZE) * TILE_SIZE;
+			ray->dist_v_e = get_distance(game, ray->x, ray->y);
 		}
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
@@ -255,4 +249,5 @@ void	cast_ray(t_game *game, t_ray *ray)
 		ray->door_state = ray->v_door_state;
 		ray->door_col = ray->door_v_col;
 	}
+	game->z_buffer[ray->column] = ray->distance;
 }

@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 15:12:31 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/21 10:23:17 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,32 +303,119 @@ void	render_enemy(t_game *game, t_ray *ray)
 	int		row;
 	int		color;
 	float	ratio;
-	int		fishtable;
-
+	//int		fishtable;
+	float	relative_x;
+	float	relative_y;
+	
 	row = 0;
-	if (ray->dist_h_e < ray->dist_v_e)
-		ray->enemy_dist = ray->dist_h_e;
-	else
-		ray->enemy_dist = ray->dist_v_e;
-	//printf("enemy_dist: %f\n", ray->enemy_dist);
-	fishtable = (int)(fabs(game->p.angle - ray->angle) * game->math.fish_it);
-	ray->enemy_dist *= game->math.fishcos[fishtable];
+	relative_x = game->p.x - game->e.x;
+	relative_y = game->p.y - game->e.y;
+	ray->enemy_dist =  sqrt(relative_x * relative_x + relative_y * relative_y);
+	// fishtable = (int)(fabs(game->p.angle - ray->angle) * game->math.fish_it);
+	// ray->enemy_dist *= game->math.ifishcos[fishtable];
 	ratio = game->dist_to_proj_plane / ray->enemy_dist;
 	game->render.bottom_wall = (ratio * game->p.height) + game->vertical_center;
 	ray->height = (game->dist_to_proj_plane * WALL_HEIGHT) / ray->enemy_dist;
 	game->render.top_wall = game->render.bottom_wall - (int)ray->height;
+	ray->ty = 0;
+	ray->ty_step = (float)game->e.img->height / ray->height;
 	if (game->render.top_wall < 0)
 	{
+		ray->ty += -game->render.top_wall * ray->ty_step;
 		ray->height += game->render.top_wall;
 		game->render.top_wall = 0;
 	}
+	ray->tx = (float)(game->e.img->width / WALL_HEIGHT) * ray->enemy_col;
+	ray->tx = fmod(ray->tx, game->e.img->width);
+	ray->ty = fmod(ray->ty, game->e.img->height);
 	while (row < ray->height)
 	{
 		color = get_rgba(255, 255, 0, 255);
-		mlx_put_pixel(game->image, ray->column, game->render.top_wall + row, color);
+		//mlx_put_pixel(game->image, ray->column, game->render.top_wall + row, color);
+		put_texture_pixel(game, ray, game->e.img, game->render.top_wall + row);
 		row++;
+		ray->ty += ray->ty_step;
+		if (ray->ty >= game->e.img->height)
+			break ;
 	}
+
+	// int	row;
+
+	// row = 0;
+	// ray->ty = 0;
+	// ray->ty_step = (float)img->height / ray->height;
+	// if (game->render.top_wall < 0)
+	// {
+	// 	ray->ty += -game->render.top_wall * ray->ty_step;
+	// 	game->render.top_wall = 0;
+	// 	ray->height = SCREEN_HEIGHT;
+	// }
+	// get_wall_ray_x_y(game, ray);
+	// ray->tx = (float)(img->width / TILE_SIZE) * ray->col;
+	// ray->tx = fmod(ray->tx, img->width);
+	// ray->ty = fmod(ray->ty, img->height);
+	// while (row < ray->height)
+	// {
+	// 	if (game->render.top_wall + ray->height > SCREEN_HEIGHT)
+	// 		ray->height = SCREEN_HEIGHT - game->render.top_wall;
+	// 	put_texture_pixel(game, ray, img, game->render.top_wall + row);
+	// 	row++;
+	// 	ray->ty += ray->ty_step;
+	// 	if (ray->ty >= img->height)
+	// 		break ;
+	// }
 }
+// void draw_sprite(t_game *game, int start_x, int end_x, int start_y, int end_y, int sprite_width, int sprite_height, float sprite_distance)
+// {
+//     for (int x = start_x; x < end_x; x++) {
+//         if (x >= 0 && x < SCREEN_WIDTH && game->z_buffer[x] > sprite_distance) {
+//             for (int y = start_y; y < end_y; y++) {
+//                 if (y >= 0 && y < SCREEN_HEIGHT) {
+//                     int texture_x = (x - start_x) * game->e.img->width / sprite_width;
+//                     int texture_y = (y - start_y) * game->e.img->height / sprite_height;
+
+//                     uint8_t *pixel = &game->e.img->pixels[(texture_y * game->e.img->width) + texture_x];
+//                     uint8_t red = (*pixel >> 24) & 0xFF;
+//                     uint8_t green = (*pixel >> 16) & 0xFF;
+//                     uint8_t blue = (*pixel >> 8) & 0xFF;
+//                     uint8_t alpha = (*pixel) & 0xFF;
+
+//                     uint32_t color = (red << 24) | (green << 16) | (blue << 8) | alpha;
+// 					color = get_rgba(255, 255, 0, 255);
+//                     mlx_put_pixel(game->image, x, y, color);
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// void	render_enemy(t_game *game)
+// {
+// 	float relative_x = game->e.x - game->p.x;
+//     float relative_y = game->e.y - game->p.y;
+
+// 	float sprite_distance =  sqrt(relative_x * relative_x + relative_y * relative_y);
+
+// 	float camera_x = relative_x * cos(game->p.angle) + relative_y * sin(game->p.angle);
+//     float camera_y = -relative_x * sin(game->p.angle) + relative_y * cos(game->p.angle);
+// 	if (camera_y > 0)
+// 	{
+// 		// Calculate screen position and size
+// 		int screen_x = (int)((camera_x / camera_y) * game->dist_to_proj_plane + (SCREEN_WIDTH / 2));
+// 		int sprite_size = 64; // Example sprite size in world units
+// 		int sprite_height = (int)((sprite_size / camera_y) * game->dist_to_proj_plane);
+// 		int sprite_width = sprite_height;
+
+// 		int start_x = screen_x - sprite_width / 2;
+// 		int end_x = screen_x + sprite_width / 2;
+// 		int start_y = (SCREEN_HEIGHT / 2) - sprite_height / 2;
+// 		int end_y = (SCREEN_HEIGHT / 2) + sprite_height / 2;
+
+// 		// Draw the sprite
+// 		draw_sprite(game, start_x, end_x, start_y, end_y, sprite_width, sprite_height, sprite_distance);
+//     }
+// }
+
 void	render_walls(t_game *game)
 {
 	t_ray	ray;

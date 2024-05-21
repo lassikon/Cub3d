@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 15:53:04 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:17:23 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ typedef struct ray_s
 	float	dist_h_e;
 	float	dist_v_e;
 	float	enemy_dist;
+	float	enemy_col;
 }			t_ray;
 
 typedef struct s_render
@@ -226,6 +227,7 @@ typedef struct s_game
 	double			frame_count;
 	int				door_opening;
 	int				door_closing;
+	float	z_buffer[SCREEN_WIDTH];
 }					t_game;
 
 /*error*/
@@ -281,5 +283,6 @@ void	error_handler(t_scene *scene, t_err_code code);
 /*debug*/
 void	print_array(char **array);
 void	print_list(t_list *head);
+
 
 #endif

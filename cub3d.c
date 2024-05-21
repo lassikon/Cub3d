@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 15:55:14 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:17:07 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	find_char(t_game *game)
 		j = 0;
 		while (game->map[i][j])
 		{
-			if (ft_strchr("NSWE", game->map[i][j]) != NULL)
+			if (ft_strchr("NSWE*", game->map[i][j]) != NULL)
 			{
 				if (game->map[i][j] == 'N')
 					game->p.angle = 3 * PI / 2;
@@ -77,6 +77,8 @@ void	init_textures(t_game *game, t_scene *scene)
 		scene->ceiling_tex = mlx_load_png(scene->cl_texture);
 		game->ceiling_img = mlx_texture_to_image(game->mlx, scene->ceiling_tex);
 	}
+	game->e.tx = mlx_load_png("textures/hero.png");
+	game->e.img = mlx_texture_to_image(game->mlx, game->e.tx);
 }
 
 void	fill_math_table(t_game *game)
@@ -267,9 +269,10 @@ void	game_loop(void *param)
 	move_player(game);
 	render_walls(game);
 	animate_door(game);
+	//render_enemy(game);
 	minimap(game);
-	move_mouse(game);
-	weapons(game);
+	//move_mouse(game);
+	//weapons(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
 	game->frame_count++;
