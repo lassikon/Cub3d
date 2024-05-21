@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/21 10:27:25 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/21 21:57:54 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	init_textures(t_game *game, t_scene *scene)
 	}
 	game->e.tx = mlx_load_png("textures/hero.png");
 	game->e.img = mlx_texture_to_image(game->mlx, game->e.tx);
+	mlx_resize_image(game->e.img, 512, 512);
 }
 
 void	fill_math_table(t_game *game)
@@ -260,6 +261,65 @@ void	init_game(t_game *game, t_scene *scene)
 	init_jump_height_table(game);
 }
 
+void	render_enemy(t_game *game)
+{
+	float relative_x = game->e.x - game->p.x;
+    float relative_y = game->e.y - game->p.y;
+	float camera_x = relative_y * cos(game->p.angle) - relative_x * sin(game->p.angle);
+    float camera_y = relative_y * sin(game->p.angle) + relative_x * cos(game->p.angle);
+
+	if (camera_y <= 0)
+		return;
+	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) * (1 + camera_x / camera_y));
+    int sprite_height = (int)((WALL_HEIGHT / camera_y) * game->dist_to_proj_plane);
+	
+	
+	float ty_step = (float)game->e.img->height / sprite_height;
+	float tx_step = (float)game->e.img->width / sprite_height;
+	float ty = 0;
+	ty_step = fmod(ty_step, game->e.img->height);
+	tx_step = fmod(tx_step, game->e.img->width);
+	for (int y = -sprite_height / 2; y < sprite_height / 2; y++)
+	{
+        int screen_y = SCREEN_HEIGHT / 2 + y;
+        if (screen_y >= 0 && screen_y < SCREEN_HEIGHT)
+		{
+			float tx = 0;
+            for (int x = -sprite_height / 2; x < sprite_height / 2; x++)
+			{
+                int screen_x = sprite_screen_x + x;
+
+                if (screen_x >= 0 && screen_x < SCREEN_WIDTH)
+				{
+					
+                    int	color;
+					int	red;
+					int	green;
+					int	blue;
+					int	alpha;
+
+					uint8_t *pixel = &game->e.img->pixels[(int)ty * game->e.img->width * 4 + (int)tx * 4];
+/* 					if (pixel[3] != 0)
+					{ */
+						red = pixel[0];
+						green = pixel[1];
+						blue = pixel[2];
+						alpha = pixel[3];
+						color = get_rgba(red, green, blue, alpha);
+						mlx_put_pixel(game->image, screen_x, screen_y, color);
+						tx += tx_step;
+						if (tx >= game->e.img->width)
+							break ;
+/*                 	} */
+            	}
+        	}
+			ty += ty_step;
+			if (ty >= game->e.img->height)
+				break ;
+    	}
+	}
+}
+
 void	game_loop(void *param)
 {
 	t_game	*game;
@@ -269,8 +329,9 @@ void	game_loop(void *param)
 	move_player(game);
 	render_walls(game);
 	animate_door(game);
+	render_enemy(game);
 	minimap(game);
-	move_mouse(game);
+	//move_mouse(game);
 	//weapons(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
