@@ -3,16 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 13:55:17 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:18:21 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 
+void	get_texture_name(t_game *game, char *buffer, char *path, int i)
+{
+	char	*frame;
+
+	(void)game;
+	ft_memset(buffer, 0, 100);
+	frame = ft_itoa(i);
+	if (!frame)
+		exit(1);
+	ft_strlcpy(buffer, path, ft_strlen(path) + 1);
+	ft_strlcat(buffer, frame, ft_strlen(buffer) + ft_strlen(frame) + 1);
+	ft_strlcat(buffer, ".png", ft_strlen(buffer) + 5);
+}
 
 void	find_player(t_game *game)
 {
@@ -49,6 +62,8 @@ void	find_enemies(t_game *game)
 	int	i;
 	int	j;
 	int	k;
+	char	buffer[100];
+	int		frame;
 
 	i = 0;
 	k = 0;
@@ -62,9 +77,15 @@ void	find_enemies(t_game *game)
 				game->e[k].x = j * TILE + TILE / 2;
 				game->e[k].y = i * TILE + TILE / 2;
 				game->e[k].alive = true;
-				game->e[k].tx = mlx_load_png("textures/hero.png");
-				game->e[k].img = mlx_texture_to_image(game->mlx, game->e[k].tx);
-				mlx_resize_image(game->e[k].img, 512, 512);
+				frame = 0;
+				while (frame < 4)
+				{
+					get_texture_name(game, buffer, "sprites/monster/mons_", frame + 1);
+					game->e[k].tx[frame] = mlx_load_png(buffer);
+					game->e[k].img[frame] = mlx_texture_to_image(game->mlx, game->e[k].tx[frame]);
+					mlx_resize_image(game->e[k].img[frame], 64, 64);
+					frame++;
+				}
 				k++;
 				if (k > 99)
 					break ;
@@ -155,19 +176,6 @@ void	init_math_tables(t_game *game)
 	game->math.fish_it = 1 / fish_step;
 }
 
-void	get_texture_name(t_game *game, char *buffer, char *path, int i)
-{
-	char	*frame;
-
-	(void)game;
-	ft_memset(buffer, 0, 100);
-	frame = ft_itoa(i);
-	if (!frame)
-		exit(1);
-	ft_strlcpy(buffer, path, ft_strlen(path) + 1);
-	ft_strlcat(buffer, frame, ft_strlen(buffer) + ft_strlen(frame) + 1);
-	ft_strlcat(buffer, ".png", ft_strlen(buffer) + 5);
-}
 
 void	init_sprites(t_game *game)
 {
@@ -299,7 +307,7 @@ void	init_game(t_game *game, t_scene *scene)
 	init_enemies(game);
 }
 
-void	render_enemy(t_game *game, int i)
+/* void	render_enemy(t_game *game, int i, int frame)
 {
 	if (game->e[i].alive == false)
 		return ;
@@ -312,9 +320,9 @@ void	render_enemy(t_game *game, int i)
 		return;
 	float ratio = game->dist_to_proj_plane / camera_y;
 	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) * (1 + (camera_x / camera_y)));
-    int sprite_height = (int)((WALL_HEIGHT/ camera_y) * game->dist_to_proj_plane);
+    int sprite_height = (int)((48/ camera_y) * game->dist_to_proj_plane);
 	float ty = 0;
-	float ty_step = (float)game->e[i].img->height / sprite_height;
+	float ty_step = (float)game->e[i].img[0]->height / sprite_height;
     int draw_end_y = (ratio * game->p.height) + game->vertical_center;
 	int draw_start_y = draw_end_y - sprite_height;
     if (draw_start_y < 0)
@@ -324,8 +332,8 @@ void	render_enemy(t_game *game, int i)
 	}
     if (draw_end_y >= SCREEN_HEIGHT)
 		draw_end_y = SCREEN_HEIGHT - 1;
-	ty_step = fmod(ty_step, game->e[i].img->height);
-	float tx_step = (float)game->e[i].img->width / sprite_height;
+	ty_step = fmod(ty_step, game->e[i].img[0]->height);
+	float tx_step = (float)game->e[i].img[0]->width / sprite_height;
 	float tx = 0;
     int draw_start_x = -sprite_height / 2 + sprite_screen_x;
     int draw_end_x = sprite_height / 2 + sprite_screen_x;
@@ -336,8 +344,14 @@ void	render_enemy(t_game *game, int i)
 	}
     if (draw_end_x >= SCREEN_WIDTH)
 		draw_end_x = SCREEN_WIDTH - 1;
-	tx_step = fmod(tx_step, game->e[i].img->width);
+	tx_step = fmod(tx_step, game->e[i].img[0]->width);
 	float tx_tmp = tx;
+
+	float brightness = 130 / distance;
+	if (brightness > 1)
+		brightness = 1;
+	if (brightness < 0.1)
+		brightness = 0.1;
 	for (int y = draw_start_y; y < draw_end_y; y++)
 	{
 		tx = tx_tmp;
@@ -349,10 +363,10 @@ void	render_enemy(t_game *game, int i)
 			int	blue;
 			int	alpha;
 
-			uint8_t *pixel = &game->e[i].img->pixels[(int)ty * game->e[i].img->width * 4 + (int)tx * 4];
-			red = pixel[0];
-			green = pixel[1];
-			blue = pixel[2];
+			uint8_t *pixel = &game->e[i].img[frame]->pixels[(int)ty * game->e[i].img[0]->width * 4 + (int)tx * 4];
+			red = pixel[0]*brightness;
+			green = pixel[1]*brightness;
+			blue = pixel[2]*brightness;
 			alpha = pixel[3];
 			color = get_rgba(red, green, blue, alpha);
 			if (alpha != 0 && (distance < game->rays[x].distance))
@@ -360,11 +374,11 @@ void	render_enemy(t_game *game, int i)
 				mlx_put_pixel(game->image, x, y, color);
 			}
 			tx += tx_step;
-			if (tx >= game->e[i].img->width)
+			if (tx >= game->e[i].img[0]->width)
 				break ;
 		}
 		ty += ty_step;
-		if (ty >= game->e[i].img->height)
+		if (ty >= game->e[i].img[0]->height)
 			break ;
 	}
 	if (SCREEN_WIDTH / 2 > draw_start_x && SCREEN_WIDTH / 2 < draw_end_x)
@@ -373,6 +387,98 @@ void	render_enemy(t_game *game, int i)
 		{
 			game->rays[SCREEN_WIDTH / 2].enemy_top = draw_start_y;
 			game->rays[SCREEN_WIDTH / 2].enemy_bottom = draw_end_y;
+			printf("Aiming at enemy\n");
+		}
+		else
+			printf("Aiming at enemy, but not in y range\n");
+	}
+	else
+		printf("Not aiming at enemy\n");
+} */
+
+void	render_enemy(t_game *game, int i, int frame)
+{
+	t_ray	eray;
+	float rel_x;
+	float rel_y;
+	if (game->e[i].alive == false)
+		return ;
+	rel_x = game->e[i].x - game->p.x;
+    rel_y = game->e[i].y - game->p.y;
+	eray.x = rel_y * cosf(game->p.angle) - rel_x * sinf(game->p.angle);
+    eray.y = rel_y * sinf(game->p.angle) + rel_x * cosf(game->p.angle);
+	eray.distance = sqrtf(eray.x * eray.x + eray.y * eray.y);
+	if (eray.y <= 0)
+		return;
+	float ratio = game->dist_to_proj_plane / eray.y;
+	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) * (1 + (eray.x / eray.y)));
+   	eray.height = (int)((48/ eray.y) * game->dist_to_proj_plane);
+	eray.ty = 0;
+	eray.ty_step = (float)game->e[i].img[0]->height / eray.height;
+    game->render.e_bottom = (ratio * game->p.height) + game->vertical_center;
+	game->render.e_top = game->render.e_bottom - eray.height;
+    if (game->render.e_top < 0)
+	{
+		eray.ty += -game->render.e_top * eray.ty_step;
+		game->render.e_top = 0;
+	}
+    if ( game->render.e_bottom >= SCREEN_HEIGHT)
+		 game->render.e_bottom = SCREEN_HEIGHT - 1;
+	eray.ty_step = fmod(eray.ty_step, game->e[i].img[0]->height);
+	eray.tx_step = (float)game->e[i].img[0]->width / eray.height;
+	eray.tx = 0;
+    game->render.e_left = -eray.height / 2 + sprite_screen_x;
+    game->render.e_right = eray.height / 2 + sprite_screen_x;
+    if ( game->render.e_left < 0)
+	{
+		eray.tx += -game->render.e_left * eray.tx_step;
+		game->render.e_left = 0;
+	}
+    if ( game->render.e_right >= SCREEN_WIDTH)
+		 game->render.e_right = SCREEN_WIDTH - 1;
+	eray.tx_step = fmod(eray.tx_step, game->e[i].img[0]->width);
+	float tx_tmp = eray.tx;
+
+	float brightness = 130 / eray.distance;
+	if (brightness > 1)
+		brightness = 1;
+	if (brightness < 0.1)
+		brightness = 0.1;
+	for (int y = game->render.e_top; y < game->render.e_bottom; y++)
+	{
+		eray.tx = tx_tmp;
+		for (int x = game->render.e_left; x < game->render.e_right; x++)
+		{
+			int	color;
+			int	red;
+			int	green;
+			int	blue;
+			int	alpha;
+
+			uint8_t *pixel = &game->e[i].img[frame]->pixels[(int)eray.ty * game->e[i].img[0]->width * 4 + (int)eray.tx * 4];
+			red = pixel[0]*brightness;
+			green = pixel[1]*brightness;
+			blue = pixel[2]*brightness;
+			alpha = pixel[3];
+			color = get_rgba(red, green, blue, alpha);
+			if (alpha != 0 && (eray.distance < game->rays[x].distance))
+			{
+				mlx_put_pixel(game->image, x, y, color);
+			}
+			eray.tx += eray.tx_step;
+			if (eray.tx >= game->e[i].img[0]->width)
+				break ;
+		}
+		eray.ty += eray.ty_step;
+		if (eray.ty >= game->e[i].img[0]->height)
+			break ;
+	}
+	if (SCREEN_WIDTH / 2 > game->render.e_left && SCREEN_WIDTH / 2 < game->render.e_right)
+	{
+		if (SCREEN_HEIGHT / 2 > game->render.e_top && SCREEN_HEIGHT / 2 < game->render.e_bottom)
+		{
+			game->rays[SCREEN_WIDTH / 2].enemy_top = game->render.e_top;
+			game->rays[SCREEN_WIDTH / 2].enemy_bottom = game->render.e_bottom;
 			printf("Aiming at enemy\n");
 		}
 		else
@@ -394,7 +500,7 @@ void	game_loop(void *param)
 	render_walls(game);
 	while (i < game->enemy_count)
 	{
-		render_enemy(game, i);
+		render_enemy(game, i, ((int)game->frame_count % 8) / 2);
 		i++;
 	}
 	moving_door(game);

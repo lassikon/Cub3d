@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_mouse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:44:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 11:31:12 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:30:48 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ void	move_mouse(t_game *game)
 	int	y;
 	int	x_mid;
 	int	y_mid;
+
+	x = 0;
+	y = 0;
 
 	x_mid = SCREEN_WIDTH / 2;
 	y_mid = SCREEN_HEIGHT / 2;

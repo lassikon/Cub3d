@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 13:55:04 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:51:39 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ typedef struct s_enemy
 	float	angle;
 	int		height;
 	bool	alive;
-	mlx_texture_t	*tx;
-	mlx_image_t		*img;
+	mlx_texture_t	*tx[4];
+	mlx_image_t		*img[4];
 }	t_enemy;
 
 typedef struct s_minimap
@@ -134,6 +134,7 @@ typedef struct ray_s
 	float	ty;
 	float	tx;
 	float	ty_step;
+	float	tx_step;
 	uint8_t	*pixel;
 	int		column;
 	float	distance_to_horizontal;
@@ -161,6 +162,10 @@ typedef struct s_render
 	int		bottom_wall;
 	int		top_wall;
 	float	brightness;
+	int		e_top;
+	int		e_bottom;
+	int		e_left;
+	int		e_right;
 }			t_render;
 
 typedef struct s_math
