@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 15:18:21 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/22 22:59:34 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ void	find_enemies(t_game *game)
 				}
 				k++;
 				if (k > 99)
+				{
+					printf("Too many enemies\n");
 					break ;
+				}
 			}
 			j++;
 		}
@@ -396,6 +399,32 @@ void	init_game(t_game *game, t_scene *scene)
 		printf("Not aiming at enemy\n");
 } */
 
+void	next_enemy_to_render(t_game *game)
+{
+	int i;
+	float rel_x;
+	float rel_y;
+	float distance;
+
+	i = 0;
+	distance = 0;
+	while (i < game->enemy_count)
+	{
+		if (game->e[i].rendered == false)
+		{
+			rel_x = game->e[i].x - game->p.x;
+			rel_y = game->e[i].y - game->p.y;
+			game->e[i].distance = sqrtf(rel_x * rel_x + rel_y * rel_y);
+			if (game->e[i].distance > distance)
+			{
+				distance = game->e[i].distance;
+				game->next_enemy_to_render = i;
+			}
+		}
+		i++;
+	}
+}
+
 void	render_enemy(t_game *game, int i, int frame)
 {
 	t_ray	eray;
@@ -479,13 +508,12 @@ void	render_enemy(t_game *game, int i, int frame)
 		{
 			game->rays[SCREEN_WIDTH / 2].enemy_top = game->render.e_top;
 			game->rays[SCREEN_WIDTH / 2].enemy_bottom = game->render.e_bottom;
-			printf("Aiming at enemy\n");
+			game->in_crosshairs_id = i;
+			// printf("Aiming at enemy\n");
 		}
-		else
-			printf("Aiming at enemy, but not in y range\n");
 	}
-	else
-		printf("Not aiming at enemy\n");
+	// else
+	// 	printf("Not aiming at enemy\n");
 }
 
 void	game_loop(void *param)
@@ -495,18 +523,27 @@ void	game_loop(void *param)
 
 	i = 0;
 	game = (t_game *)param;
+	game->in_crosshairs_id = -1;
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
 	render_walls(game);
 	while (i < game->enemy_count)
 	{
-		render_enemy(game, i, ((int)game->frame_count % 8) / 2);
+		game->e[i].rendered = false;
+		i++;
+	}
+	i = 0;
+	while (i < game->enemy_count)
+	{
+		next_enemy_to_render(game);
+		render_enemy(game, game->next_enemy_to_render, ((int)game->frame_count % 8) / 2);
+		game->e[game->next_enemy_to_render].rendered = true;
 		i++;
 	}
 	moving_door(game);
 	animate_door(game);
 	minimap(game);
-	move_mouse(game);
+	// move_mouse(game);
 	move_enemy(game);
 	weapons(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))

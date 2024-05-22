@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 14:51:39 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/22 22:31:22 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ typedef struct s_enemy
 	float	x;
 	float	y;
 	float	angle;
+	float	distance;
 	int		height;
 	bool	alive;
+	bool	rendered;
 	mlx_texture_t	*tx[4];
 	mlx_image_t		*img[4];
 }	t_enemy;
@@ -233,6 +235,8 @@ typedef struct s_game
 	int				door_opening;
 	int				door_closing;
 	int				enemy_count;
+	int				in_crosshairs_id;
+	int				next_enemy_to_render;
 	float	z_buffer[SCREEN_WIDTH];
 }					t_game;
 

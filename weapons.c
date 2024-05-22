@@ -6,13 +6,13 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:30:50 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 13:49:43 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 22:14:12 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	enemy_hit(t_game *game)
+/* int	enemy_hit(t_game *game)
 {
 	int crosshair_x;
 	int crosshair_y;
@@ -26,7 +26,7 @@ int	enemy_hit(t_game *game)
 			return (1);
 	}
 	return (0);
-}
+} */
 
 void	weapons(t_game *game)
 {
@@ -53,15 +53,14 @@ void	weapons(t_game *game)
 		i++;
 	}
 
-	if (mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT) && game->sprite.weapon_state != ANIMATING)
+	if ((mlx_is_key_down(game->mlx, MLX_KEY_F) 
+		|| mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
+		&& game->sprite.weapon_state != ANIMATING)
 	{
 		game->sprite.weapon_fire++;
 		flag = 1;
-		if (game->e[0].alive)
-		{
-			if (enemy_hit(game))
-				game->e[0].alive = false;
-		}
+		if (game->in_crosshairs_id >= 0)
+			game->e[game->in_crosshairs_id].alive = false;
 	}
 	if (flag == 1 && game->sprite.weapon_state == IDLE)
 		game->sprite.hk53_fire_img[game->sprite.weapon_fire % 14]->enabled = true;

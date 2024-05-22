@@ -1,8 +1,8 @@
 NAME		:= cub3D
 CC			:= cc
-MLXFLAGS	:= -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" # MacOS
-#MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm # Linux
-CFLAGS		:= -Wall -Wextra -Werror -O3  -g -fsanitize=address
+#MLXFLAGS	:= -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" # MacOS
+MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm # Linux
+CFLAGS		:= -Wall -Wextra -Werror -O3  -g #-fsanitize=address
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
 OBJ_DIR		:= obj/
