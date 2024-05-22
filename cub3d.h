@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 10:56:49 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 11:25:13 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,6 @@ typedef struct s_game
 {
 	mlx_t			*mlx;
 	mlx_image_t		*image;
-	mlx_image_t		*enemy_img;
 	t_minimap		mini;
 	mlx_image_t		*mini_img;
 	mlx_image_t		*north_img;
