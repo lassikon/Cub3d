@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 11:27:06 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/22 12:15:47 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 
 
-void	find_char(t_game *game)
+void	find_player(t_game *game)
 {
 	int	i;
 	int	j;
@@ -25,7 +25,7 @@ void	find_char(t_game *game)
 		j = 0;
 		while (game->map[i][j])
 		{
-			if (ft_strchr("NSWE*", game->map[i][j]) != NULL)
+			if (ft_strchr("NSWE", game->map[i][j]) != NULL)
 			{
 				if (game->map[i][j] == 'N')
 					game->p.angle = 3 * PI / 2;
@@ -35,13 +35,30 @@ void	find_char(t_game *game)
 					game->p.angle = PI;
 				if (game->map[i][j] == 'E')
 					game->p.angle = 0;
-				if (game->map[i][j] == '*')
-				{
-					game->e.x = j * TILE + TILE / 2;
-					game->e.y = i * TILE + TILE / 2;
-				}
 				game->p.x = j * TILE + TILE / 2;
 				game->p.y = i * TILE + TILE / 2;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void	find_enemy(t_game *game)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (game->map[i])
+	{
+		j = 0;
+		while (game->map[i][j])
+		{
+			if ((game->map[i][j]) == '*')
+			{
+				game->e.x = j * TILE + TILE / 2;
+				game->e.y = i * TILE + TILE / 2;
 			}
 			j++;
 		}
@@ -241,7 +258,8 @@ void	init_game(t_game *game, t_scene *scene)
 	game->sprite.weapon_aim = -1;
 	game->sprite.weapon_fire = -1;
 	game->p.jumping = 0;
-	find_char(game);
+	find_player(game);
+	find_enemy(game);
 	init_textures(game, scene);
 	init_sprites(game);
 	init_math_tables(game);
@@ -263,6 +281,9 @@ void	init_game(t_game *game, t_scene *scene)
 
 void	render_enemy(t_game *game)
 {
+
+	move_enemy(game);
+
 	float relative_x = game->e.x - game->p.x;
     float relative_y = game->e.y - game->p.y;
 	float camera_x = relative_y * cosf(game->p.angle) - relative_x * sinf(game->p.angle);
