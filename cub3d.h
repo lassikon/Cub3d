@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 12:06:38 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:35:52 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@
 # define MOUSE_SENSITIVITY 500
 # define LOOK_UP_AND_DOWN 1
 # define DOOR_SPEED 1
+# define ENEMY_SPEED 1.5
 
 
 # define MAP_CHARS "1 023NSEW*" //1 = wall, 0 = empty space, 2 = closed door, 3 = open door, NSEW = player
-# define C_CHARS "12abcdefghijklmnopqrstuvwxyz*"
+# define C_CHARS "12abcdefghijklmnopqrstuvwxyz"
 
 # define GREY2 0x808080FF
 # define GREY 0x404040FF
@@ -252,6 +253,7 @@ typedef struct s_error_entry
 }	t_error_entry;
 
 void	move_player(t_game *game);
+void	move_enemy(t_game *game);
 void	move_player_vertical(t_game *game);
 void	move_mouse(t_game *game);
 void	weapons(t_game *game);
