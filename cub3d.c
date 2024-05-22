@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/21 21:57:54 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/22 09:47:04 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,7 @@ void	init_game(t_game *game, t_scene *scene)
 {
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
 	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	game->enemy_img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game->mini_img = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
 	game->dist_to_proj_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
 	game->p.height = TILE / 2;
@@ -248,9 +249,11 @@ void	init_game(t_game *game, t_scene *scene)
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
 	game->map_width = scene->map_width * TILE;
 	game->map_height = scene->map_height * TILE;
+	mlx_image_to_window(game->mlx, game->enemy_img, 0, 0);
 	mlx_image_to_window(game->mlx, game->mini_img, SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	mlx_set_instance_depth(&game->image->instances[0], 0);
-	mlx_set_instance_depth(&game->mini_img->instances[0], 1);
+	mlx_set_instance_depth(&game->enemy_img->instances[0], 1);
+	mlx_set_instance_depth(&game->mini_img->instances[0], 2);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
 	mlx_resize_image(game->north_img, 512, 512);
 	mlx_resize_image(game->south_img, 512, 512);
@@ -261,22 +264,34 @@ void	init_game(t_game *game, t_scene *scene)
 	init_jump_height_table(game);
 }
 
+/* 	ratio = game->dist_to_proj_plane / ray->distance;
+	game->render.bottom_wall = (ratio * game->p.height) + game->vertical_center;
+	ray->height = (game->dist_to_proj_plane * WALL_HEIGHT) / ray->distance;
+	game->render.top_wall = game->render.bottom_wall - (int)ray->height; */
+
 void	render_enemy(t_game *game)
 {
 	float relative_x = game->e.x - game->p.x;
     float relative_y = game->e.y - game->p.y;
-	float camera_x = relative_y * cos(game->p.angle) - relative_x * sin(game->p.angle);
-    float camera_y = relative_y * sin(game->p.angle) + relative_x * cos(game->p.angle);
+	printf("p angle: %f\n", game->p.angle);
+	float camera_x = relative_y * cosf(game->p.angle) - relative_x * sinf(game->p.angle);
+    float camera_y = relative_y * sinf(game->p.angle) + relative_x * cosf(game->p.angle);
 
 	if (camera_y <= 0)
 		return;
-	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) * (1 + camera_x / camera_y));
-    int sprite_height = (int)((WALL_HEIGHT / camera_y) * game->dist_to_proj_plane);
+	printf("camera x: %f\n", camera_x);
 	
+	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) * (1 + (camera_x / camera_y)));
+    int sprite_height = (int)((WALL_HEIGHT/ camera_y) * game->dist_to_proj_plane);
+
 	
 	float ty_step = (float)game->e.img->height / sprite_height;
 	float tx_step = (float)game->e.img->width / sprite_height;
 	float ty = 0;
+	float tx = 0;
+
+	printf("sprite height %d\n", sprite_height);
+
 	ty_step = fmod(ty_step, game->e.img->height);
 	tx_step = fmod(tx_step, game->e.img->width);
 	for (int y = -sprite_height / 2; y < sprite_height / 2; y++)
@@ -284,11 +299,10 @@ void	render_enemy(t_game *game)
         int screen_y = SCREEN_HEIGHT / 2 + y;
         if (screen_y >= 0 && screen_y < SCREEN_HEIGHT)
 		{
-			float tx = 0;
+			tx = 0;
             for (int x = -sprite_height / 2; x < sprite_height / 2; x++)
 			{
                 int screen_x = sprite_screen_x + x;
-
                 if (screen_x >= 0 && screen_x < SCREEN_WIDTH)
 				{
 					
@@ -299,18 +313,16 @@ void	render_enemy(t_game *game)
 					int	alpha;
 
 					uint8_t *pixel = &game->e.img->pixels[(int)ty * game->e.img->width * 4 + (int)tx * 4];
-/* 					if (pixel[3] != 0)
-					{ */
-						red = pixel[0];
-						green = pixel[1];
-						blue = pixel[2];
-						alpha = pixel[3];
-						color = get_rgba(red, green, blue, alpha);
+					red = pixel[0];
+					green = pixel[1];
+					blue = pixel[2];
+					alpha = pixel[3];
+					color = get_rgba(red, green, blue, alpha);
+					// if (alpha != 0)
 						mlx_put_pixel(game->image, screen_x, screen_y, color);
-						tx += tx_step;
-						if (tx >= game->e.img->width)
-							break ;
-/*                 	} */
+					tx += tx_step;
+					if (tx >= game->e.img->width)
+						break ;
             	}
         	}
 			ty += ty_step;
@@ -326,6 +338,7 @@ void	game_loop(void *param)
 
 	game = (t_game *)param;
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
+	ft_memset(game->enemy_img->pixels, 5, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
 	render_walls(game);
 	animate_door(game);

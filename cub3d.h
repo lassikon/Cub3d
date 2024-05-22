@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/21 11:24:54 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 08:27:05 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 
 
 # define MAP_CHARS "1 023NSEW*" //1 = wall, 0 = empty space, 2 = closed door, 3 = open door, NSEW = player
-# define C_CHARS "12abcdefghijklmnopqrstuvwxyz"
+# define C_CHARS "12abcdefghijklmnopqrstuvwxyz*"
 
 # define GREY2 0x808080FF
 # define GREY 0x404040FF
@@ -150,13 +150,6 @@ typedef struct ray_s
 	float	door_col;
 	float	distance;
 	float	angle;
-
-	float	dist_h_e;
-	float	dist_v_e;
-	float	enemy_dist;
-	float	enemy_col;
-	float	enemy_h_col;
-	float	enemy_v_col;
 }			t_ray;
 
 typedef struct s_render
@@ -204,6 +197,7 @@ typedef struct s_game
 {
 	mlx_t			*mlx;
 	mlx_image_t		*image;
+	mlx_image_t		*enemy_img;
 	t_minimap		mini;
 	mlx_image_t		*mini_img;
 	mlx_image_t		*north_img;

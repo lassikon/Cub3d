@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cast_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/21 11:26:26 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 08:13:26 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,6 @@ int	moving_door_collision(t_game *game, t_ray *ray)
 	return (0);
 }
 
-int	enemy_collision(t_game *game, float ray_x, float ray_y)
-{
-	int	x;
-	int	y;
-
-	y = (int)ray_y;
-	x = (int)ray_x;
-	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
-		return (1);
-	if (game->map[y / TILE][x / TILE] == '*')
-		return (1);
-	return (0);
-}
 
 int	closed_door_collision(t_game *game, t_ray *ray)
 {
@@ -112,11 +99,6 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 		return ;
 	while (wall_collision(game, ray->x, ray->y) == 0)
 	{
-		if (enemy_collision(game, ray->x, ray->y))
-		{
-			ray->enemy_h_col = ray->x - (int)(ray->x / TILE) * TILE;
-			ray->dist_h_e = get_distance(game, ray->x, ray->y);
-		}
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
 		ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
@@ -173,11 +155,6 @@ static void	vertical_intersection(t_game *game, t_ray *ray)
 		return ;
 	while (wall_collision(game, ray->x, ray->y) == 0)
 	{
-		if (enemy_collision(game, ray->x, ray->y))
-		{
-			ray->enemy_v_col = ray->y - (int)(ray->y / TILE) * TILE;
-			ray->dist_v_e = get_distance(game, ray->x, ray->y);
-		}
 		ray->x += ray->x_step;
 		ray->y += ray->y_step;
 		ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
@@ -201,12 +178,6 @@ void	cast_ray(t_game *game, t_ray *ray)
 	ray->door = 0;
 	ray->door_state = 0;
 	ray->door_col = 0;
-	ray->enemy_dist = MAX_DEPTH;
-	ray->dist_h_e = MAX_DEPTH;
-	ray->dist_v_e = MAX_DEPTH;
-	ray->enemy_h_col = 0;
-	ray->enemy_v_col = 0;
-	ray->enemy_col = 0;
 	horizontal_intersection(game, ray);
 	if (ray->angle < PI)
 	{
@@ -251,16 +222,6 @@ void	cast_ray(t_game *game, t_ray *ray)
 		ray->door_distance = ray->door_v_dist;
 		ray->door_state = ray->v_door_state;
 		ray->door_col = ray->door_v_col;
-	}
-	if (ray->dist_h_e < ray->dist_v_e)
-	{
-		ray->enemy_dist = ray->dist_h_e;
-		ray->enemy_col = ray->enemy_h_col;
-	}
-	else if (ray->dist_v_e < ray->dist_h_e)
-	{
-		ray->enemy_dist = ray->dist_v_e;
-		ray->enemy_col = ray->enemy_v_col;
 	}
 	game->z_buffer[ray->column] = ray->distance;
 }
