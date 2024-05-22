@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 10:05:52 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 11:10:18 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,13 +273,11 @@ void	render_enemy(t_game *game)
 {
 	float relative_x = game->e.x - game->p.x;
     float relative_y = game->e.y - game->p.y;
-	printf("p angle: %f\n", game->p.angle);
 	float camera_x = relative_y * cosf(game->p.angle) - relative_x * sinf(game->p.angle);
     float camera_y = relative_y * sinf(game->p.angle) + relative_x * cosf(game->p.angle);
 
 	if (camera_y <= 0)
 		return;
-	printf("camera x: %f\n", camera_x);
 	
 	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) * (1 + (camera_x / camera_y)));
     int sprite_height = (int)((WALL_HEIGHT/ camera_y) * game->dist_to_proj_plane);
@@ -290,7 +288,6 @@ void	render_enemy(t_game *game)
 	float ty = 0;
 	float tx = 0;
 
-	printf("sprite height %d\n", sprite_height);
 
 	ty_step = fmod(ty_step, game->e.img->height);
 	tx_step = fmod(tx_step, game->e.img->width);
@@ -319,7 +316,7 @@ void	render_enemy(t_game *game)
 					blue = pixel[2];
 					alpha = pixel[3];
 					color = get_rgba(red, green, blue, alpha);
-					if (alpha != 0 && distance < game->rays[screen_x].distance)
+					if (alpha != 0 && (distance < game->rays[screen_x].distance))
 						mlx_put_pixel(game->image, screen_x, screen_y, color);
 					tx += tx_step;
 					if (tx >= game->e.img->width)
@@ -342,10 +339,11 @@ void	game_loop(void *param)
 	ft_memset(game->enemy_img->pixels, 5, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
 	render_walls(game);
-	animate_door(game);
 	render_enemy(game);
+	moving_door(game);
+	animate_door(game);
 	minimap(game);
-	//move_mouse(game);
+	// move_mouse(game);
 	//weapons(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);

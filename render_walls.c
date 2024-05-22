@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 10:03:01 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 11:05:54 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,6 +298,22 @@ void	render_moving_door(t_game *game, t_ray *ray)
 	draw_moving_door(game, ray);
 }
 
+void	moving_door(t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < SCREEN_WIDTH)
+	{
+		if (game->rays[i].door_state)
+		{
+			if (game->rays[i].door_distance < game->rays[i].distance)
+				render_moving_door(game, &game->rays[i]);
+		}
+		i++;
+	}
+}
+
 
 void	render_walls(t_game *game)
 {
@@ -320,8 +336,8 @@ void	render_walls(t_game *game)
 		cast_ray(game, &ray);
 		if (ray.distance < MAX_DEPTH)
 			render_column(game, &ray);
-		if (ray.door_state && ray.door_distance < ray.distance)
-			render_moving_door(game, &ray);
+		// if (ray.door_state && ray.door_distance < ray.distance)
+		// 	render_moving_door(game, &ray);
 		game->rays[ray.column] = ray;
 		ray.column++;
 		ray.angle += angle_step;

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 10:01:38 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 10:56:49 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ void	cast_ray(t_game *game, t_ray *ray);
 int		get_rgba(int red, int green, int blue, int alpha);
 void	operate_door(mlx_key_data_t data, void *param);
 void	animate_door(t_game *game);
+void	moving_door(t_game *game);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);
