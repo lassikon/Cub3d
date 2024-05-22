@@ -25,7 +25,8 @@ SRCS	:= 	cub3d.c \
 			minimap.c \
 			cast_ray.c \
 			move_mouse.c \
-			operate_door.c
+			operate_door.c \
+			weapons.c \
 			
 OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cast_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 08:13:26 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/22 11:38:38 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,8 @@ void	cast_ray(t_game *game, t_ray *ray)
 	ray->door = 0;
 	ray->door_state = 0;
 	ray->door_col = 0;
+	ray->enemy_top = 0;
+	ray->enemy_bottom = 0;
 	horizontal_intersection(game, ray);
 	if (ray->angle < PI)
 	{

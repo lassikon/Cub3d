@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 11:27:06 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/22 12:14:47 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,10 +259,13 @@ void	init_game(t_game *game, t_scene *scene)
 	if (game->door_img)
 		mlx_resize_image(game->door_img, 512, 512);
 	init_jump_height_table(game);
+	game->e.alive = true;
 }
 
 void	render_enemy(t_game *game)
 {
+	if (game->e.alive == false)
+		return ;
 	float relative_x = game->e.x - game->p.x;
     float relative_y = game->e.y - game->p.y;
 	float camera_x = relative_y * cosf(game->p.angle) - relative_x * sinf(game->p.angle);
@@ -316,7 +319,9 @@ void	render_enemy(t_game *game)
 			alpha = pixel[3];
 			color = get_rgba(red, green, blue, alpha);
 			if (alpha != 0 && (distance < game->rays[x].distance))
+			{
 				mlx_put_pixel(game->image, x, y, color);
+			}
 			tx += tx_step;
 			if (tx >= game->e.img->width)
 				break ;
@@ -325,6 +330,19 @@ void	render_enemy(t_game *game)
 		if (ty >= game->e.img->height)
 			break ;
 	}
+	if (SCREEN_WIDTH / 2 > draw_start_x && SCREEN_WIDTH / 2 < draw_end_x)
+	{
+		if (SCREEN_HEIGHT / 2 > draw_start_y && SCREEN_HEIGHT / 2 < draw_end_y)
+		{
+			game->rays[SCREEN_WIDTH / 2].enemy_top = draw_start_y;
+			game->rays[SCREEN_WIDTH / 2].enemy_bottom = draw_end_y;
+			printf("Aiming at enemy\n");
+		}
+		else
+			printf("Aiming at enemy, but not in y range\n");
+	}
+	else
+		printf("Not aiming at enemy\n");
 }
 
 void	game_loop(void *param)

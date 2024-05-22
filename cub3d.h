@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 11:25:13 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/22 12:06:38 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_enemy
 	float	y;
 	float	angle;
 	int		height;
+	bool	alive;
 	mlx_texture_t	*tx;
 	mlx_image_t		*img;
 }	t_enemy;
@@ -142,6 +143,8 @@ typedef struct ray_s
 	int		h_door_state;
 	int		door;
 	int		door_state;
+	int		enemy_top;
+	int		enemy_bottom;
 	float	door_distance;
 	float	door_h_dist;
 	float	door_v_dist;
