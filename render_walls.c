@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/21 21:55:28 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/22 10:03:01 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,6 +322,7 @@ void	render_walls(t_game *game)
 			render_column(game, &ray);
 		if (ray.door_state && ray.door_distance < ray.distance)
 			render_moving_door(game, &ray);
+		game->rays[ray.column] = ray;
 		ray.column++;
 		ray.angle += angle_step;
 	}

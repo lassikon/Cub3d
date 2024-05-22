@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 09:47:04 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/22 10:05:52 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,7 @@ void	render_enemy(t_game *game)
 
 	ty_step = fmod(ty_step, game->e.img->height);
 	tx_step = fmod(tx_step, game->e.img->width);
+	float distance = sqrtf(camera_x * camera_x + camera_y * camera_y);
 	for (int y = -sprite_height / 2; y < sprite_height / 2; y++)
 	{
         int screen_y = SCREEN_HEIGHT / 2 + y;
@@ -318,7 +319,7 @@ void	render_enemy(t_game *game)
 					blue = pixel[2];
 					alpha = pixel[3];
 					color = get_rgba(red, green, blue, alpha);
-					// if (alpha != 0)
+					if (alpha != 0 && distance < game->rays[screen_x].distance)
 						mlx_put_pixel(game->image, screen_x, screen_y, color);
 					tx += tx_step;
 					if (tx >= game->e.img->width)
