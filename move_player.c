@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 12:26:52 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/22 13:51:32 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,23 +119,32 @@ void	move_player(t_game *game)
 	move_player_vertical(game);
 }
 
+void	move_enemy_single(t_game *game, t_enemy *e)
+{
+	if (e->x < 0 || e->x >= game->map_width || e->y < 0 || e->y >= game->map_height)
+		return;
+	if (e->x > game->p.x)
+		if (!player_x_collision(game, (int)e->x - ENEMY_SPEED, (int)e->y))
+			e->x -= ENEMY_SPEED;
+	if (e->x < game->p.x)
+		if (!player_x_collision(game, (int)e->x + ENEMY_SPEED, (int)e->y))
+			e->x += ENEMY_SPEED;
+	if (e->y > game->p.y)
+		if (!player_y_collision(game, (int)e->x, (int)e->y - ENEMY_SPEED))
+			e->y -= ENEMY_SPEED;
+	if (e->y < game->p.y)
+		if (!player_y_collision(game, (int)e->x, (int)e->y + ENEMY_SPEED))
+			e->y += ENEMY_SPEED;
+}
+
 void	move_enemy(t_game *game)
 {
-	if (game->e.x < 0 || game->e.x >= game->map_width || game->e.y < 0 || game->e.y >= game->map_height)
-		return;
-	if (game->e.x > game->p.x)
-		if (!player_x_collision(game, (int)game->e.x - ENEMY_SPEED, (int)game->e.y))
-			game->e.x -= ENEMY_SPEED;
-	if (game->e.x < game->p.x)
-		if (!player_x_collision(game, (int)game->e.x + ENEMY_SPEED, (int)game->e.y))
-			game->e.x += ENEMY_SPEED;
-	if (game->e.y > game->p.y)
-		if (!player_y_collision(game, (int)game->e.x, (int)game->e.y - ENEMY_SPEED))
-			game->e.y -= ENEMY_SPEED;
-	if (game->e.y < game->p.y)
-		if (!player_y_collision(game, (int)game->e.x, (int)game->e.y + ENEMY_SPEED))
-			game->e.y += ENEMY_SPEED;
-	if (game->map[((int)game->e.y + C_BUF) / TILE][((int)game->e.x + C_BUF) / TILE] == \
-		game->map[((int)game->p.y - C_BUF) / TILE][((int)game->p.x + C_BUF) / TILE])
-		printf("You died\n");
+	int	i;
+
+	i = 0;
+	while (i < game->enemy_count)
+	{
+		move_enemy_single(game, &game->e[i]);
+		i++;
+	}
 }

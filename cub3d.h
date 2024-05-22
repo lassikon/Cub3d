@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 12:35:52 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:55:04 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ typedef struct s_game
 	mlx_image_t		*ceiling_img;
 	mlx_image_t		*door_img;
 	t_player		p;
-	t_enemy			e;
+	t_enemy			e[100];
 	t_render		render;
 	t_math			math;
 	t_sprite		sprite;
@@ -227,6 +227,7 @@ typedef struct s_game
 	double			frame_count;
 	int				door_opening;
 	int				door_closing;
+	int				enemy_count;
 	float	z_buffer[SCREEN_WIDTH];
 }					t_game;
 
@@ -264,6 +265,7 @@ int		get_rgba(int red, int green, int blue, int alpha);
 void	operate_door(mlx_key_data_t data, void *param);
 void	animate_door(t_game *game);
 void	moving_door(t_game *game);
+void	move_enemy(t_game *game);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);

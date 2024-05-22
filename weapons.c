@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 11:30:50 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 12:17:53 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:49:43 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ void	weapons(t_game *game)
 	{
 		game->sprite.weapon_fire++;
 		flag = 1;
-		if (game->e.alive)
+		if (game->e[0].alive)
 		{
 			if (enemy_hit(game))
-				game->e.alive = false;
+				game->e[0].alive = false;
 		}
 	}
 	if (flag == 1 && game->sprite.weapon_state == IDLE)

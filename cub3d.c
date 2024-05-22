@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 12:36:49 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:55:17 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,14 @@ void	find_player(t_game *game)
 	}
 }
 
-void	find_enemy(t_game *game)
+void	find_enemies(t_game *game)
 {
 	int	i;
 	int	j;
+	int	k;
 
 	i = 0;
+	k = 0;
 	while (game->map[i])
 	{
 		j = 0;
@@ -57,13 +59,21 @@ void	find_enemy(t_game *game)
 		{
 			if ((game->map[i][j]) == '*')
 			{
-				game->e.x = j * TILE + TILE / 2;
-				game->e.y = i * TILE + TILE / 2;
+				game->e[k].x = j * TILE + TILE / 2;
+				game->e[k].y = i * TILE + TILE / 2;
+				game->e[k].alive = true;
+				game->e[k].tx = mlx_load_png("textures/hero.png");
+				game->e[k].img = mlx_texture_to_image(game->mlx, game->e[k].tx);
+				mlx_resize_image(game->e[k].img, 512, 512);
+				k++;
+				if (k > 99)
+					break ;
 			}
 			j++;
 		}
 		i++;
 	}
+	game->enemy_count = k;
 }
 
 void	init_textures(t_game *game, t_scene *scene)
@@ -94,9 +104,6 @@ void	init_textures(t_game *game, t_scene *scene)
 		scene->ceiling_tex = mlx_load_png(scene->cl_texture);
 		game->ceiling_img = mlx_texture_to_image(game->mlx, scene->ceiling_tex);
 	}
-	game->e.tx = mlx_load_png("textures/hero.png");
-	game->e.img = mlx_texture_to_image(game->mlx, game->e.tx);
-	mlx_resize_image(game->e.img, 512, 512);
 }
 
 void	fill_math_table(t_game *game)
@@ -243,6 +250,19 @@ void	init_jump_height_table(t_game *game)
 	game->p.jump_height[13] = TILE / 2;
 }
 
+void	init_enemies(t_game *game)
+{
+	int i;
+
+	i = 0;
+	while (i < 100)
+	{
+		game->e[i].alive = false;
+		i++;
+	}
+	find_enemies(game);
+}
+
 void	init_game(t_game *game, t_scene *scene)
 {
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
@@ -259,7 +279,6 @@ void	init_game(t_game *game, t_scene *scene)
 	game->sprite.weapon_fire = -1;
 	game->p.jumping = 0;
 	find_player(game);
-	find_enemy(game);
 	init_textures(game, scene);
 	init_sprites(game);
 	init_math_tables(game);
@@ -277,15 +296,15 @@ void	init_game(t_game *game, t_scene *scene)
 	if (game->door_img)
 		mlx_resize_image(game->door_img, 512, 512);
 	init_jump_height_table(game);
-	game->e.alive = true;
+	init_enemies(game);
 }
 
-void	render_enemy(t_game *game)
+void	render_enemy(t_game *game, int i)
 {
-	if (game->e.alive == false)
+	if (game->e[i].alive == false)
 		return ;
-	float relative_x = game->e.x - game->p.x;
-    float relative_y = game->e.y - game->p.y;
+	float relative_x = game->e[i].x - game->p.x;
+    float relative_y = game->e[i].y - game->p.y;
 	float camera_x = relative_y * cosf(game->p.angle) - relative_x * sinf(game->p.angle);
     float camera_y = relative_y * sinf(game->p.angle) + relative_x * cosf(game->p.angle);
 	float distance = sqrtf(camera_x * camera_x + camera_y * camera_y);
@@ -295,7 +314,7 @@ void	render_enemy(t_game *game)
 	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) * (1 + (camera_x / camera_y)));
     int sprite_height = (int)((WALL_HEIGHT/ camera_y) * game->dist_to_proj_plane);
 	float ty = 0;
-	float ty_step = (float)game->e.img->height / sprite_height;
+	float ty_step = (float)game->e[i].img->height / sprite_height;
     int draw_end_y = (ratio * game->p.height) + game->vertical_center;
 	int draw_start_y = draw_end_y - sprite_height;
     if (draw_start_y < 0)
@@ -305,8 +324,8 @@ void	render_enemy(t_game *game)
 	}
     if (draw_end_y >= SCREEN_HEIGHT)
 		draw_end_y = SCREEN_HEIGHT - 1;
-	ty_step = fmod(ty_step, game->e.img->height);
-	float tx_step = (float)game->e.img->width / sprite_height;
+	ty_step = fmod(ty_step, game->e[i].img->height);
+	float tx_step = (float)game->e[i].img->width / sprite_height;
 	float tx = 0;
     int draw_start_x = -sprite_height / 2 + sprite_screen_x;
     int draw_end_x = sprite_height / 2 + sprite_screen_x;
@@ -317,7 +336,7 @@ void	render_enemy(t_game *game)
 	}
     if (draw_end_x >= SCREEN_WIDTH)
 		draw_end_x = SCREEN_WIDTH - 1;
-	tx_step = fmod(tx_step, game->e.img->width);
+	tx_step = fmod(tx_step, game->e[i].img->width);
 	float tx_tmp = tx;
 	for (int y = draw_start_y; y < draw_end_y; y++)
 	{
@@ -330,7 +349,7 @@ void	render_enemy(t_game *game)
 			int	blue;
 			int	alpha;
 
-			uint8_t *pixel = &game->e.img->pixels[(int)ty * game->e.img->width * 4 + (int)tx * 4];
+			uint8_t *pixel = &game->e[i].img->pixels[(int)ty * game->e[i].img->width * 4 + (int)tx * 4];
 			red = pixel[0];
 			green = pixel[1];
 			blue = pixel[2];
@@ -341,11 +360,11 @@ void	render_enemy(t_game *game)
 				mlx_put_pixel(game->image, x, y, color);
 			}
 			tx += tx_step;
-			if (tx >= game->e.img->width)
+			if (tx >= game->e[i].img->width)
 				break ;
 		}
 		ty += ty_step;
-		if (ty >= game->e.img->height)
+		if (ty >= game->e[i].img->height)
 			break ;
 	}
 	if (SCREEN_WIDTH / 2 > draw_start_x && SCREEN_WIDTH / 2 < draw_end_x)
@@ -366,16 +385,23 @@ void	render_enemy(t_game *game)
 void	game_loop(void *param)
 {
 	t_game	*game;
+	int	i;
 
+	i = 0;
 	game = (t_game *)param;
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
 	render_walls(game);
-	render_enemy(game);
+	while (i < game->enemy_count)
+	{
+		render_enemy(game, i);
+		i++;
+	}
 	moving_door(game);
 	animate_door(game);
 	minimap(game);
 	move_mouse(game);
+	move_enemy(game);
 	weapons(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
