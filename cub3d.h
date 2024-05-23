@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 09:29:12 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 09:41:19 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,10 @@ typedef struct s_enemy
 	float	x;
 	float	y;
 	float	angle;
+	float	distance;
 	int		height;
 	bool	alive;
+	bool	rendered;
 	mlx_texture_t	*tx[4];
 	mlx_image_t		*img[4];
 }	t_enemy;
@@ -234,6 +236,8 @@ typedef struct s_game
 	int				door_opening;
 	int				door_closing;
 	int				enemy_count;
+	int				in_crosshairs_id;
+	int				next_enemy_to_render;
 	float	z_buffer[SCREEN_WIDTH];
 }					t_game;
 

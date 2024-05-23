@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 09:35:55 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 10:25:30 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ void	find_enemies(t_game *game)
 				}
 				k++;
 				if (k > 99)
+				{
+					printf("Too many enemies\n");
 					break ;
+				}
 			}
 			j++;
 		}
@@ -315,12 +318,17 @@ void	render_enemy(t_game *game, int i, int frame)
 	float relative_y = game->e[i].y - game->p.y;
 	float camera_x = relative_y * cosf(game->p.angle) - relative_x * sinf(game->p.angle);
 	float camera_y = relative_y * sinf(game->p.angle) + relative_x * cosf(game->p.angle);
+	//int fishtable = (int)(fabs(game->p.angle) * game->math.fish_it);
+	// camera_x *= game->math.ifishcos[fishtable];
+	// camera_y *= game->math.ifishcos[fishtable];
+	printf("camera_x: %f, camera_y: %f\n", camera_x, camera_y);
 	float distance = sqrtf(camera_x * camera_x + camera_y * camera_y);
+	printf("distance: %f\n", distance);
 	if (camera_y <= 0)
 		return;
-	float ratio = game->dist_to_proj_plane / camera_y;
-	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) * (1 + (camera_x / camera_y)));
-	int sprite_height = (int)((48/ camera_y) * game->dist_to_proj_plane);
+	float ratio = game->dist_to_proj_plane / distance;
+	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) + ((camera_x * game->dist_to_proj_plane) / camera_y));
+	int sprite_height = (int)((48/ distance) * game->dist_to_proj_plane);
 	float ty = 0;
 	float ty_step = (float)game->e[i].img[0]->height / sprite_height;
 	int draw_end_y = (ratio * game->p.height) + game->vertical_center;
@@ -369,7 +377,7 @@ void	render_enemy(t_game *game, int i, int frame)
 			blue = pixel[2]*brightness;
 			alpha = pixel[3];
 			color = get_rgba(red, green, blue, alpha);
-			if (alpha != 0 && (distance < game->rays[x].distance))
+			if ((distance < game->rays[x].distance))
 			{
 				mlx_put_pixel(game->image, x, y, color);
 			}
@@ -385,16 +393,131 @@ void	render_enemy(t_game *game, int i, int frame)
 	{
 		if (SCREEN_HEIGHT / 2 > draw_start_y && SCREEN_HEIGHT / 2 < draw_end_y)
 		{
-			game->rays[SCREEN_WIDTH / 2].enemy_top = draw_start_y;
-			game->rays[SCREEN_WIDTH / 2].enemy_bottom = draw_end_y;
-			printf("Aiming at enemy\n");
+			game->in_crosshairs_id = i;
 		}
-		else
-			printf("Aiming at enemy, but not in y range\n");
 	}
-	else
-		printf("Not aiming at enemy\n");
 }
+
+void	next_enemy_to_render(t_game *game)
+{
+	int i;
+	float rel_x;
+	float rel_y;
+	float distance;
+
+	i = 0;
+	distance = 0;
+	while (i < game->enemy_count)
+	{
+		if (game->e[i].rendered == false)
+		{
+			rel_x = game->e[i].x - game->p.x;
+			rel_y = game->e[i].y - game->p.y;
+			game->e[i].distance = sqrtf(rel_x * rel_x + rel_y * rel_y);
+			if (game->e[i].distance > distance)
+			{
+				distance = game->e[i].distance;
+				game->next_enemy_to_render = i;
+			}
+		}
+		i++;
+	}
+}
+
+// void	render_enemy(t_game *game, int i, int frame)
+// {
+// 	t_ray	eray;
+// 	float rel_x;
+// 	float rel_y;
+// 	if (game->e[i].alive == false)
+// 		return ;
+// 	rel_x = game->e[i].x - game->p.x;
+//     rel_y = game->e[i].y - game->p.y;
+// 	eray.x = rel_y * cosf(game->p.angle) - rel_x * sinf(game->p.angle);
+//     eray.y = rel_y * sinf(game->p.angle) + rel_x * cosf(game->p.angle);
+// 	eray.distance = sqrtf(eray.x * eray.x + eray.y * eray.y);
+// 	if (eray.y <= 0)
+// 		return;
+// 	float ratio = game->dist_to_proj_plane / eray.y;
+// 	int sprite_screen_x = (int)((SCREEN_WIDTH / 2) * (1 + (eray.x / eray.y)));
+//    	eray.height = (int)((48/ eray.y) * game->dist_to_proj_plane);
+// 	eray.ty = 0;
+// 	eray.ty_step = (float)game->e[i].img[0]->height / eray.height;
+//     game->render.e_bottom = (ratio * game->p.height) + game->vertical_center;
+// 	game->render.e_top = game->render.e_bottom - eray.height;
+//     if (game->render.e_top < 0)
+// 	{
+// 		eray.ty += -game->render.e_top * eray.ty_step;
+// 		game->render.e_top = 0;
+// 	}
+//     if ( game->render.e_bottom >= SCREEN_HEIGHT)
+// 		 game->render.e_bottom = SCREEN_HEIGHT - 1;
+// 	eray.ty_step = fmod(eray.ty_step, game->e[i].img[0]->height);
+// 	eray.tx_step = (float)game->e[i].img[0]->width / eray.height;
+// 	eray.tx = 0;
+//     game->render.e_left = -eray.height / 2 + sprite_screen_x;
+//     game->render.e_right = eray.height / 2 + sprite_screen_x;
+//     if ( game->render.e_left < 0)
+// 	{
+// 		eray.tx += -game->render.e_left * eray.tx_step;
+// 		game->render.e_left = 0;
+// 	}
+//     if ( game->render.e_right >= SCREEN_WIDTH)
+// 		 game->render.e_right = SCREEN_WIDTH - 1;
+// 	eray.tx_step = fmod(eray.tx_step, game->e[i].img[0]->width);
+// 	float tx_tmp = eray.tx;
+
+// 	float brightness = 130 / eray.distance;
+// 	if (brightness > 1)
+// 		brightness = 1;
+// 	if (brightness < 0.1)
+// 		brightness = 0.1;
+// 	for (int y = game->render.e_top; y < game->render.e_bottom; y++)
+// 	{
+// 		eray.tx = tx_tmp;
+// 		for (int x = game->render.e_left; x < game->render.e_right; x++)
+// 		{
+// 			int	color;
+// 			int	red;
+// 			int	green;
+// 			int	blue;
+// 			int	alpha;
+
+// 			uint8_t *pixel = &game->e[i].img[frame]->pixels[(int)eray.ty * game->e[i].img[0]->width * 4 + (int)eray.tx * 4];
+// 			printf("frame: %d\n", frame);
+// 			if (pixel[3] != 0)
+// 			{
+// 				red = pixel[0]*brightness;
+// 				green = pixel[1]*brightness;
+// 				blue = pixel[2]*brightness;
+// 				alpha = pixel[3];
+// 				color = get_rgba(red, green, blue, alpha);
+// 				if (alpha != 0 && (eray.distance < game->rays[x].distance))
+// 				{
+// 					mlx_put_pixel(game->image, x, y, color);
+// 				}
+// 			}
+// 			eray.tx += eray.tx_step;
+// 			if (eray.tx >= game->e[i].img[0]->width)
+// 				break ;
+// 		}
+// 		eray.ty += eray.ty_step;
+// 		if (eray.ty >= game->e[i].img[0]->height)
+// 			break ;
+// 	}
+// 	if (SCREEN_WIDTH / 2 > game->render.e_left && SCREEN_WIDTH / 2 < game->render.e_right)
+// 	{
+// 		if (SCREEN_HEIGHT / 2 > game->render.e_top && SCREEN_HEIGHT / 2 < game->render.e_bottom)
+// 		{
+// 			game->rays[SCREEN_WIDTH / 2].enemy_top = game->render.e_top;
+// 			game->rays[SCREEN_WIDTH / 2].enemy_bottom = game->render.e_bottom;
+// 			game->in_crosshairs_id = i;
+// 			printf("Aiming at enemy\n");
+// 		}
+// 	}
+// 	else
+// 		printf("Not aiming at enemy\n");
+// }
 
 // void	get_enemy_ray_x_y(t_game *game, t_ray *ray, int i)
 // {
@@ -490,12 +613,21 @@ void	game_loop(void *param)
 
 	i = 0;
 	game = (t_game *)param;
+	game->in_crosshairs_id = -1;
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
 	render_walls(game);
 	while (i < game->enemy_count)
 	{
-		render_enemy(game, i, ((int)game->frame_count % 8) / 2);
+		game->e[i].rendered = false;
+		i++;
+	}
+	i = 0;
+	while (i < game->enemy_count)
+	{
+		next_enemy_to_render(game);
+		render_enemy(game, game->next_enemy_to_render, ((int)game->frame_count % 8) / 2);
+		game->e[game->next_enemy_to_render].rendered = true;
 		i++;
 	}
 	moving_door(game);
