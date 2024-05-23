@@ -24,6 +24,8 @@ SRCS	:= 	cub3d.c \
 			frees.c \
 			minimap.c \
 			cast_ray.c \
+			ray_collision.c \
+			ray_utils.c \
 			move_mouse.c \
 			operate_door.c \
 			weapons.c \

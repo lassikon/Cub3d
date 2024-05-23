@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 09:41:19 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 12:18:31 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ typedef enum e_side
 	SOUTH,
 	EAST,
 	WEST,
+	HORIZONTAL,
+	VERTICAL,
 }	t_side;
 
 typedef struct ray_s
@@ -148,8 +150,8 @@ typedef struct ray_s
 	int		h_door_state;
 	int		door;
 	int		door_state;
-	int		enemy_top;
-	int		enemy_bottom;
+	// int		enemy_top;
+	// int		enemy_bottom;
 	float	door_distance;
 	float	door_h_dist;
 	float	door_v_dist;
@@ -233,12 +235,9 @@ typedef struct s_game
 	float			vertical_center;
 	float			angle_step;
 	double			frame_count;
-	int				door_opening;
-	int				door_closing;
 	int				enemy_count;
 	int				in_crosshairs_id;
 	int				next_enemy_to_render;
-	float	z_buffer[SCREEN_WIDTH];
 }					t_game;
 
 /*error*/
@@ -270,12 +269,20 @@ void	move_mouse(t_game *game);
 void	weapons(t_game *game);
 void	render_walls(t_game *game);
 void	minimap(t_game *game);
-void	cast_ray(t_game *game, t_ray *ray);
 int		get_rgba(int red, int green, int blue, int alpha);
 void	operate_door(mlx_key_data_t data, void *param);
 void	animate_door(t_game *game);
 void	moving_door(t_game *game);
 void	move_enemy(t_game *game);
+
+/*raycasting*/
+void	cast_ray(t_game *game, t_ray *ray);
+void	moving_door_collision(t_game *game, t_ray *ray, t_side side);
+int		closed_door_collision(t_game *game, t_ray *ray);
+int		wall_collision(t_game *game, float ray_x, float ray_y);
+float	get_distance(t_game *game, float dx, float dy);
+float	ray_col_point(t_ray *ray, t_side side);
+void	init_ray(t_ray *ray);
 
 /*redndering*/
 void	put_texture_pixel(t_game *game, t_ray *ray, mlx_image_t *img, int row);

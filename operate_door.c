@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:09:09 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 15:54:12 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/23 11:10:19 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 void	update_opening_door_state(t_game *game, int x, int y)
 {
-	game->door_opening = 1;
 	if (game->map[y][x] == 'm')
 	{
 		game->map[y][x] = '3';
-		game->door_opening = 0;
 	}
 	else
 		game->map[y][x] += 1;
@@ -26,11 +24,9 @@ void	update_opening_door_state(t_game *game, int x, int y)
 
 void	update_closing_door_state(t_game *game, int x, int y)
 {
-	game->door_closing = 1;
 	if (game->map[y][x] == 'n')
 	{
 		game->map[y][x] = '2';
-		game->door_closing = 0;
 	}
 	else
 		game->map[y][x] -= 1;
@@ -91,14 +87,12 @@ void	operate_door(mlx_key_data_t data, void *param)
 		if (game->map[y][x] == '2')
 		{
 			game->map[y][x] = 'a';
-			game->door_opening = 1;
 		}
 		else if (game->map[y][x] == '3')
 		{
 			if (player_too_close(game, x, y))
 				return ;
 			game->map[y][x] = 'z';
-			game->door_closing = 1;
 		}
 	}
 }
