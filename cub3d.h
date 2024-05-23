@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 14:51:39 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 09:29:12 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define C_BUF 16
 # define MAX_DEPTH 64000
 # define P_HEIGHT 32
+# define E_HEIGHT 48
 # define MOUSE_SENSITIVITY 500
 # define LOOK_UP_AND_DOWN 1
 # define DOOR_SPEED 1
@@ -271,6 +272,9 @@ void	operate_door(mlx_key_data_t data, void *param);
 void	animate_door(t_game *game);
 void	moving_door(t_game *game);
 void	move_enemy(t_game *game);
+
+/*redndering*/
+void	put_texture_pixel(t_game *game, t_ray *ray, mlx_image_t *img, int row);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);
