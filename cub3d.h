@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 12:18:31 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:31:50 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@
 # define TILE 64
 # define WALL_HEIGHT 64
 # define PI 3.14159265359
-# define FOV 1.0471975512 // 60 degrees
+# define FOV 1.0471975512
 # define MOVE_SPEED 4
 # define STRAFE_SPEED 2
-# define ROTATION_SPEED (PI / 60) // 3 degrees
+# define ROTATION_SPEED 0.05235987755
 # define MINIMAP_SIZE 256
 # define C_BUF 16
 # define MAX_DEPTH 64000
@@ -73,14 +73,13 @@ typedef struct s_player
 
 typedef struct s_enemy
 {
-	float	x;
-	float	y;
-	float	angle;
-	float	distance;
-	int		height;
-	bool	alive;
-	bool	rendered;
-	mlx_texture_t	*tx[4];
+	float			x;
+	float			y;
+	float			angle;
+	float			distance;
+	int				height;
+	bool			alive;
+	bool			rendered;
 	mlx_image_t		*img[4];
 }	t_enemy;
 
@@ -115,6 +114,7 @@ typedef struct s_scene
 	mlx_texture_t	*door_tex;
 	mlx_texture_t	*floor_tex;
 	mlx_texture_t	*ceiling_tex;
+	mlx_texture_t	*e_tex[4];
 	t_list			*tokens;
 }					t_scene;
 
@@ -142,6 +142,7 @@ typedef struct ray_s
 	float	tx_step;
 	uint8_t	*pixel;
 	int		column;
+	int		sprite_screen_x;
 	float	distance_to_horizontal;
 	float	distance_to_vertical;
 	int		height;
@@ -150,8 +151,6 @@ typedef struct ray_s
 	int		h_door_state;
 	int		door;
 	int		door_state;
-	// int		enemy_top;
-	// int		enemy_bottom;
 	float	door_distance;
 	float	door_h_dist;
 	float	door_v_dist;
@@ -191,7 +190,8 @@ typedef enum s_weapon_state
 {
 	IDLE,
 	AIM,
-	ANIMATING,
+	AIM_ANIMATING,
+	FIRE_ANIMATING,
 }	t_weapon_state;
 
 typedef struct s_sprite
@@ -275,6 +275,15 @@ void	animate_door(t_game *game);
 void	moving_door(t_game *game);
 void	move_enemy(t_game *game);
 
+/*init*/
+void	init_textures(t_game *game, t_scene *scene);
+void	load_textures(t_game *game, t_scene *scene);
+void	init_game(t_game *game, t_scene *scene);
+void	init_math_tables(t_game *game);
+void	init_jump_height_table(t_game *game);
+void	init_sprites(t_game *game);
+void	load_weapon_textures(t_game *game);
+
 /*raycasting*/
 void	cast_ray(t_game *game, t_ray *ray);
 void	moving_door_collision(t_game *game, t_ray *ray, t_side side);
@@ -284,8 +293,21 @@ float	get_distance(t_game *game, float dx, float dy);
 float	ray_col_point(t_ray *ray, t_side side);
 void	init_ray(t_ray *ray);
 
-/*redndering*/
+/*rendering*/
 void	put_texture_pixel(t_game *game, t_ray *ray, mlx_image_t *img, int row);
+void	get_brightness_lvl(t_game *game, t_ray *ray);
+
+/*render enemy*/
+void	render_enemy(t_game *game, int i, int frame);
+void	next_enemy_to_render(t_game *game);
+
+/*render floor*/
+void	render_floor_color(t_game *game);
+void	draw_floor(t_game *game, t_ray *ray, mlx_image_t *img);
+
+/*render ceiling*/
+void	render_ceiling_color(t_game *game);
+void	draw_ceiling(t_game *game, t_ray *ray, mlx_image_t *img);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);
@@ -303,10 +325,11 @@ void	free_arr(char ***array);
 void	free_lst(t_list **head);
 void	free_scene(t_scene *scene);
 void	error_handler(t_scene *scene, t_err_code code);
+void	mlx_error_exit(t_game *game, t_scene *scene);
+void	delete_textures(t_scene *scene);
 
 /*debug*/
 void	print_array(char **array);
 void	print_list(t_list *head);
-
 
 #endif

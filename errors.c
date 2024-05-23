@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:14:58 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/14 15:08:01 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 14:54:32 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,32 @@ void	error_handler(t_scene *scene, t_err_code code)
 		}
 		i++;
 	}
+}
+
+void	delete_textures(t_scene *scene)
+{
+	if (scene->north_tex)
+		mlx_delete_texture(scene->north_tex);
+	if (scene->south_tex)
+		mlx_delete_texture(scene->south_tex);
+	if (scene->east_tex)
+		mlx_delete_texture(scene->east_tex);
+	if (scene->west_tex)
+		mlx_delete_texture(scene->west_tex);
+	if (scene->floor_tex)
+		mlx_delete_texture(scene->floor_tex);
+	if (scene->ceiling_tex)
+		mlx_delete_texture(scene->ceiling_tex);
+	if (scene->door_tex)
+		mlx_delete_texture(scene->door_tex);
+}
+
+void	mlx_error_exit(t_game *game, t_scene *scene)
+{
+	mlx_terminate(game->mlx);
+	if (scene)
+		delete_textures(scene);
+	if (scene)
+		free_scene(scene);
+	exit(1);
 }

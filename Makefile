@@ -2,7 +2,7 @@ NAME		:= cub3D
 CC			:= cc
 MLXFLAGS	:= -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" # MacOS
 #MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm # Linux
-CFLAGS		:= -Wall -Wextra -Werror -O3  -g -fsanitize=address
+CFLAGS		:= -Wall -Wextra -Werror -O3  -g #-fsanitize=address
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
 OBJ_DIR		:= obj/
@@ -11,24 +11,32 @@ HEADERS	:= -I ./include -I $(MLX_DIR)/include -I $(LIBFT)/include
 MLX42	:= $(MLX_DIR)/build/libmlx42.a
 LIBFT	:= $(LIBFT_DIR)/libft.a
 SRCS	:= 	cub3d.c \
+			cast_ray.c \
+			ray_collision.c \
+			ray_utils.c \
+			errors.c \
+			frees.c \
+			gnl_chk.c \
+			minimap.c \
+			move_mouse.c \
 			move_player.c \
 			move_player_vertical.c \
-			render_walls.c \
-			gnl_chk.c \
+			operate_door.c \
 			parse.c \
 			parse_map.c \
 			parse_map_validate.c \
 			parse_utils.c \
+			render_ceiling.c \
+			render_enemy.c \
+			render_floor.c \
+			render_walls.c \
 			tokenize.c \
-			errors.c \
-			frees.c \
-			minimap.c \
-			cast_ray.c \
-			ray_collision.c \
-			ray_utils.c \
-			move_mouse.c \
-			operate_door.c \
 			weapons.c \
+			init_game.c \
+			init_textures.c \
+			init_math_tables.c \
+			load_textures.c \
+			load_weapon_textures.c \
 			
 OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})
 

@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 10:22:07 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 10:35:13 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	move_enemy_single(t_game *game, t_enemy *e)
 		if (!player_x_collision(game, (int)e->x + ENEMY_SPEED, (int)e->y))
 			e->x += ENEMY_SPEED;
 	if (e->y > game->p.y)
-		if (!player_y_collision(game, (int)e->x, (int)e->y - ENEMY_SPEED ))
+		if (!player_y_collision(game, (int)e->x, (int)e->y - ENEMY_SPEED))
 			e->y -= ENEMY_SPEED;
 	if (e->y < game->p.y)
 		if (!player_y_collision(game, (int)e->x, (int)e->y + ENEMY_SPEED))

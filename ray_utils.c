@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:23:50 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 11:51:31 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:02:41 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_ray(t_ray *ray)
 	ray->distance_to_vertical = MAX_DEPTH;
 	ray->h_door_state = 0;
 	ray->v_door_state = 0;
+	ray->door_state = 0;
 	ray->door_h_dist = MAX_DEPTH;
 	ray->door_v_dist = MAX_DEPTH;
 	ray->wall_side = 0;
