@@ -11,21 +11,24 @@ HEADERS	:= -I ./include -I $(MLX_DIR)/include -I $(LIBFT)/include
 MLX42	:= $(MLX_DIR)/build/libmlx42.a
 LIBFT	:= $(LIBFT_DIR)/libft.a
 SRCS	:= 	cub3d.c \
+			cast_ray.c \
+			errors.c \
+			frees.c \
+			gnl_chk.c \
+			minimap.c \
+			move_mouse.c \
 			move_player.c \
 			move_player_vertical.c \
-			render_walls.c \
-			gnl_chk.c \
+			operate_door.c \
 			parse.c \
 			parse_map.c \
 			parse_map_validate.c \
 			parse_utils.c \
+			render_ceiling.c \
+			render_enemy.c \
+			render_floor.c \
+			render_walls.c \
 			tokenize.c \
-			errors.c \
-			frees.c \
-			minimap.c \
-			cast_ray.c \
-			move_mouse.c \
-			operate_door.c \
 			weapons.c \
 			
 OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})

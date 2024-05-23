@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 09:41:19 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 12:28:22 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ typedef struct ray_s
 	float	tx_step;
 	uint8_t	*pixel;
 	int		column;
+	int		sprite_screen_x;
 	float	distance_to_horizontal;
 	float	distance_to_vertical;
 	int		height;
@@ -189,7 +190,8 @@ typedef enum s_weapon_state
 {
 	IDLE,
 	AIM,
-	ANIMATING,
+	AIM_ANIMATING,
+	FIRE_ANIMATING,
 }	t_weapon_state;
 
 typedef struct s_sprite
@@ -277,8 +279,17 @@ void	animate_door(t_game *game);
 void	moving_door(t_game *game);
 void	move_enemy(t_game *game);
 
-/*redndering*/
+/*rendering*/
 void	put_texture_pixel(t_game *game, t_ray *ray, mlx_image_t *img, int row);
+void	get_brightness_lvl(t_game *game, t_ray *ray);
+/*render enemy*/
+void	render_enemy(t_game *game, int i, int frame);
+/*render floor*/
+void	render_floor_color(t_game *game);
+void	draw_floor(t_game *game, t_ray *ray, mlx_image_t *img);
+/*render ceiling*/
+void	render_ceiling_color(t_game *game);
+void	draw_ceiling(t_game *game, t_ray *ray, mlx_image_t *img);
 
 /*parse and utils*/
 int		gnl_chk(char **line, int fd);

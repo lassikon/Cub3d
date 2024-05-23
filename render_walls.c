@@ -3,69 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 11:05:54 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/23 12:07:23 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	render_ceiling(t_game *game)
-{
-	int		x;
-	int		y;
-	int		color;
-	float	b;
-
-	y = 0;
-
-	while (y <= game->vertical_center)
-	{
-		b = (game->vertical_center + 1) / (y + (float)game->vertical_center);
-		if (b > 1)
-			b = 1;
-		if (b < 0)
-			b = 0;
-		x = 0;
-		color = get_rgba(game->ceiling_color[0] * b, game->ceiling_color[1] * b, \
-			game->ceiling_color[2] * b, 255);
-		while (x < SCREEN_WIDTH)
-		{
-			mlx_put_pixel(game->image, x, y, color);
-			x++;
-		}
-		y++;
-	}
-}
-
-void	render_floor(t_game *game)
-{
-	int		x;
-	int		y;
-	int		color;
-	float	b;
-
-	y = game->vertical_center;
-	while (y < SCREEN_HEIGHT)
-	{
-		b = (y - game->vertical_center + 150) / SCREEN_HEIGHT;
-		if (b > 1)
-			b = 1;
-		if (b < 0)
-			b = 0;
-		color = get_rgba(game->floor_color[0] * b, game->floor_color[1] * b, \
-			game->floor_color[2] * b, 255);
-		x = 0;
-		while (x < SCREEN_WIDTH)
-		{
-			mlx_put_pixel(game->image, x, y, color);
-			x++;
-		}
-		y++;
-	}
-}
 
 int	get_rgba(int red, int green, int blue, int alpha)
 {
@@ -92,7 +37,7 @@ void	put_texture_pixel(t_game *game, t_ray *ray, mlx_image_t *img, int row)
 	}
 }
 
-void	get_wall_ray_x_y(t_game *game, t_ray *ray)
+void	get_brightness_lvl(t_game *game, t_ray *ray)
 {
 	if (ray->wall_side == EAST || ray->wall_side == WEST)
 		game->render.brightness = 180 / ray->distance;
@@ -100,6 +45,8 @@ void	get_wall_ray_x_y(t_game *game, t_ray *ray)
 		game->render.brightness = 130 / ray->distance;
 	if (game->render.brightness > 1)
 		game->render.brightness = 1;
+	if (game->render.brightness < 0.1)
+		game->render.brightness = 0.1;
 }
 
 static void	draw_wall(t_game *game, t_ray *ray, mlx_image_t *img)
@@ -115,7 +62,7 @@ static void	draw_wall(t_game *game, t_ray *ray, mlx_image_t *img)
 		game->render.top_wall = 0;
 		ray->height = SCREEN_HEIGHT;
 	}
-	get_wall_ray_x_y(game, ray);
+	get_brightness_lvl(game, ray);
 	ray->tx = (float)(img->width / TILE_SIZE) * ray->col;
 	ray->tx = fmod(ray->tx, img->width);
 	ray->ty = fmod(ray->ty, img->height);
@@ -128,102 +75,6 @@ static void	draw_wall(t_game *game, t_ray *ray, mlx_image_t *img)
 		ray->ty += ray->ty_step;
 		if (ray->ty >= img->height)
 			break ;
-	}
-}
-
-void	get_floor_ray_x_y(t_game *game, t_ray *ray, int row)
-{
-	float	eye_to_floor;
-	float	ratio;
-	float	angle;
-	int		fishtable;
-	int		trigtable;
-
-	if (row - game->vertical_center <= 0)
-		return ;
-	ratio = game->p.height / (row - game->vertical_center);
-	fishtable = (int)(fabs(game->p.angle - ray->angle) * game->math.fish_it);
-	trigtable = (int)(ray->angle * game->math.trig_it);
-	angle = game->math.ifishcos[fishtable];
-	eye_to_floor = ratio * game->dist_to_proj_plane * angle;
-	ray->tx = game->p.x + game->math.cos[trigtable] * eye_to_floor;
-	ray->ty = game->p.y + game->math.sin[trigtable] * eye_to_floor;
-	game->render.brightness = 150 / eye_to_floor;
-	if (game->render.brightness > 1)
-		game->render.brightness = 1;
-}
-
-/*draw floors*/
-void	draw_floor(t_game *game, t_ray *ray, mlx_image_t *img)
-{
-	int		row;
-
-	if (!img)
-		return ;
-	row = (int)game->render.bottom_wall;
-	while (row < SCREEN_HEIGHT)
-	{
-		get_floor_ray_x_y(game, ray, row);
-		if (ray->tx < 0)
-			ray->tx += TILE_SIZE;
-		if (ray->ty < 0)
-			ray->ty += TILE_SIZE;
-		ray->tx = ray->tx - (int)(ray->tx / TILE_SIZE) * TILE_SIZE;
-		ray->ty = ray->ty - (int)(ray->ty / TILE_SIZE) * TILE_SIZE;
-		ray->tx = (float)img->width / TILE_SIZE * ray->tx;
-		ray->ty = (float)img->height / TILE_SIZE * ray->ty;
-		ray->tx = ((int)ray->tx % img->width);
-		ray->ty = ((int)ray->ty % img->height);
-		put_texture_pixel(game, ray, img, row);
-		row++;
-	}
-}
-
-void	get_ceiling_ray_x_y(t_game *game, t_ray *ray, int row)
-{
-	float	eye_to_floor;
-	float	ratio;
-	float	angle;
-	int		fishtable;
-	int		trigtable;
-
-	if (game->vertical_center - row <= 0)
-		return ;
-	ratio = (WALL_HEIGHT - game->p.height) / (game->vertical_center - row);
-	fishtable = (int)(fabs(game->p.angle - ray->angle) * game->math.fish_it);
-	trigtable = (int)(ray->angle * game->math.trig_it);
-	angle = game->math.ifishcos[fishtable];
-	eye_to_floor = ratio * game->dist_to_proj_plane * angle;
-	ray->tx = game->p.x + game->math.cos[trigtable] * eye_to_floor;
-	ray->ty = game->p.y + game->math.sin[trigtable] * eye_to_floor;
-	game->render.brightness = 100 / eye_to_floor;
-	if (game->render.brightness > 1)
-		game->render.brightness = 1;
-}
-
-/*draw ceiling*/
-void	draw_ceiling(t_game *game, t_ray *ray, mlx_image_t *img)
-{
-	int		row;
-
-	if (!img)
-		return ;
-	row = (int)game->render.top_wall;
-	while (row >= 0)
-	{
-		get_ceiling_ray_x_y(game, ray, row);
-		if (ray->tx < 0)
-			ray->tx += TILE_SIZE; // Ensure positive texture coordinates
-		if (ray->ty < 0)
-			ray->ty += TILE_SIZE;
-		ray->tx = ray->tx - (int)(ray->tx / TILE_SIZE) * TILE_SIZE;
-		ray->ty = ray->ty - (int)(ray->ty / TILE_SIZE) * TILE_SIZE;
-		ray->tx = (float)img->width / TILE_SIZE * ray->tx;
-		ray->ty = (float)img->height / TILE_SIZE * ray->ty;
-		ray->tx = ((int)ray->tx % img->width);
-		ray->ty = ((int)ray->ty % img->height);
-		put_texture_pixel(game, ray, img, row);
-		row--;
 	}
 }
 
@@ -324,9 +175,9 @@ void	render_walls(t_game *game)
 	angle_step = FOV / SCREEN_WIDTH;
 	ray.angle = game->p.angle - FOV / 2;
 	if (!game->floor_img)
-		render_floor(game);
+		render_floor_color(game);
 	if (!game->ceiling_img)
-		render_ceiling(game);
+		render_ceiling_color(game);
 	while (ray.column < SCREEN_WIDTH)
 	{
 		if (ray.angle < 0)
@@ -336,8 +187,6 @@ void	render_walls(t_game *game)
 		cast_ray(game, &ray);
 		if (ray.distance < MAX_DEPTH)
 			render_column(game, &ray);
-		// if (ray.door_state && ray.door_distance < ray.distance)
-		// 	render_moving_door(game, &ray);
 		game->rays[ray.column] = ray;
 		ray.column++;
 		ray.angle += angle_step;
