@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 22:22:26 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/24 11:28:37 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,17 @@ void	game_loop(void *param)
 
 int	main(int argc, char **argv)
 {
-	//t_game	game;
+	t_game	game;
 	t_scene	scene;
 
 	parse(&scene, argc, argv);
-/* 	init_game(&game, &scene);
+	print_array(scene.map);
+	init_game(&game, &scene);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_key_hook(game.mlx, operate_door, &game);
 	mlx_loop(game.mlx);
 	printf("Average FPS: %f\n", game.frame_count / mlx_get_time());
 	mlx_terminate(game.mlx);
-	free_scene(&scene); */
+	free_scene(&scene);
 	return (0);
 }

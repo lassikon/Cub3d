@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/23 23:35:44 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/24 11:35:01 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ static t_type	get_type(char *line)
 		return (WE);
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 		return (EA);
-	else if (ft_strncmp(line, "F ", 2) == 0)
-		return (F);
-	else if (ft_strncmp(line, "C ", 2) == 0)
-		return (C);
 	else if (ft_strncmp(line, "DR ", 3) == 0)
 		return (DR);
 	else if (ft_strncmp(line, "FL ", 3) == 0)
@@ -139,7 +135,7 @@ void	tokenize(t_scene *scene, char *line)
 			take_fc(scene, line, F, &i);
 		else if (ft_strncmp(&line[i], "C ", 2) == 0)
 			take_fc(scene, line, C, &i);
-		else if (line[i] == '\n')
+		else if (line[0] == '\n')
 			take_map(scene, line, NL, &i);
 		else
 			take_map(scene, line, MAP, &i);

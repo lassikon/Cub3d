@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/23 23:36:26 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/24 11:25:32 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	syntax_error(t_scene *scene, char *line, int *flag)
 		error_handler(scene, SCENE_FORMAT_ERR);
 	if (line != NULL)
 	{
+		flag[7]++;
 		while (line[i] && line[i] != '\n')
 		{
 			if (ft_strchr(MAP_CHARS, line[i]) == NULL)
@@ -32,7 +33,6 @@ static void	syntax_error(t_scene *scene, char *line, int *flag)
 				flag[6]++;
 			i++;
 		}
-		printf("%s\n", line);
 		if (invalid || line[0] == '\n')
 			error_handler(scene, INVALID_MAP_ERR);
 	}
@@ -42,11 +42,11 @@ static void	syntax_error(t_scene *scene, char *line, int *flag)
 
 static void	scene_syntax(t_scene *scene)
 {
-	int		flag[7];
+	int		flag[8];
 	t_list	*tmp;
 
 	tmp = scene->tokens;
-	ft_memset(flag, 0, 7 * sizeof(int));
+	ft_memset(flag, 0, 8 * sizeof(int));
 	while (tmp)
 	{
 		if (((t_token *)tmp->content)->type == NO)
@@ -63,6 +63,9 @@ static void	scene_syntax(t_scene *scene)
 			flag[5]++;
 		else if (((t_token *)tmp->content)->type == MAP)
 			syntax_error(scene, ((t_token *)tmp->content)->line, flag);
+		else if (((t_token *)tmp->content)->type == NL)
+			if (flag[7] > 0)
+				error_handler(scene, SCENE_FORMAT_ERR);
 		tmp = tmp->next;
 	}
 	syntax_error(scene, NULL, flag);

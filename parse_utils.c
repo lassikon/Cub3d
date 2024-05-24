@@ -6,7 +6,7 @@
 /*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/23 22:14:15 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/24 11:36:27 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void print_list(t_list *head)
 	while (tmp)
 	{
 		token = (t_token *)tmp->content;
+		printf("########\n");
 		printf("line: %s\n", token->line);
 		printf("type: %d\n", token->type);
 		printf("start: %zu\n", token->location.start);
