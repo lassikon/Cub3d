@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 15:07:36 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:04:22 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,7 +303,7 @@ void	get_brightness_lvl(t_game *game, t_ray *ray);
 int		get_rgba(int red, int green, int blue, int alpha);
 
 /*render enemies*/
-void	render_enemies(t_game *game, int frame);
+void	render_enemy(t_game *game, int i, int frame);
 void	next_enemy_to_render(t_game *game);
 
 /*render walls*/

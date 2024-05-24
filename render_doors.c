@@ -6,13 +6,13 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:02:24 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 15:18:05 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:57:39 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	calc_tx_and_ty(t_game *game, t_ray *ray)
+static void	get_door_tx_ty(t_game *game, t_ray *ray)
 {
 	ray->ty = 0;
 	ray->ty_step = (float)game->door_img->height / ray->height;
@@ -34,7 +34,7 @@ static void	draw_moving_door(t_game *game, t_ray *ray)
 {
 	int	row;
 
-	calc_tx_and_ty(game, ray);
+	get_door_tx_ty(game, ray);
 	if (ray->tx >= game->door_img->width)
 		return ;
 	row = 0;

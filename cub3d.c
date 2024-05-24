@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 15:06:17 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:04:59 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,21 @@ void	init_frame(t_game *game)
 void	game_loop(void *param)
 {
 	t_game	*game;
+	int		i;
 
+	i = 0;
 	game = (t_game *)param;
 	init_frame(game);
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
 	render_walls(game);
-	render_enemies(game, ((int)game->frame_count % 8) / 2);
+	while (i < game->enemy_count)
+	{
+		next_enemy_to_render(game);
+		render_enemy(game, i, ((int)game->frame_count % 8) / 2);
+		game->e[game->next_enemy_to_render].rendered = true;
+		i++;
+	}
 	moving_door(game);
 	minimap(game);
 	move_mouse(game);
