@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/15 08:42:37 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 23:36:26 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static void	syntax_error(t_scene *scene, char *line, int *flag)
 				flag[6]++;
 			i++;
 		}
-		if (invalid)
+		printf("%s\n", line);
+		if (invalid || line[0] == '\n')
 			error_handler(scene, INVALID_MAP_ERR);
 	}
 	if (flag[6] != 1 && line == NULL)
@@ -98,7 +99,7 @@ static void	call_gnl(t_scene *scene, int map_fd)
 		if (line == NULL)
 			break ;
 		i = 0;
-		while (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
+		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 		if (line[i] == '\0')
 			free(line);

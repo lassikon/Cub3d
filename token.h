@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:42:54 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/15 08:35:39 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 23:32:29 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ typedef enum e_type
 	DR,
 	FL,
 	CL,
-	MAP
+	MAP,
+	NL
 }	t_type;
 
 typedef struct s_slice

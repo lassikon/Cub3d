@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:41:22 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 16:39:18 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/23 22:16:50 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	find_enemies(t_game *game)
 
 void	init_enemies(t_game *game)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < 100)
@@ -99,13 +99,12 @@ void	init_game(t_game *game, t_scene *scene)
 	game->map = scene->map;
 	game->floor_color = scene->floor_color;
 	game->ceiling_color = scene->ceiling_color;
-	game->sprite.weapon_aim = -1;
-	game->sprite.weapon_fire = -1;
+	game->gun.aim_frme = -1;
+	game->gun.fire_frme = -1;
 	game->p.jumping = 0;
 	find_player(game);
 	init_enemies(game);
 	init_textures(game, scene);
-	init_sprites(game);
 	init_math_tables(game);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
 	game->map_width = scene->map_width * TILE;

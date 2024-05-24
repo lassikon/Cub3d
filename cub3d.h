@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 16:31:50 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/23 22:16:18 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,9 +202,9 @@ typedef struct s_sprite
 	mlx_texture_t	*hk53_fire_mid_tx[13];
 	mlx_image_t		*hk53_aim_mid_img[12];
 	mlx_image_t		*hk53_fire_mid_img[13];
-	int				weapon_aim;
-	size_t			weapon_fire;
-	t_weapon_state	weapon_state;
+	int				aim_frme;
+	size_t			fire_frme;
+	t_weapon_state	state;
 }					t_sprite;
 
 typedef struct s_game
@@ -224,7 +224,7 @@ typedef struct s_game
 	t_enemy			e[100];
 	t_render		render;
 	t_math			math;
-	t_sprite		sprite;
+	t_sprite		gun;
 	t_ray			rays[SCREEN_WIDTH];
 	char			**map;
 	int				*floor_color;
@@ -278,11 +278,10 @@ void	move_enemy(t_game *game);
 /*init*/
 void	init_textures(t_game *game, t_scene *scene);
 void	load_textures(t_game *game, t_scene *scene);
+void	load_weapon_textures(t_game *game, t_scene *scene);
 void	init_game(t_game *game, t_scene *scene);
 void	init_math_tables(t_game *game);
 void	init_jump_height_table(t_game *game);
-void	init_sprites(t_game *game);
-void	load_weapon_textures(t_game *game);
 
 /*raycasting*/
 void	cast_ray(t_game *game, t_ray *ray);
@@ -319,6 +318,7 @@ char	*substr_guard(t_scene *scene, t_list **head);
 void	write_map(t_scene *scene, t_list *head, int i);
 void	extract_data(t_scene *scene);
 void	is_valid(t_scene *scene);
+void	ft_itoa_stack(char *buf, int n);
 
 /*frees and error*/
 void	free_arr(char ***array);

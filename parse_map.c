@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/15 08:43:22 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 23:06:03 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static void	parse_color(t_scene *scene, t_list **lst_iter, int *color)
 	i = 0;
 	j = 0;
 	line = substr_guard(scene, lst_iter);
+/* 	if (ft_strnstr(line, ",,", ft_strlen(line)) != NULL)
+		error_handler(scene, SCENE_FORMAT_ERR); */
 	split = ft_split(line, ',');
 	malloc_guard(scene, NULL, split);
 	if (is_arrdigit(split))

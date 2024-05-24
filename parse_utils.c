@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/06 10:08:47 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 22:14:15 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	ft_itoa_stack(char *buf, int n)
+{
+	long	nbl;
+	size_t	len;
+
+	nbl = n;
+	len = 1;
+	while (n / 10 >= 1)
+	{
+		n = n / 10;
+		len++;
+	}
+	while (len > 0)
+	{
+		buf[len - 1] = nbl % 10 + 48;
+		nbl = nbl / 10;
+		len--;
+	}
+}
 
 void	malloc_guard(t_scene *scene, char ***tmp, void *ptr)
 {
@@ -32,7 +52,7 @@ size_t	ft_arrlen(char **arr)
 	return (i);
 }
 
-void	print_array(char **array)
+void print_array(char **array)
 {
 	size_t	i;
 

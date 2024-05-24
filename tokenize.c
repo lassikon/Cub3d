@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:47:03 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/15 08:37:02 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/23 23:35:44 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static void	take_textures(t_scene *scene, char *line, size_t *iter)
 		(*iter)++;
 		token.location.len++;
 	}
+	if (line[*iter] == '\n')
+		(*iter)++;
 	tokenp = malloc(sizeof(t_token));
 	malloc_guard(scene, NULL, tokenp);
 	*tokenp = token;
@@ -80,6 +82,8 @@ static void	take_fc(t_scene *scene, char *line, t_type type, size_t *iter)
 		(*iter)++;
 		token.location.len++;
 	}
+	if (line[*iter] == '\n')
+		(*iter)++;
 	tokenp = malloc(sizeof(t_token));
 	malloc_guard(scene, NULL, tokenp);
 	*tokenp = token;
@@ -104,6 +108,8 @@ static void	take_map(t_scene *scene, char *line, t_type type, size_t *iter)
 		(*iter)++;
 		token.location.len++;
 	}
+	if (line[*iter] == '\n')
+		(*iter)++;
 	tokenp = malloc(sizeof(t_token));
 	malloc_guard(scene, NULL, tokenp);
 	*tokenp = token;
@@ -119,7 +125,7 @@ void	tokenize(t_scene *scene, char *line)
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
+		if (line[i] == ' ' || line[i] == '\t')
 			i++;
 		else if (ft_strncmp(&line[i], "NO ", 3) == 0
 			|| ft_strncmp(&line[i], "SO ", 3) == 0
@@ -133,6 +139,8 @@ void	tokenize(t_scene *scene, char *line)
 			take_fc(scene, line, F, &i);
 		else if (ft_strncmp(&line[i], "C ", 2) == 0)
 			take_fc(scene, line, C, &i);
+		else if (line[i] == '\n')
+			take_map(scene, line, NL, &i);
 		else
 			take_map(scene, line, MAP, &i);
 	}

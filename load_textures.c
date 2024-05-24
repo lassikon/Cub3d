@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:42:55 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 16:05:17 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/23 21:46:10 by janraub          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ void	load_textures(t_game *game, t_scene *scene)
 	game->door_img = NULL;
 	load_wall_textures(game, scene);
 	load_floor_ceiling_door_textures(game, scene);
-	load_weapon_textures(game);
+	load_weapon_textures(game, scene);
 	load_enemy_textures(game, scene);
 }
