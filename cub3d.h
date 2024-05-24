@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 16:04:22 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:39:11 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define ROTATION_SPEED 0.05235987755
 # define MINIMAP_SIZE 256
 # define C_BUF 16
+# define ENEMY_SIZE 48
 # define MAX_DEPTH 64000
 # define P_HEIGHT 32
 # define E_HEIGHT 48
