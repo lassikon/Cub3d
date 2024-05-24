@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_enemy.c                                     :+:      :+:    :+:   */
+/*   render_enemies.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:42:42 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/23 16:30:15 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:01:18 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void	get_enemy_x_y(t_game *game, t_ray *eray, int i)
 	float	rel_y;
 	int		trigtable;
 	float	ratio;
-
 
 	trigtable = (int)(game->p.angle * game->math.trig_it);
 	rel_x = game->e[i].x - game->p.x;
@@ -120,22 +119,31 @@ void	next_enemy_to_render(t_game *game)
 	}
 }
 
-void	render_enemy(t_game *game, int i, int frame)
+void	render_enemies(t_game *game, int frame)
 {
 	t_ray	eray;
+	int		i;
 
-	if (game->e[i].alive == false)
-		return ;
-	get_enemy_x_y(game, &eray, i);
-	if (eray.y <= 0)
-		return ;
-	get_brightness_lvl(game, &eray);
-	render_image(game, &eray, i, frame);
-	if (SCREEN_WIDTH / 2 > game->render.e_left
-		&& SCREEN_WIDTH / 2 < game->render.e_right)
+	i = 0;
+	while (i < game->enemy_count)
 	{
-		if (SCREEN_HEIGHT / 2 > game->render.e_top
-			&& SCREEN_HEIGHT / 2 < game->render.e_bottom)
-			game->in_crosshairs_id = i;
+		next_enemy_to_render(game);
+		get_enemy_x_y(game, &eray, game->next_enemy_to_render);
+		if (!game->e[i].alive || eray.y <= 0)
+		{
+			i++;
+			continue ;
+		}
+		get_brightness_lvl(game, &eray);
+		render_image(game, &eray, game->next_enemy_to_render, frame);
+		if (SCREEN_WIDTH / 2 > game->render.e_left
+			&& SCREEN_WIDTH / 2 < game->render.e_right)
+		{
+			if (SCREEN_HEIGHT / 2 > game->render.e_top
+				&& SCREEN_HEIGHT / 2 < game->render.e_bottom)
+				game->in_crosshairs_id = game->next_enemy_to_render;
+		}
+		game->e[game->next_enemy_to_render].rendered = true;
+		i++;
 	}
 }

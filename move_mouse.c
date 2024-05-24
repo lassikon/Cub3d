@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_mouse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:44:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/22 14:30:48 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/24 14:46:17 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	move_mouse(t_game *game)
 
 	x = 0;
 	y = 0;
-
 	x_mid = SCREEN_WIDTH / 2;
 	y_mid = SCREEN_HEIGHT / 2;
 	mlx_get_mouse_pos(game->mlx, &x, &y);

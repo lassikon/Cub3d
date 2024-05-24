@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operate_door.c                                     :+:      :+:    :+:   */
+/*   door_operation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 16:09:09 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 11:10:19 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:07:50 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	update_opening_door_state(t_game *game, int x, int y)
+static void	update_opening_door_state(t_game *game, int x, int y)
 {
 	if (game->map[y][x] == 'm')
 	{
@@ -22,7 +22,7 @@ void	update_opening_door_state(t_game *game, int x, int y)
 		game->map[y][x] += 1;
 }
 
-void	update_closing_door_state(t_game *game, int x, int y)
+static void	update_closing_door_state(t_game *game, int x, int y)
 {
 	if (game->map[y][x] == 'n')
 	{
@@ -32,7 +32,7 @@ void	update_closing_door_state(t_game *game, int x, int y)
 		game->map[y][x] -= 1;
 }
 
-void	animate_door(t_game *game)
+void	update_door_state(t_game *game)
 {
 	int			x;
 	int			y;

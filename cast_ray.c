@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:06:25 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 13:10:45 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:43:43 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,3 @@ void	cast_ray(t_game *game, t_ray *ray)
 	if (closed_door_collision(game, ray))
 		ray->door = 1;
 }
-

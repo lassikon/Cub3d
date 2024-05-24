@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 22:16:18 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/24 15:07:36 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@
 # define DOOR_SPEED 1
 # define ENEMY_SPEED 1.5
 
-
-# define MAP_CHARS "1 023NSEW*" //1 = wall, 0 = empty space, 2 = closed door, 3 = open door, NSEW = player
+# define MAP_CHARS "1 023NSEW*"
 # define C_CHARS "12abcdefghijklmnopqrstuvwxyz"
 
 # define GREY2 0x808080FF
@@ -262,26 +261,32 @@ typedef struct s_error_entry
 	t_err_code	code;
 }	t_error_entry;
 
-void	move_player(t_game *game);
-void	move_enemy(t_game *game);
-void	move_player_vertical(t_game *game);
-void	move_mouse(t_game *game);
-void	weapons(t_game *game);
-void	render_walls(t_game *game);
-void	minimap(t_game *game);
-int		get_rgba(int red, int green, int blue, int alpha);
-void	operate_door(mlx_key_data_t data, void *param);
-void	animate_door(t_game *game);
-void	moving_door(t_game *game);
-void	move_enemy(t_game *game);
-
-/*init*/
+/*init game*/
 void	init_textures(t_game *game, t_scene *scene);
 void	load_textures(t_game *game, t_scene *scene);
 void	load_weapon_textures(t_game *game, t_scene *scene);
 void	init_game(t_game *game, t_scene *scene);
 void	init_math_tables(t_game *game);
 void	init_jump_height_table(t_game *game);
+
+/*movement*/
+void	move_player(t_game *game);
+void	move_player_vertical(t_game *game);
+void	move_mouse(t_game *game);
+void	move_enemies(t_game *game);
+int		move_x_collision(t_game *game, int x, int y);
+int		move_y_collision(t_game *game, int x, int y);
+
+/*minimap*/
+void	minimap(t_game *game);
+
+/*weapons*/
+void	weapons(t_game *game);
+
+/*doors*/
+void	operate_door(mlx_key_data_t data, void *param);
+void	update_door_state(t_game *game);
+void	moving_door(t_game *game);
 
 /*raycasting*/
 void	cast_ray(t_game *game, t_ray *ray);
@@ -295,10 +300,14 @@ void	init_ray(t_ray *ray);
 /*rendering*/
 void	put_texture_pixel(t_game *game, t_ray *ray, mlx_image_t *img, int row);
 void	get_brightness_lvl(t_game *game, t_ray *ray);
+int		get_rgba(int red, int green, int blue, int alpha);
 
-/*render enemy*/
-void	render_enemy(t_game *game, int i, int frame);
+/*render enemies*/
+void	render_enemies(t_game *game, int frame);
 void	next_enemy_to_render(t_game *game);
+
+/*render walls*/
+void	render_walls(t_game *game);
 
 /*render floor*/
 void	render_floor_color(t_game *game);

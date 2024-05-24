@@ -3,51 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 12:07:23 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/24 15:09:40 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	get_rgba(int red, int green, int blue, int alpha)
-{
-	return (red << 24 | green << 16 | blue << 8 | alpha);
-}
-
-void	put_texture_pixel(t_game *game, t_ray *ray, mlx_image_t *img, int row)
-{
-	int	color;
-	int	red;
-	int	green;
-	int	blue;
-	int	alpha;
-
-	ray->pixel = &img->pixels[(int)ray->ty * img->width * 4 + (int)ray->tx * 4];
-	if (ray->pixel[3] != 0)
-	{
-		red = ray->pixel[0] * game->render.brightness;
-		green = ray->pixel[1] * game->render.brightness;
-		blue = ray->pixel[2] * game->render.brightness;
-		alpha = ray->pixel[3];
-		color = get_rgba(red, green, blue, alpha);
-		mlx_put_pixel(game->image, ray->column, row, color);
-	}
-}
-
-void	get_brightness_lvl(t_game *game, t_ray *ray)
-{
-	if (ray->wall_side == EAST || ray->wall_side == WEST)
-		game->render.brightness = 180 / ray->distance;
-	else
-		game->render.brightness = 130 / ray->distance;
-	if (game->render.brightness > 1)
-		game->render.brightness = 1;
-	if (game->render.brightness < 0.1)
-		game->render.brightness = 0.1;
-}
 
 static void	draw_wall(t_game *game, t_ray *ray, mlx_image_t *img)
 {
@@ -105,66 +68,6 @@ static void	render_column(t_game *game, t_ray *ray)
 	draw_floor(game, ray, game->floor_img);
 	draw_ceiling(game, ray, game->ceiling_img);
 }
-
-void	draw_moving_door(t_game *game, t_ray *ray)
-{
-	int	row;
-
-	row = 0;
-	ray->ty = 0;
-	ray->ty_step = (float)game->door_img->height / ray->height;
-	if (game->render.top_wall < 0)
-	{
-		ray->ty += -game->render.top_wall * ray->ty_step;
-		game->render.top_wall = 0;
-		ray->height = SCREEN_HEIGHT;
-	}
-	ray->tx = (float)(game->door_img->width / TILE_SIZE) * (ray->door_col + 5 * ray->door_state);
-	if (ray->tx >= game->door_img->width)
-		return ;
-	game->render.brightness = 1;
-	ray->tx = fmod(ray->tx, game->door_img->width);
-	ray->ty = fmod(ray->ty, game->door_img->height);
-	while (row < ray->height)
-	{
-		put_texture_pixel(game, ray, game->door_img, game->render.top_wall + row);
-		row++;
-		ray->ty += ray->ty_step;
-		if (ray->ty >= game->door_img->height)
-			break ;
-	}
-}
-
-void	render_moving_door(t_game *game, t_ray *ray)
-{
-	float		ratio;
-	int			fishtable;
-
-	fishtable = (int)(fabs(game->p.angle - ray->angle) * game->math.fish_it);
-	ray->door_distance *= game->math.fishcos[fishtable];
-	ratio = game->dist_to_proj_plane / ray->door_distance;
-	game->render.bottom_wall = (ratio * game->p.height) + game->vertical_center;
-	ray->height = (game->dist_to_proj_plane * WALL_HEIGHT) / ray->door_distance;
-	game->render.top_wall = game->render.bottom_wall - (int)ray->height;
-	draw_moving_door(game, ray);
-}
-
-void	moving_door(t_game *game)
-{
-	int	i;
-
-	i = 0;
-	while (i < SCREEN_WIDTH)
-	{
-		if (game->rays[i].door_state)
-		{
-			if (game->rays[i].door_distance < game->rays[i].distance)
-				render_moving_door(game, &game->rays[i]);
-		}
-		i++;
-	}
-}
-
 
 void	render_walls(t_game *game)
 {

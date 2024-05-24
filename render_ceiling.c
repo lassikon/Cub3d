@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_ceiling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 12:06:34 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/23 12:07:52 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/24 15:00:59 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	render_ceiling_color(t_game *game)
 	float	b;
 
 	y = 0;
-
 	while (y <= game->vertical_center)
 	{
 		b = (game->vertical_center + 1) / (y + (float)game->vertical_center);
@@ -86,4 +85,3 @@ void	draw_ceiling(t_game *game, t_ray *ray, mlx_image_t *img)
 		row--;
 	}
 }
-

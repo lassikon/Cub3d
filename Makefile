@@ -1,8 +1,8 @@
 NAME		:= cub3D
 CC			:= cc
-#MLXFLAGS	:= -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" # MacOS
-MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm # Linux
-CFLAGS		:= -Wall -Wextra -Werror -O3  -g -fsanitize=address
+MLXFLAGS	:= -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" # MacOS
+#MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm # Linux
+CFLAGS		:= -Wall -Wextra -Werror -O3  #-g -fsanitize=address
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
 OBJ_DIR		:= obj/
@@ -17,18 +17,22 @@ SRCS	:= 	cub3d.c \
 			errors.c \
 			frees.c \
 			gnl_chk.c \
+			door_operation.c \
 			minimap.c \
+			move_collisions.c \
+			move_enemies.c \
 			move_mouse.c \
 			move_player.c \
 			move_player_vertical.c \
-			operate_door.c \
 			parse.c \
 			parse_map.c \
 			parse_map_validate.c \
 			parse_utils.c \
 			render_ceiling.c \
-			render_enemy.c \
+			render_doors.c \
+			render_enemies.c \
 			render_floor.c \
+			render_utils.c \
 			render_walls.c \
 			tokenize.c \
 			weapons.c \
