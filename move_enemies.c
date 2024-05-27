@@ -6,11 +6,23 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:47:40 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 12:46:59 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:25:45 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	enemy_attack(t_game *game, int id)
+{
+	if ((int)game->e[id].distance < ENEMY_SIZE * 2
+		&& game->e[id].dying == 0 && game->p.hp > 0)
+	{
+		if (game->e[id].attacking == 0)
+			game->e[id].attacking = 1;
+		if (game->e[id].attacking == 18)
+			game->p.hp -= 15;
+	}
+}
 
 static int	enemy_collision(t_game *game, int x, int y, int id)
 {
@@ -61,7 +73,15 @@ void	move_enemies(t_game *game)
 	i = 0;
 	while (i < game->enemy_count)
 	{
-		move_one_enemy(game, &game->e[i], i);
+		if (game->e[i].alive && game->e[i].dying == 0)
+		{
+			if (game->e[i].attacking == 0)
+				move_one_enemy(game, &game->e[i], i);
+			else
+				game->e[i].attacking++;
+			if (game->e[i].attacking > 18)
+				game->e[i].attacking = 0;
+		}
 		i++;
 	}
 }

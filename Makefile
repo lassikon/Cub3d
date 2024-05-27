@@ -41,6 +41,7 @@ SRCS	:= 	cub3d.c \
 			init_math_tables.c \
 			load_textures.c \
 			load_weapon_textures.c \
+			enemy_textures.c
 			
 OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})
 

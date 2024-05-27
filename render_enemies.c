@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:42:42 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 12:57:56 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:24:38 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ static void	render_image(t_game *game, t_ray *eray, int i, int frame)
 
 	tx_tmp = eray->tx;
 	row = game->render.e_top;
-	if (game->e[i].dying == 0)
+	if (game->e[i].attacking > 0)
+		img = game->e[i].aimg[game->e[i].attacking / 6];
+	else if (game->e[i].dying == 0)
 		img = game->e[i].img[frame / 4];
 	else
 	{
@@ -123,8 +125,7 @@ void	next_enemy_to_render(t_game *game)
 			rel_x = game->e[i].x - game->p.x;
 			rel_y = game->e[i].y - game->p.y;
 			game->e[i].distance = sqrtf(rel_x * rel_x + rel_y * rel_y);
-			if ((int)game->e[i].distance < TILE && game->e[i].dying == 0 && game->p.hp > 0)
-				game->p.hp -= 1;
+			enemy_attack(game, i);
 			if (game->e[i].distance > distance)
 			{
 				distance = game->e[i].distance;

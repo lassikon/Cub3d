@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 12:54:42 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:58:52 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,11 @@ typedef struct s_enemy
 	float			distance;
 	int				height;
 	int				dying;
+	int				attacking;
 	bool			alive;
 	bool			rendered;
 	mlx_image_t		*img[4];
+	mlx_image_t		*aimg[3];
 	mlx_image_t		*dimg[9];
 }	t_enemy;
 
@@ -128,6 +130,7 @@ typedef struct s_scene
 	mlx_texture_t	*floor_tex;
 	mlx_texture_t	*ceiling_tex;
 	mlx_texture_t	*e_tex[4];
+	mlx_texture_t	*ea_tex[3];
 	mlx_texture_t	*ed_tex[9];
 	t_list			*tokens;
 }					t_scene;
@@ -284,6 +287,8 @@ void	load_weapon_textures(t_game *game, t_scene *scene);
 void	init_game(t_game *game, t_scene *scene);
 void	init_math_tables(t_game *game);
 void	init_jump_height_table(t_game *game);
+void	enemy_textures(t_game *game, t_scene *scene);
+void	get_texture_name(char *buffer, char *path, int i);
 
 /*movement*/
 void	move_player(t_game *game);
@@ -292,6 +297,7 @@ void	move_mouse(t_game *game);
 void	move_enemies(t_game *game);
 int		move_x_collision(t_game *game, int x, int y);
 int		move_y_collision(t_game *game, int x, int y);
+void	enemy_attack(t_game *game, int id);
 
 /*minimap*/
 void	minimap(t_game *game);
