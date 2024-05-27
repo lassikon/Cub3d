@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:42:42 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/24 16:05:54 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:51:33 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,22 @@ static void	render_image(t_game *game, t_ray *eray, int i, int frame)
 {
 	int		row;
 	float	tx_tmp;
+	mlx_image_t	*img;
 
 	tx_tmp = eray->tx;
 	row = game->render.e_top;
+	if (game->e[i].dying == 0)
+		img = game->e[i].img[frame / 4];
+	else
+	{
+		img = game->e[i].dimg[(game->e[i].dying - 1) / 2];
+		game->e[i].dying++;
+		if (game->e[i].dying > 18)
+		{
+			game->e[i].alive = false;
+			return ;
+		}
+	}
 	while (row < game->render.e_bottom)
 	{
 		eray->tx = tx_tmp;
@@ -80,14 +93,14 @@ static void	render_image(t_game *game, t_ray *eray, int i, int frame)
 		while (eray->column < game->render.e_right
 			&& (eray->distance < game->rays[eray->column].distance))
 		{
-			put_texture_pixel(game, eray, game->e[i].img[frame], row);
+			put_texture_pixel(game, eray, img, row);
 			eray->tx += eray->tx_step;
-			if (eray->tx >= game->e[i].img[frame]->width)
+			if (eray->tx >= img->width)
 				break ;
 			eray->column++;
 		}
 		eray->ty += eray->ty_step;
-		if (eray->ty >= game->e[i].img[frame]->height)
+		if (eray->ty >= img->height)
 			break ;
 		row++;
 	}
@@ -105,11 +118,13 @@ void	next_enemy_to_render(t_game *game)
 	game->next_enemy_to_render = -1;
 	while (i < game->enemy_count)
 	{
-		if (game->e[i].rendered == false)
+		if (game->e[i].rendered == false && game->e[i].alive == true)
 		{
 			rel_x = game->e[i].x - game->p.x;
 			rel_y = game->e[i].y - game->p.y;
 			game->e[i].distance = sqrtf(rel_x * rel_x + rel_y * rel_y);
+			if ((int)game->e[i].distance < TILE && game->e[i].dying == 0 && game->p.hp > 0)
+				game->p.hp -= 1;
 			if (game->e[i].distance > distance)
 			{
 				distance = game->e[i].distance;
@@ -124,7 +139,7 @@ void	render_enemy(t_game *game, int i, int frame)
 {
 	t_ray	eray;
 
-	if (game->e[i].alive == false)
+	if (game->e[i].alive == false || game->e[i].rendered == true)
 		return ;
 	get_enemy_x_y(game, &eray, i);
 	if (eray.y <= 0)

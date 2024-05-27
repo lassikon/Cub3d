@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:42:55 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/23 21:46:10 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/27 11:02:28 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,50 @@ static void	load_floor_ceiling_door_textures(t_game *game, t_scene *scene)
 	}
 }
 
-static void	load_enemy_textures(t_game *game, t_scene *scene)
+static void	load_enemy_walk_textures(t_game *game, t_scene *scene)
 {
-	scene->e_tex[0] = mlx_load_png("sprites/monster/mons_1.png");
+	scene->e_tex[0] = mlx_load_png("sprites/enemy/walk1.png");
 	if (scene->e_tex[0] == NULL)
 		mlx_error_exit(game, scene);
-	scene->e_tex[1] = mlx_load_png("sprites/monster/mons_2.png");
+	scene->e_tex[1] = mlx_load_png("sprites/enemy/walk2.png");
 	if (scene->e_tex[1] == NULL)
 		mlx_error_exit(game, scene);
-	scene->e_tex[2] = mlx_load_png("sprites/monster/mons_3.png");
+	scene->e_tex[2] = mlx_load_png("sprites/enemy/walk3.png");
 	if (scene->e_tex[2] == NULL)
 		mlx_error_exit(game, scene);
-	scene->e_tex[3] = mlx_load_png("sprites/monster/mons_4.png");
+	scene->e_tex[3] = mlx_load_png("sprites/enemy/walk4.png");
 	if (scene->e_tex[3] == NULL)
+		mlx_error_exit(game, scene);
+}
+
+static void	load_enemy_d_textures(t_game *game, t_scene *scene)
+{
+	scene->ed_tex[0] = mlx_load_png("sprites/enemy/death1.png");
+	if (scene->ed_tex[0] == NULL)
+		mlx_error_exit(game, scene);
+	scene->ed_tex[1] = mlx_load_png("sprites/enemy/death2.png");
+	if (scene->ed_tex[1] == NULL)
+		mlx_error_exit(game, scene);
+	scene->ed_tex[2] = mlx_load_png("sprites/enemy/death3.png");
+	if (scene->ed_tex[2] == NULL)
+		mlx_error_exit(game, scene);
+	scene->ed_tex[3] = mlx_load_png("sprites/enemy/death4.png");
+	if (scene->ed_tex[3] == NULL)
+		mlx_error_exit(game, scene);
+	scene->ed_tex[4] = mlx_load_png("sprites/enemy/death5.png");
+	if (scene->ed_tex[4] == NULL)
+		mlx_error_exit(game, scene);
+	scene->ed_tex[5] = mlx_load_png("sprites/enemy/death6.png");
+	if (scene->ed_tex[5] == NULL)
+		mlx_error_exit(game, scene);
+	scene->ed_tex[6] = mlx_load_png("sprites/enemy/death7.png");
+	if (scene->ed_tex[6] == NULL)
+		mlx_error_exit(game, scene);
+	scene->ed_tex[7] = mlx_load_png("sprites/enemy/death8.png");
+	if (scene->ed_tex[7] == NULL)
+		mlx_error_exit(game, scene);
+	scene->ed_tex[8] = mlx_load_png("sprites/enemy/death9.png");
+	if (scene->ed_tex[8] == NULL)
 		mlx_error_exit(game, scene);
 }
 
@@ -85,5 +116,6 @@ void	load_textures(t_game *game, t_scene *scene)
 	load_wall_textures(game, scene);
 	load_floor_ceiling_door_textures(game, scene);
 	load_weapon_textures(game, scene);
-	load_enemy_textures(game, scene);
+	load_enemy_walk_textures(game, scene);
+	load_enemy_d_textures(game, scene);
 }

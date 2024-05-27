@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:47:40 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 16:42:50 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:46:59 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,19 @@ static void	move_one_enemy(t_game *game, t_enemy *e, int id)
 		|| e->y < 0 || e->y >= game->map_height)
 		return ;
 	if (e->x > game->p.x)
-		if (!move_x_collision(game, (int)e->x - ENEMY_SPEED, (int)e->y)
+		if (!move_x_collision(game, (int)e->x - ENEMY_SPEED - ENEMY_SIZE, (int)e->y)
 			&& !enemy_collision(game, (int)e->x - ENEMY_SPEED, (int)e->y, id))
 			e->x -= ENEMY_SPEED;
 	if (e->x < game->p.x)
-		if (!move_x_collision(game, (int)e->x + ENEMY_SPEED, (int)e->y)
+		if (!move_x_collision(game, (int)e->x + ENEMY_SPEED + ENEMY_SIZE, (int)e->y)
 			&& !enemy_collision(game, (int)e->x + ENEMY_SPEED, (int)e->y, id))
 			e->x += ENEMY_SPEED;
 	if (e->y > game->p.y)
-		if (!move_y_collision(game, (int)e->x, (int)e->y - ENEMY_SPEED)
+		if (!move_y_collision(game, (int)e->x, (int)e->y - ENEMY_SPEED - ENEMY_SIZE)
 			&& !enemy_collision(game, (int)e->x, (int)e->y - ENEMY_SPEED, id))
 			e->y -= ENEMY_SPEED;
 	if (e->y < game->p.y)
-		if (!move_y_collision(game, (int)e->x, (int)e->y + ENEMY_SPEED)
+		if (!move_y_collision(game, (int)e->x, (int)e->y + ENEMY_SPEED  + ENEMY_SIZE)
 			&& !enemy_collision(game, (int)e->x, (int)e->y + ENEMY_SPEED, id))
 			e->y += ENEMY_SPEED;
 }

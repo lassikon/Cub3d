@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 16:39:11 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:32:41 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_player
 	int		height;
 	int		jumping;
 	int		jump_height[14];
+	int		hp;
 }	t_player;
 
 typedef struct s_enemy
@@ -78,9 +79,11 @@ typedef struct s_enemy
 	float			angle;
 	float			distance;
 	int				height;
+	int				dying;
 	bool			alive;
 	bool			rendered;
 	mlx_image_t		*img[4];
+	mlx_image_t		*dimg[9];
 }	t_enemy;
 
 typedef struct s_minimap
@@ -115,6 +118,7 @@ typedef struct s_scene
 	mlx_texture_t	*floor_tex;
 	mlx_texture_t	*ceiling_tex;
 	mlx_texture_t	*e_tex[4];
+	mlx_texture_t	*ed_tex[9];
 	t_list			*tokens;
 }					t_scene;
 
@@ -220,6 +224,7 @@ typedef struct s_game
 	mlx_image_t		*floor_img;
 	mlx_image_t		*ceiling_img;
 	mlx_image_t		*door_img;
+	mlx_image_t		*hp_img;
 	t_player		p;
 	t_enemy			e[100];
 	t_render		render;

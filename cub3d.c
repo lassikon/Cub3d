@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 16:04:59 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:50:17 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,18 @@ void	init_frame(t_game *game)
 	game->in_crosshairs_id = -1;
 }
 
+void	hitpoints(t_game *game, double frame)
+{
+	char	hp[4];
+
+	ft_itoa_stack(hp, game->p.hp);
+	if (game->hp_img)
+		mlx_delete_image(game->mlx, game->hp_img);
+	game->hp_img = mlx_put_string(game->mlx, hp, 10, 10);
+	if (game->p.hp < 100 && (int)frame % 40 == 0)
+		game->p.hp++;
+}
+
 void	game_loop(void *param)
 {
 	t_game	*game;
@@ -39,10 +51,14 @@ void	game_loop(void *param)
 	while (i < game->enemy_count)
 	{
 		next_enemy_to_render(game);
-		render_enemy(game, i, ((int)game->frame_count % 8) / 2);
-		game->e[game->next_enemy_to_render].rendered = true;
+		if (game->next_enemy_to_render != -1)
+		{
+			render_enemy(game, game->next_enemy_to_render, ((int)game->frame_count % 16));
+			game->e[game->next_enemy_to_render].rendered = true;
+		}
 		i++;
 	}
+	hitpoints(game, game->frame_count);
 	moving_door(game);
 	minimap(game);
 	move_mouse(game);
@@ -50,6 +66,10 @@ void	game_loop(void *param)
 	weapons(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
+	if (game->p.hp <= 0)
+	{
+		// DEATH SCREEN
+	}
 	game->frame_count++;
 }
 

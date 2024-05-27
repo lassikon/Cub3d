@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:41:22 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 16:39:17 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:18:07 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	find_enemies(t_game *game)
 				game->e[k].x = j * TILE + TILE / 2;
 				game->e[k].y = i * TILE + TILE / 2;
 				game->e[k].alive = true;
+				game->e[k].dying = 0;
 				k++;
 				if (k > 99)
 				{
@@ -102,6 +103,7 @@ void	init_game(t_game *game, t_scene *scene)
 	game->gun.aim_frme = -1;
 	game->gun.fire_frme = -1;
 	game->p.jumping = 0;
+	game->p.hp = 100;
 	find_player(game);
 	init_enemies(game);
 	init_textures(game, scene);

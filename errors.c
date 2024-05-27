@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:14:58 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/23 14:54:32 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:08:00 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,26 @@ void	error_handler(t_scene *scene, t_err_code code)
 	}
 }
 
+static void	delete_enemy_textures(t_scene *scene)
+{
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if (scene->e_tex[i])
+			mlx_delete_texture(scene->e_tex[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 9)
+	{
+		if (scene->ed_tex[i])
+			mlx_delete_texture(scene->ed_tex[i]);
+		i++;
+	}
+}
+
 void	delete_textures(t_scene *scene)
 {
 	if (scene->north_tex)
@@ -60,6 +80,7 @@ void	delete_textures(t_scene *scene)
 		mlx_delete_texture(scene->ceiling_tex);
 	if (scene->door_tex)
 		mlx_delete_texture(scene->door_tex);
+	delete_enemy_textures(scene);
 }
 
 void	mlx_error_exit(t_game *game, t_scene *scene)
