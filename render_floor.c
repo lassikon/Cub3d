@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:50:14 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/23 12:06:16 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/27 10:53:27 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,10 @@ void	draw_floor(t_game *game, t_ray *ray, mlx_image_t *img)
 		ray->ty = (float)img->height / TILE_SIZE * ray->ty;
 		ray->tx = ((int)ray->tx % img->width);
 		ray->ty = ((int)ray->ty % img->height);
+		put_texture_pixel(game, ray, img, row);
+		row++;
+		if (row >= SCREEN_HEIGHT)
+			break ;
 		put_texture_pixel(game, ray, img, row);
 		row++;
 	}

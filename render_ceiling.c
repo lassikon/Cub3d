@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_ceiling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 12:06:34 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/24 15:00:59 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 10:53:25 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,10 @@ void	draw_ceiling(t_game *game, t_ray *ray, mlx_image_t *img)
 		ray->ty = (float)img->height / TILE_SIZE * ray->ty;
 		ray->tx = ((int)ray->tx % img->width);
 		ray->ty = ((int)ray->ty % img->height);
+		put_texture_pixel(game, ray, img, row);
+		row--;
+		if (row < 0)
+			break ;
 		put_texture_pixel(game, ray, img, row);
 		row--;
 	}

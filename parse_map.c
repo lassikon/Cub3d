@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 09:34:05 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/27 10:46:06 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,7 @@ void	extract_data(t_scene *scene)
 			parse_color(scene, &lst_iter, scene->floor_color);
 		else if (t_type == C)
 			parse_color(scene, &lst_iter, scene->ceiling_color);
-		else if (t_type == NL)
-			lst_iter = lst_iter->next;
-		else
+		else if (t_type == MAP)
 			parse_map(scene, &lst_iter);
 		if (lst_iter)
 			lst_iter = lst_iter->next;
