@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 10:16:45 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/20 10:24:47 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:35:39 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,24 @@ static void	put_minimap_pixel(t_game *game, t_minimap *m)
 
 void	minimap(t_game *game)
 {
+	int	radius;
+	int	distance;
+
 	game->mini.y = 0;
 	game->mini.map_y = game->p.y - MINIMAP_SIZE * 2;
+	radius = 480;
 	while (game->mini.y < MINIMAP_SIZE)
 	{
 		game->mini.x = 0;
 		game->mini.map_x = game->p.x - MINIMAP_SIZE * 2;
 		while (game->mini.x < MINIMAP_SIZE)
 		{
-			put_minimap_pixel(game, &game->mini);
+			distance = sqrtf((game->p.x - game->mini.map_x) \
+				* (game->p.x - game->mini.map_x) \
+				+ (game->p.y - game->mini.map_y) \
+				* (game->p.y - game->mini.map_y));
+			if (distance < radius)
+				put_minimap_pixel(game, &game->mini);
 			game->mini.x++;
 			game->mini.map_x += 4;
 		}

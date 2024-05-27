@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 12:50:17 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:54:50 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	main(int argc, char **argv)
 	t_scene	scene;
 
 	parse(&scene, argc, argv);
-	print_array(scene.map);
 	init_game(&game, &scene);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_key_hook(game.mlx, operate_door, &game);

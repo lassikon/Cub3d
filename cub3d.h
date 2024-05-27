@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 12:32:41 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 12:54:42 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@
 # define BLACK 0x000000FF
 # define LIGHT_GREY 0xD3D3D3FF
 # define WHITE 0xFFFFFFFF
+
+# define MSG_MALLOC "Error\nMalloc failed\n"
+# define MSG_ARG "Error\nInvalid arguments\n"
+# define MSG_FILE_EXT "Error\nInvalid file extension\n"
+# define MSG_FILE_OPEN "Error\nFailed to open file\n"
+# define MSG_SCENE_FORMAT "Error\nInvalid scene format\n"
+# define MSG_INVALID_MAP "Error\nFound invalid map characters\n"
+# define MSG_MAP_NOT_CLOSED "Error\nMap is not closed\n"
+# define MSG_INVALID_PLAYER "Error\nInvalid player\n"
+# define MSG_MAP_BIG "Error\nMap too big\n"
 
 typedef struct s_player
 {
@@ -324,6 +334,7 @@ void	render_ceiling_color(t_game *game);
 void	draw_ceiling(t_game *game, t_ray *ray, mlx_image_t *img);
 
 /*parse and utils*/
+void	init_scene(t_scene *scene);
 int		gnl_chk(char **line, int fd);
 void	tokenize(t_scene *scene, char *line);
 void	parse(t_scene *scene, int argc, char **argv);

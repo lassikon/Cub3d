@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/24 11:38:30 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/27 10:46:06 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ static void	parse_color(t_scene *scene, t_list **lst_iter, int *color)
 	i = 0;
 	j = 0;
 	line = substr_guard(scene, lst_iter);
-/* 	if (ft_strnstr(line, ",,", ft_strlen(line)) != NULL)
-		error_handler(scene, SCENE_FORMAT_ERR); */
+	if (ft_strnstr(line, ",,", ft_strlen(line)) != NULL)
+		error_handler(scene, SCENE_FORMAT_ERR);
 	split = ft_split(line, ',');
 	malloc_guard(scene, NULL, split);
 	if (is_arrdigit(split))
@@ -126,9 +126,7 @@ void	extract_data(t_scene *scene)
 			parse_color(scene, &lst_iter, scene->floor_color);
 		else if (t_type == C)
 			parse_color(scene, &lst_iter, scene->ceiling_color);
-		else if (t_type == NL)
-			lst_iter = lst_iter->next;
-		else
+		else if (t_type == MAP)
 			parse_map(scene, &lst_iter);
 		if (lst_iter)
 			lst_iter = lst_iter->next;
