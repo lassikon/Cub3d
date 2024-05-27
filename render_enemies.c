@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:42:42 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 11:59:26 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/27 12:52:28 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ static void	render_image(t_game *game, t_ray *eray, int i, int frame)
 	{
 		eray->tx = tx_tmp;
 		eray->column = game->render.e_left;
-		while (eray->column < game->render.e_right
-			&& (eray->distance < game->rays[eray->column].distance))
+		while (eray->column < game->render.e_right)
 		{
-			put_texture_pixel(game, eray, game->e[i].img[frame], row);
+			if (eray->distance < game->rays[eray->column].distance)
+				put_texture_pixel(game, eray, game->e[i].img[frame], row);
 			eray->tx += eray->tx_step;
 			if (eray->tx >= game->e[i].img[frame]->width)
 				break ;
