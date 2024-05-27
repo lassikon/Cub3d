@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:14:58 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 12:54:35 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:10:03 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_entry(t_error_entry *errors)
 	errors[4] = (t_error_entry){MSG_SCENE_FORMAT, SCENE_FORMAT_ERR};
 	errors[5] = (t_error_entry){MSG_INVALID_MAP, INVALID_MAP_ERR};
 	errors[6] = (t_error_entry){MSG_MAP_NOT_CLOSED, MAP_NOT_CLOSED_ERR};
-	errors[7] = (t_error_entry){MSG_INVALID_MAP, INVALID_PLAYER_ERR};
+	errors[7] = (t_error_entry){MSG_INVALID_PLAYER, INVALID_PLAYER_ERR};
 	errors[8] = (t_error_entry){MSG_MAP_BIG, MAP_BIG_ERR};
 }
 
@@ -49,17 +49,20 @@ static void	delete_enemy_textures(t_scene *scene)
 	int	i;
 
 	i = 0;
-	while (i < 4)
-	{
-		if (scene->e_tex[i])
-			mlx_delete_texture(scene->e_tex[i]);
-		i++;
-	}
-	i = 0;
 	while (i < 9)
 	{
 		if (scene->ed_tex[i])
 			mlx_delete_texture(scene->ed_tex[i]);
+		if (i < 4)
+		{
+			if (scene->e_tex[i])
+				mlx_delete_texture(scene->e_tex[i]);
+		}
+		if (i < 3)
+		{
+			if (scene->ea_tex[i])
+				mlx_delete_texture(scene->ea_tex[i]);
+		}
 		i++;
 	}
 }

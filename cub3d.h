@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 14:58:52 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:34:36 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ typedef struct s_minimap
 	float		y;
 	float		map_x;
 	float		map_y;
+	int			dist;
+	int			radius;
 	int			color;
 	mlx_image_t	*image;
 }	t_minimap;

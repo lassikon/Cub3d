@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/21 14:18:48 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:15:32 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,16 @@
 # define P_HEIGHT 32
 
 # define MAP_CHARS "1 0NSEW"
+
+# define MSG_MALLOC "Error\nMalloc failed\n"
+# define MSG_ARG "Error\nInvalid arguments\n"
+# define MSG_FILE_EXT "Error\nInvalid file extension\n"
+# define MSG_FILE_OPEN "Error\nFailed to open file\n"
+# define MSG_SCENE_FORMAT "Error\nInvalid scene format\n"
+# define MSG_INVALID_MAP "Error\nFound invalid map characters\n"
+# define MSG_MAP_NOT_CLOSED "Error\nMap is not closed\n"
+# define MSG_INVALID_PLAYER "Error\nInvalid player\n"
+# define MSG_MAP_BIG "Error\nMap too big\n"
 
 typedef struct s_player
 {
@@ -157,6 +167,7 @@ void	render_wall_column(t_game *game, t_ray *ray);
 int		get_rgba(int red, int green, int blue, int alpha);
 
 /*parse and utils*/
+void	init_scene(t_scene *scene);
 int		gnl_chk(char **line, int fd);
 void	tokenize(t_scene *scene, char *line);
 void	parse(t_scene *scene, int argc, char **argv);

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:32:12 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 14:33:30 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:19:02 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,36 @@ static void	floor_ceiling_door_textures_to_img(t_game *game, t_scene *scene)
 	}
 }
 
+static void	null_textures(t_scene *scene)
+{
+	int	i;
+
+	i = 0;
+	while (i < 9)
+	{
+		scene->ed_tex[i] = NULL;
+		if (i < 4)
+			scene->e_tex[i] = NULL;
+		if (i < 3)
+			scene->ea_tex[i] = NULL;
+		i++;
+	}
+	scene->north_tex = NULL;
+	scene->south_tex = NULL;
+	scene->east_tex = NULL;
+	scene->west_tex = NULL;
+	scene->floor_tex = NULL;
+	scene->ceiling_tex = NULL;
+	scene->door_tex = NULL;
+}
+
 void	init_textures(t_game *game, t_scene *scene)
 {
+	null_textures(scene);
 	load_textures(game, scene);
 	wall_textures_to_img(game, scene);
 	floor_ceiling_door_textures_to_img(game, scene);
-	enemy_textures(game, scene);
+	if (game->enemy_count > 0)
+		enemy_textures(game, scene);
 	delete_textures(scene);
 }

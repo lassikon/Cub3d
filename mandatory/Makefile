@@ -1,9 +1,9 @@
 NAME		:= cub3d
 CC			:= cc
-#MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/" # Janrau
-MLXFLAGS	:= -Iinclude -lglfw -L"/Users/lkonttin/.brew/opt/glfw/lib/" # Lassi
+MLXFLAGS	:= -Iinclude -lglfw -L"/Users/jberay/.brew/opt/glfw/lib/" # Janrau
+#MLXFLAGS	:= -Iinclude -lglfw -L"/Users/lkonttin/.brew/opt/glfw/lib/" # Lassi
 #MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm
-CFLAGS		:= -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS		:= -Wall -Wextra -Werror -g -fsanitize=address
 MLX_DIR		:= ../MLX42
 LIBFT_DIR	:= ../libft
 OBJ_DIR		:= obj/

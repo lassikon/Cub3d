@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:47:40 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:25:45 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:14:51 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	enemy_attack(t_game *game, int id)
 	{
 		if (game->e[id].attacking == 0)
 			game->e[id].attacking = 1;
-		if (game->e[id].attacking == 18)
-			game->p.hp -= 15;
+		if (game->e[id].attacking == 18 && game->p.hp > 5)
+			game->p.hp -= 5;
 	}
 }
 
