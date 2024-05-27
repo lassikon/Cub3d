@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 10:14:40 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/27 10:23:25 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,18 @@ static void	call_gnl(t_scene *scene, int map_fd)
 {
 	char	*line;
 	int		i;
+	int		row;
 
 	line = NULL;
+	row = 0;
 	while (1)
 	{
 		if (gnl_chk(&line, map_fd) == -1)
 			error_handler(scene, MALLOC_ERR);
 		if (line == NULL)
 			break ;
+		if (ft_strlen(line) > 500 || row > 500)
+			error_handler(scene, MAP_BIG_ERR);
 		i = 0;
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
@@ -102,6 +106,7 @@ static void	call_gnl(t_scene *scene, int map_fd)
 			free(line);
 		else
 			tokenize(scene, line);
+		row++;
 	}
 	scene_syntax(scene);
 	extract_data(scene);
