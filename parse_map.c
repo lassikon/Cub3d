@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 10:46:06 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/27 14:20:31 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static int	is_arrdigit(char **arr)
 		}
 		i++;
 	}
+	if (i != 3)
+		return (1);
 	return (0);
 }
 

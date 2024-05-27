@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:26:02 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 10:23:25 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/27 14:06:22 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	parse(t_scene *scene, int argc, char **argv)
 		error_handler(scene, FILE_EXT_ERR);
 	map_fd = open(argv[1], O_RDONLY);
 	if (map_fd < 0)
-		error_handler(scene, FILE_OPEN_ERR);	
+		error_handler(scene, FILE_OPEN_ERR);
 	call_gnl(scene, map_fd);
 	close(map_fd);
 }

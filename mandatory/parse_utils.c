@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/21 14:07:17 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:15:24 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	init_scene(t_scene *scene)
+{
+	scene->no_texture = NULL;
+	scene->so_texture = NULL;
+	scene->we_texture = NULL;
+	scene->ea_texture = NULL;
+	ft_memset(scene->floor_color, -1, 3);
+	ft_memset(scene->ceiling_color, -1, 3);
+	scene->map = NULL;
+	scene->tokens = NULL;
+	scene->map_height = 0;
+	scene->map_width = 0;
+}
 
 void	malloc_guard(t_scene *scene, char ***tmp, void *ptr)
 {

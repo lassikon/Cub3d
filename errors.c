@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:14:58 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 12:54:35 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:55:01 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_entry(t_error_entry *errors)
 	errors[4] = (t_error_entry){MSG_SCENE_FORMAT, SCENE_FORMAT_ERR};
 	errors[5] = (t_error_entry){MSG_INVALID_MAP, INVALID_MAP_ERR};
 	errors[6] = (t_error_entry){MSG_MAP_NOT_CLOSED, MAP_NOT_CLOSED_ERR};
-	errors[7] = (t_error_entry){MSG_INVALID_MAP, INVALID_PLAYER_ERR};
+	errors[7] = (t_error_entry){MSG_INVALID_PLAYER, INVALID_PLAYER_ERR};
 	errors[8] = (t_error_entry){MSG_MAP_BIG, MAP_BIG_ERR};
 }
 
