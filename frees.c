@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   frees.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:35:07 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/05 13:49:13 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/27 09:33:24 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,33 +73,21 @@ void	free_lst(t_list **head)
 void	free_scene(t_scene *scene)
 {
 	if (scene->no_texture != NULL)
-	{
 		free(scene->no_texture);
-		scene->no_texture = NULL;
-	}
 	if (scene->so_texture != NULL)
-	{
 		free(scene->so_texture);
-		scene->so_texture = NULL;
-	}
 	if (scene->we_texture != NULL)
-	{
 		free(scene->we_texture);
-		scene->we_texture = NULL;
-	}
 	if (scene->ea_texture != NULL)
-	{
 		free(scene->ea_texture);
-		scene->ea_texture = NULL;
-	}
 	if (scene->map != NULL)
-	{
 		free_arr(&(scene->map));
-		scene->map = NULL;
-	}
 	if (scene->tokens != NULL)
-	{
 		free_lst(&(scene->tokens));
-		scene->tokens = NULL;
-	}
+	scene->no_texture = NULL;
+	scene->so_texture = NULL;
+	scene->ea_texture = NULL;
+	scene->we_texture = NULL;
+	scene->map = NULL;
+	scene->tokens = NULL;
 }

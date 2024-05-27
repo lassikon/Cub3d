@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/24 11:36:27 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/27 09:31:11 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	init_scene(t_scene *scene)
+{
+	scene->no_texture = NULL;
+	scene->so_texture = NULL;
+	scene->we_texture = NULL;
+	scene->ea_texture = NULL;
+	scene->dr_texture = NULL;
+	scene->dr_texture = NULL;
+	scene->fl_texture = NULL;
+	scene->cl_texture = NULL;
+	ft_memset(scene->floor_color, -1, 3);
+	ft_memset(scene->ceiling_color, -1, 3);
+	scene->map = NULL;
+	scene->tokens = NULL;
+	scene->map_height = 0;
+	scene->map_width = 0;
+}
 
 void	ft_itoa_stack(char *buf, int n)
 {
