@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:34:36 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:25:06 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define ROTATION_SPEED 0.05235987755
 # define MINIMAP_SIZE 256
 # define C_BUF 16
-# define ENEMY_SIZE 48
+# define E_SIZE 48
 # define MAX_DEPTH 64000
 # define P_HEIGHT 32
 # define E_HEIGHT 48
@@ -70,6 +70,7 @@
 # define MSG_MAP_NOT_CLOSED "Error\nMap is not closed\n"
 # define MSG_INVALID_PLAYER "Error\nInvalid player\n"
 # define MSG_MAP_BIG "Error\nMap too big\n"
+# define MSG_ENEMIES "Error\nToo many enemies\n"
 
 typedef struct s_player
 {
@@ -274,6 +275,7 @@ typedef enum e_err_code
 	MAP_NOT_CLOSED_ERR,
 	INVALID_PLAYER_ERR,
 	MAP_BIG_ERR,
+	ENEMIES_ERR,
 }	t_err_code;
 
 typedef struct s_error_entry
@@ -297,8 +299,7 @@ void	move_player(t_game *game);
 void	move_player_vertical(t_game *game);
 void	move_mouse(t_game *game);
 void	move_enemies(t_game *game);
-int		move_x_collision(t_game *game, int x, int y);
-int		move_y_collision(t_game *game, int x, int y);
+int		move_collision(t_game *game, int x, int y);
 void	enemy_attack(t_game *game, int id);
 
 /*minimap*/

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:14:58 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 16:10:03 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:43:01 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,22 @@ void	init_entry(t_error_entry *errors)
 	errors[6] = (t_error_entry){MSG_MAP_NOT_CLOSED, MAP_NOT_CLOSED_ERR};
 	errors[7] = (t_error_entry){MSG_INVALID_PLAYER, INVALID_PLAYER_ERR};
 	errors[8] = (t_error_entry){MSG_MAP_BIG, MAP_BIG_ERR};
+	errors[9] = (t_error_entry){MSG_ENEMIES, ENEMIES_ERR};
 }
 
 void	error_handler(t_scene *scene, t_err_code code)
 {
-	t_error_entry	errors[9];
+	t_error_entry	errors[10];
 	int				i;
 
 	init_entry(errors);
 	i = 0;
-	while (i < 9)
+	while (i < 10)
 	{
 		if (errors[i].code == code)
 		{
-			free_scene(scene);
+			if (scene)
+				free_scene(scene);
 			ft_putstr_fd(errors[i].message, 2);
 			exit(code);
 		}

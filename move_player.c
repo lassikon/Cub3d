@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 14:57:09 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 10:41:58 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	move_forward(t_game *game)
 
 	new_x = game->p.x + cos(game->p.angle) * MOVE_SPEED;
 	new_y = game->p.y + sin(game->p.angle) * MOVE_SPEED;
-	if (!move_x_collision(game, (int)new_x, (int)game->p.y))
+	if (!move_collision(game, (int)new_x, (int)game->p.y))
 		game->p.x = new_x;
-	if (!move_y_collision(game, (int)game->p.x, (int)new_y))
+	if (!move_collision(game, (int)game->p.x, (int)new_y))
 		game->p.y = new_y;
 }
 
@@ -32,9 +32,9 @@ void	move_backward(t_game *game)
 
 	new_x = game->p.x - cos(game->p.angle) * MOVE_SPEED;
 	new_y = game->p.y - sin(game->p.angle) * MOVE_SPEED;
-	if (!move_x_collision(game, (int)new_x, (int)game->p.y))
+	if (!move_collision(game, (int)new_x, (int)game->p.y))
 		game->p.x = new_x;
-	if (!move_y_collision(game, (int)game->p.x, (int)new_y))
+	if (!move_collision(game, (int)game->p.x, (int)new_y))
 		game->p.y = new_y;
 }
 
@@ -45,9 +45,9 @@ void	move_left(t_game *game)
 
 	new_x = game->p.x + cos(game->p.angle - PI / 2) * MOVE_SPEED;
 	new_y = game->p.y + sin(game->p.angle - PI / 2) * MOVE_SPEED;
-	if (!move_x_collision(game, (int)new_x, (int)game->p.y))
+	if (!move_collision(game, (int)new_x, (int)game->p.y))
 		game->p.x = new_x;
-	if (!move_y_collision(game, (int)game->p.x, (int)new_y))
+	if (!move_collision(game, (int)game->p.x, (int)new_y))
 		game->p.y = new_y;
 }
 
@@ -58,9 +58,9 @@ void	move_right(t_game *game)
 
 	new_x = game->p.x + cos(game->p.angle + PI / 2) * MOVE_SPEED;
 	new_y = game->p.y + sin(game->p.angle + PI / 2) * MOVE_SPEED;
-	if (!move_x_collision(game, (int)new_x, (int)game->p.y))
+	if (!move_collision(game, (int)new_x, (int)game->p.y))
 		game->p.x = new_x;
-	if (!move_y_collision(game, (int)game->p.x, (int)new_y))
+	if (!move_collision(game, (int)game->p.x, (int)new_y))
 		game->p.y = new_y;
 }
 

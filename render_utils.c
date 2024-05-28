@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:09:23 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 15:10:05 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:50:40 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,32 @@ void	get_brightness_lvl(t_game *game, t_ray *ray)
 		game->render.brightness = 1;
 	if (game->render.brightness < 0.1)
 		game->render.brightness = 0.1;
+}
+
+void	next_enemy_to_render(t_game *game)
+{
+	int		i;
+	float	rel_x;
+	float	rel_y;
+	float	distance;
+
+	i = 0;
+	distance = 0;
+	game->next_enemy_to_render = -1;
+	while (i < game->enemy_count)
+	{
+		if (game->e[i].rendered == false && game->e[i].alive == true)
+		{
+			rel_x = game->e[i].x - game->p.x;
+			rel_y = game->e[i].y - game->p.y;
+			game->e[i].distance = sqrtf(rel_x * rel_x + rel_y * rel_y);
+			if (game->e[i].distance > distance)
+			{
+				distance = game->e[i].distance;
+				game->next_enemy_to_render = i;
+			}
+		}
+		i++;
+	}
+	enemy_attack(game, game->next_enemy_to_render);
 }

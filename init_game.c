@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:41:22 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 16:00:14 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:42:49 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	find_player(t_game *game)
 	int	i;
 	int	j;
 
-	i = 0;
-	while (game->map[i])
+	i = -1;
+	while (game->map[++i])
 	{
-		j = 0;
-		while (game->map[i][j])
+		j = -1;
+		while (game->map[i][++j])
 		{
 			if (ft_strchr("NSWE", game->map[i][j]) != NULL)
 			{
@@ -36,9 +36,7 @@ void	find_player(t_game *game)
 				game->p.x = j * TILE + TILE / 2;
 				game->p.y = i * TILE + TILE / 2;
 			}
-			j++;
 		}
-		i++;
 	}
 }
 
@@ -62,10 +60,7 @@ void	find_enemies(t_game *game)
 				game->e[k].alive = true;
 				k++;
 				if (k > 99)
-				{
-					printf("Too many enemies\n");
-					break ;
-				}
+					error_handler(NULL, ENEMIES_ERR);
 			}
 			j++;
 		}

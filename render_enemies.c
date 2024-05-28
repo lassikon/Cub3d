@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:42:42 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 15:24:38 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:10:44 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,10 @@ static void	get_enemy_x_y(t_game *game, t_ray *eray, int i)
 	get_enemy_tx_ty(game, eray, ratio, i);
 }
 
-static void	render_image(t_game *game, t_ray *eray, int i, int frame)
+static mlx_image_t	*choose_enemy_img(t_game *game, int i, int frame)
 {
-	int		row;
-	float	tx_tmp;
 	mlx_image_t	*img;
 
-	tx_tmp = eray->tx;
-	row = game->render.e_top;
 	if (game->e[i].attacking > 0)
 		img = game->e[i].aimg[game->e[i].attacking / 6];
 	else if (game->e[i].dying == 0)
@@ -83,11 +79,20 @@ static void	render_image(t_game *game, t_ray *eray, int i, int frame)
 		img = game->e[i].dimg[(game->e[i].dying - 1) / 2];
 		game->e[i].dying++;
 		if (game->e[i].dying > 18)
-		{
 			game->e[i].alive = false;
-			return ;
-		}
 	}
+	return (img);
+}
+
+static void	render_image(t_game *game, t_ray *eray, int i, int frame)
+{
+	int			row;
+	float		tx_tmp;
+	mlx_image_t	*img;
+
+	tx_tmp = eray->tx;
+	row = game->render.e_top;
+	img = choose_enemy_img(game, i, frame);
 	while (row < game->render.e_bottom)
 	{
 		eray->tx = tx_tmp;
@@ -105,34 +110,6 @@ static void	render_image(t_game *game, t_ray *eray, int i, int frame)
 		if (eray->ty >= img->height)
 			break ;
 		row++;
-	}
-}
-
-void	next_enemy_to_render(t_game *game)
-{
-	int		i;
-	float	rel_x;
-	float	rel_y;
-	float	distance;
-
-	i = 0;
-	distance = 0;
-	game->next_enemy_to_render = -1;
-	while (i < game->enemy_count)
-	{
-		if (game->e[i].rendered == false && game->e[i].alive == true)
-		{
-			rel_x = game->e[i].x - game->p.x;
-			rel_y = game->e[i].y - game->p.y;
-			game->e[i].distance = sqrtf(rel_x * rel_x + rel_y * rel_y);
-			enemy_attack(game, i);
-			if (game->e[i].distance > distance)
-			{
-				distance = game->e[i].distance;
-				game->next_enemy_to_render = i;
-			}
-		}
-		i++;
 	}
 }
 
