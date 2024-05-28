@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:32:12 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 16:19:02 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:36:12 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,17 @@ static void	null_textures(t_scene *scene)
 	int	i;
 
 	i = 0;
-	while (i < 9)
+	while (i < 14)
 	{
-		scene->ed_tex[i] = NULL;
+		scene->hk53_fire_tx[i] = NULL;
+		if (i < 10)
+			scene->hp_txs[i] = NULL;
+		if (i < 13)
+			scene->hk53_fire_mid_tx[i] = NULL;
+		if (i < 12)
+			scene->hk53_aim_mid_tx[i] = NULL;
+		if (i < 9)
+			scene->ed_tex[i] = NULL;
 		if (i < 4)
 			scene->e_tex[i] = NULL;
 		if (i < 3)

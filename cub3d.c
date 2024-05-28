@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 12:11:20 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:45:48 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ int	main(int argc, char **argv)
 
 	parse(&scene, argc, argv);
 	init_game(&game, &scene);
-	mlx_loop_hook(game.mlx, game_loop, &game);
-	mlx_key_hook(game.mlx, operate_door, &game);
-	mlx_loop(game.mlx);
-	printf("Average FPS: %f\n", game.frame_count / mlx_get_time());
+	// mlx_loop_hook(game.mlx, game_loop, &game);
+	// mlx_key_hook(game.mlx, operate_door, &game);
+	// mlx_loop(game.mlx);
+	// printf("Average FPS: %f\n", game.frame_count / mlx_get_time());
 	mlx_terminate(game.mlx);
 	free_scene(&scene);
 	return (0);

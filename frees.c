@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:35:07 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 09:33:24 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/28 14:30:07 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ void	free_scene(t_scene *scene)
 		free_arr(&(scene->map));
 	if (scene->tokens != NULL)
 		free_lst(&(scene->tokens));
+	if (scene->dr_texture != NULL)
+		free(scene->dr_texture);
+	if (scene->fl_texture != NULL)
+		free(scene->fl_texture);
+	if (scene->cl_texture != NULL)
+		free(scene->cl_texture);
 	scene->no_texture = NULL;
 	scene->so_texture = NULL;
 	scene->ea_texture = NULL;
