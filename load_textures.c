@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:42:55 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 14:32:01 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:13:46 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,30 @@ static void	load_floor_ceiling_door_textures(t_game *game, t_scene *scene)
 	}
 }
 
+void	load_hp_textures(t_game *game, t_scene *scene)
+{
+	int		i;
+	char	buffer[100];
+
+	i = 0;
+	while (i < 10)
+	{
+		get_texture_name(buffer, "textures/hp/blood", 1 + i);
+		game->hp_txs[i] = mlx_load_png(buffer);
+		if (game->hp_txs[i] == NULL)
+			mlx_error_exit(game, scene);
+		game->hp_imgs[i] = mlx_texture_to_image(game->mlx, \
+		game->hp_txs[i]);
+		mlx_resize_image(game->hp_imgs[i], \
+		SCREEN_WIDTH, SCREEN_HEIGHT);
+		mlx_image_to_window(game->mlx, game->hp_imgs[i], 0, 0);
+		mlx_set_instance_depth(&game->hp_imgs[i]->instances[0], \
+		3);
+		game->hp_imgs[i]->enabled = true;
+		i++;
+	}
+}
+
 void	load_textures(t_game *game, t_scene *scene)
 {
 	scene->north_tex = NULL;
@@ -66,6 +90,7 @@ void	load_textures(t_game *game, t_scene *scene)
 	game->floor_img = NULL;
 	game->ceiling_img = NULL;
 	game->door_img = NULL;
+	load_hp_textures(game, scene);
 	load_wall_textures(game, scene);
 	load_floor_ceiling_door_textures(game, scene);
 	load_weapon_textures(game, scene);

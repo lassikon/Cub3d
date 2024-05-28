@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_enemies.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:47:40 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 16:14:51 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:40:24 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	enemy_attack(t_game *game, int id)
 		if (game->e[id].attacking == 0)
 			game->e[id].attacking = 1;
 		if (game->e[id].attacking == 18 && game->p.hp > 5)
-			game->p.hp -= 5;
+			game->p.hp -= 1;
 	}
 }
 
@@ -81,6 +81,7 @@ void	move_enemies(t_game *game)
 				game->e[i].attacking++;
 			if (game->e[i].attacking > 18)
 				game->e[i].attacking = 0;
+			printf("attacking: %d\n", game->e[i].attacking);
 		}
 		i++;
 	}

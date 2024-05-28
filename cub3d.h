@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:34:36 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:06:38 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,8 @@ typedef struct s_game
 	mlx_image_t		*ceiling_img;
 	mlx_image_t		*door_img;
 	mlx_image_t		*hp_img;
+	mlx_texture_t	*hp_txs[10];
+	mlx_image_t		*hp_imgs[10];
 	t_player		p;
 	t_enemy			e[100];
 	t_render		render;
@@ -306,6 +308,7 @@ void	minimap(t_game *game);
 
 /*weapons*/
 void	weapons(t_game *game);
+void	disable_img_frames(mlx_image_t **img, int frames);
 
 /*doors*/
 void	operate_door(mlx_key_data_t data, void *param);
