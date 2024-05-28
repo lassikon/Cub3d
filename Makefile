@@ -2,7 +2,7 @@ NAME		:= cub3D
 CC			:= cc
 MLXFLAGS	:= -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" # MacOS
 #MLXFLAGS	:= -Iinclude -ldl -lglfw -pthread -lm # Linux
-CFLAGS		:= -Wall -Wextra -Werror #-O3  -g -fsanitize=address
+CFLAGS		:= -Wall -Wextra -Werror -O3  #-g -fsanitize=address
 MLX_DIR		:= ./MLX42
 LIBFT_DIR	:= ./libft
 OBJ_DIR		:= obj/
@@ -41,7 +41,7 @@ SRCS	:= 	cub3d.c \
 			init_math_tables.c \
 			load_textures.c \
 			load_weapon_textures.c \
-			enemy_textures.c
+			enemy_textures.c \
 			
 OBJS	:= $(addprefix $(OBJ_DIR), ${SRCS:.c=.o})
 

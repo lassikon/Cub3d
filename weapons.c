@@ -48,7 +48,10 @@ void	fire_key(t_game *game, int *flag)
 		&& game->e[game->in_crosshairs_id].dying == 0
 		&& (game->gun.hk53_fire_img[0]->enabled == true
 			|| game->gun.hk53_fire_mid_img[0]->enabled == true))
+	{
 		game->e[game->in_crosshairs_id].dying = 1;
+		game->e[game->in_crosshairs_id].attacking = 0;
+	}
 }
 
 void	aim_key(t_game *game, int *flag)

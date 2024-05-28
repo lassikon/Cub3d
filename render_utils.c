@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:09:23 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 11:50:40 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:58:53 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ void	next_enemy_to_render(t_game *game)
 		}
 		i++;
 	}
-	enemy_attack(game, game->next_enemy_to_render);
+	if (game->next_enemy_to_render >= 0)
+		enemy_attack(game, game->next_enemy_to_render);
 }

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:56:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 16:13:30 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 12:11:20 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ void	hitpoints(t_game *game, double frame)
 	if (game->hp_img)
 		mlx_delete_image(game->mlx, game->hp_img);
 	game->hp_img = mlx_put_string(game->mlx, hp, 10, 10);
-	if (game->p.hp < 100 && (int)frame % 40 == 0)
-		game->p.hp++;
+	if (game->p.hp < 90 && (int)frame % 40 == 0)
+		game->p.hp += 10;
+	disable_img_frames(game->hp_imgs, 10);
+	if (game->p.hp < 80)
+		game->hp_imgs[(game->p.hp / 8)]->enabled = true;
 }
 
 void	game_loop(void *param)
@@ -47,6 +50,7 @@ void	game_loop(void *param)
 	game = (t_game *)param;
 	init_frame(game);
 	ft_memset(game->image->pixels, 0, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
+	ft_memset(game->image->pixels, 128, SCREEN_WIDTH * SCREEN_HEIGHT * 4);
 	move_player(game);
 	render_walls(game);
 	while (i < game->enemy_count)

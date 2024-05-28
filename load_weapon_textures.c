@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 16:04:39 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 15:08:05 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/28 11:11:53 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	load_fire_images(t_game *game, t_scene *scene)
 		SCREEN_WIDTH, SCREEN_HEIGHT);
 		mlx_image_to_window(game->mlx, game->gun.hk53_fire_img[i], 0, 0);
 		mlx_set_instance_depth(&game->gun.hk53_fire_img[i]->instances[0], \
-		2 + i);
+		2);
 		game->gun.hk53_fire_img[i]->enabled = false;
 		i++;
 	}
@@ -66,7 +66,7 @@ void	load_aim_images(t_game *game, t_scene *scene)
 		SCREEN_WIDTH, SCREEN_HEIGHT);
 		mlx_image_to_window(game->mlx, game->gun.hk53_aim_mid_img[i], 0, 0);
 		mlx_set_instance_depth(&game->gun.hk53_aim_mid_img[i]->instances[0], \
-		3 + i);
+		2);
 		game->gun.hk53_aim_mid_img[i]->enabled = false;
 		i++;
 	}
@@ -90,7 +90,7 @@ void	load_mid_fire_images(t_game *game, t_scene *scene)
 		SCREEN_WIDTH, SCREEN_HEIGHT);
 		mlx_image_to_window(game->mlx, game->gun.hk53_fire_mid_img[i], 0, 0);
 		mlx_set_instance_depth(&game->gun.hk53_fire_mid_img[i]->instances[0], \
-		3 + i);
+		2);
 		game->gun.hk53_fire_mid_img[i]->enabled = false;
 		i++;
 	}

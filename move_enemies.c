@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:47:40 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 11:45:18 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 12:11:57 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ void	enemy_attack(t_game *game, int id)
 	{
 		if (game->e[id].attacking == 0)
 			game->e[id].attacking = 1;
-		if (game->e[id].attacking == 18 && game->p.hp > 5)
-			game->p.hp -= 5;
+		if (game->e[id].attacking == 18 && game->p.hp > 20)
+			game->p.hp -= 20;
 	}
-	printf("enemy %d attacking: %d\n", id, game->e[id].attacking);
 }
 
 static int	enemy_collision(t_game *game, int x, int y, int id)
