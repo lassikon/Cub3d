@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:42:55 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 11:13:46 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/28 14:11:06 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ void	load_hp_textures(t_game *game, t_scene *scene)
 	while (i < 10)
 	{
 		get_texture_name(buffer, "textures/hp/blood", 1 + i);
-		game->hp_txs[i] = mlx_load_png(buffer);
-		if (game->hp_txs[i] == NULL)
+		scene->hp_txs[i] = mlx_load_png(buffer);
+		if (scene->hp_txs[i] == NULL)
 			mlx_error_exit(game, scene);
 		game->hp_imgs[i] = mlx_texture_to_image(game->mlx, \
-		game->hp_txs[i]);
+		scene->hp_txs[i]);
 		mlx_resize_image(game->hp_imgs[i], \
 		SCREEN_WIDTH, SCREEN_HEIGHT);
 		mlx_image_to_window(game->mlx, game->hp_imgs[i], 0, 0);

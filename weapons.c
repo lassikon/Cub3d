@@ -26,8 +26,6 @@ void	disable_img_frames(mlx_image_t **img, int frames)
 
 void	fire_key(t_game *game, int *flag)
 {
-	disable_img_frames(game->gun.hk53_fire_img, 14);
-	disable_img_frames(game->gun.hk53_fire_mid_img, 13);
 	if ((mlx_is_key_down(game->mlx, MLX_KEY_F)
 			|| mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT))
 		&& game->gun.state != AIM_ANIMATING)
@@ -87,6 +85,8 @@ void	weapons(t_game *game)
 		game->gun.state = AIM;
 	else
 		game->gun.state = AIM_ANIMATING;
+	disable_img_frames(game->gun.hk53_fire_img, 14);
+	disable_img_frames(game->gun.hk53_fire_mid_img, 13);
 	fire_key(game, &flag);
 	aim_key(game, &flag);
 }

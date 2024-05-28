@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 16:04:39 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 11:11:53 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/28 14:14:04 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ void	load_fire_images(t_game *game, t_scene *scene)
 	while (i < 14)
 	{
 		get_texture_name(buffer, "sprites/hk53/hk53_fire.", i);
-		game->gun.hk53_fire_tx[i] = mlx_load_png(buffer);
-		if (game->gun.hk53_fire_tx[i] == NULL)
+		scene->hk53_fire_tx[i] = mlx_load_png(buffer);
+		if (scene->hk53_fire_tx[i] == NULL)
 			mlx_error_exit(game, scene);
 		game->gun.hk53_fire_img[i] = mlx_texture_to_image(game->mlx, \
-		game->gun.hk53_fire_tx[i]);
+		scene->hk53_fire_tx[i]);
 		mlx_resize_image(game->gun.hk53_fire_img[i], \
 		SCREEN_WIDTH, SCREEN_HEIGHT);
 		mlx_image_to_window(game->mlx, game->gun.hk53_fire_img[i], 0, 0);
@@ -57,11 +57,11 @@ void	load_aim_images(t_game *game, t_scene *scene)
 	while (i < 12)
 	{
 		get_texture_name(buffer, "sprites/hk53/hk53_aim.", i + 1);
-		game->gun.hk53_aim_mid_tx[i] = mlx_load_png(buffer);
-		if (game->gun.hk53_aim_mid_tx[i] == NULL)
+		scene->hk53_aim_mid_tx[i] = mlx_load_png(buffer);
+		if (scene->hk53_aim_mid_tx[i] == NULL)
 			mlx_error_exit(game, scene);
 		game->gun.hk53_aim_mid_img[i] = mlx_texture_to_image(game->mlx, \
-		game->gun.hk53_aim_mid_tx[i]);
+		scene->hk53_aim_mid_tx[i]);
 		mlx_resize_image(game->gun.hk53_aim_mid_img[i], \
 		SCREEN_WIDTH, SCREEN_HEIGHT);
 		mlx_image_to_window(game->mlx, game->gun.hk53_aim_mid_img[i], 0, 0);
@@ -81,11 +81,11 @@ void	load_mid_fire_images(t_game *game, t_scene *scene)
 	while (i < 13)
 	{
 		get_texture_name(buffer, "sprites/hk53/hk53_aimfire.", i + 1);
-		game->gun.hk53_fire_mid_tx[i] = mlx_load_png(buffer);
-		if (game->gun.hk53_fire_mid_tx[i] == NULL)
+		scene->hk53_fire_mid_tx[i] = mlx_load_png(buffer);
+		if (scene->hk53_fire_mid_tx[i] == NULL)
 			mlx_error_exit(game, scene);
 		game->gun.hk53_fire_mid_img[i] = mlx_texture_to_image(game->mlx, \
-		game->gun.hk53_fire_mid_tx[i]);
+		scene->hk53_fire_mid_tx[i]);
 		mlx_resize_image(game->gun.hk53_fire_mid_img[i], \
 		SCREEN_WIDTH, SCREEN_HEIGHT);
 		mlx_image_to_window(game->mlx, game->gun.hk53_fire_mid_img[i], 0, 0);

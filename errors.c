@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:14:58 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/28 11:43:01 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:18:43 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,46 @@ static void	delete_enemy_textures(t_scene *scene)
 	}
 }
 
+static void	delete_gun_textures(t_scene *scene)
+{
+	int	i;
+
+	i = 0;
+	while (i < 14)
+	{
+		if (scene->hk53_fire_tx[i])
+			mlx_delete_texture(scene->hk53_fire_tx[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 12)
+	{
+		if (scene->hk53_aim_mid_tx[i])
+			mlx_delete_texture(scene->hk53_aim_mid_tx[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 13)
+	{
+		if (scene->hk53_fire_mid_tx[i])
+			mlx_delete_texture(scene->hk53_fire_mid_tx[i]);
+		i++;
+	}
+}
+
+void	delete_hp_textures(t_scene *scene)
+{
+	int	i;
+
+	i = 0;
+	while (i < 10)
+	{
+		if (scene->hp_txs[i])
+			mlx_delete_texture(scene->hp_txs[i]);
+		i++;
+	}
+}
+
 void	delete_textures(t_scene *scene)
 {
 	if (scene->north_tex)
@@ -86,6 +126,8 @@ void	delete_textures(t_scene *scene)
 	if (scene->door_tex)
 		mlx_delete_texture(scene->door_tex);
 	delete_enemy_textures(scene);
+	delete_hp_textures(scene);
+	delete_gun_textures(scene);
 }
 
 void	mlx_error_exit(t_game *game, t_scene *scene)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 12:06:57 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:16:52 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,10 @@ typedef struct s_scene
 	mlx_texture_t	*e_tex[4];
 	mlx_texture_t	*ea_tex[3];
 	mlx_texture_t	*ed_tex[9];
+	mlx_texture_t	*hp_txs[10];
+	mlx_texture_t	*hk53_aim_mid_tx[12];
+	mlx_texture_t	*hk53_fire_mid_tx[13];
+	mlx_texture_t	*hk53_fire_tx[14];
 	t_list			*tokens;
 }					t_scene;
 
@@ -211,15 +215,11 @@ typedef enum s_weapon_state
 	IDLE,
 	AIM,
 	AIM_ANIMATING,
-	FIRE_ANIMATING,
 }	t_weapon_state;
 
 typedef struct s_sprite
 {
-	mlx_texture_t	*hk53_fire_tx[14];
 	mlx_image_t		*hk53_fire_img[14];
-	mlx_texture_t	*hk53_aim_mid_tx[12];
-	mlx_texture_t	*hk53_fire_mid_tx[13];
 	mlx_image_t		*hk53_aim_mid_img[12];
 	mlx_image_t		*hk53_fire_mid_img[13];
 	int				aim_frme;
@@ -241,7 +241,6 @@ typedef struct s_game
 	mlx_image_t		*ceiling_img;
 	mlx_image_t		*door_img;
 	mlx_image_t		*hp_img;
-	mlx_texture_t	*hp_txs[10];
 	mlx_image_t		*hp_imgs[10];
 	t_player		p;
 	t_enemy			e[100];
