@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/29 09:52:31 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 10:47:18 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,6 +303,7 @@ void	move_mouse(t_game *game);
 void	move_enemies(t_game *game);
 int		move_collision(t_game *game, int x, int y);
 void	enemy_attack(t_game *game, int id);
+void	hitpoints(t_game *game, double frame);
 
 /*minimap*/
 void	minimap(t_game *game);
