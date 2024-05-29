@@ -16,6 +16,7 @@ SRCS	:= 	cub3d.c \
 			ray_utils.c \
 			errors.c \
 			frees.c \
+			game_state.c \
 			gnl_chk.c \
 			door_operation.c \
 			minimap.c \

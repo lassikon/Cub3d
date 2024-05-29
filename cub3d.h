@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/29 13:41:52 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 15:49:35 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,6 @@ typedef struct s_game
 	mlx_image_t		*floor_img;
 	mlx_image_t		*ceiling_img;
 	mlx_image_t		*door_img;
-	mlx_image_t		*hp_img;
 	mlx_image_t		*hp_imgs[10];
 	mlx_image_t		*game_over_img;
 	mlx_image_t		*win_img;
@@ -311,10 +310,14 @@ void	move_mouse(t_game *game);
 void	move_enemies(t_game *game);
 int		move_collision(t_game *game, int x, int y);
 void	enemy_attack(t_game *game, int id);
-void	hitpoints(t_game *game, double frame);
 
 /*minimap*/
 void	minimap(t_game *game);
+
+/*game state*/
+void	game_over(t_game *game);
+int		all_enemies_dead(t_game *game);
+void	hitpoints(t_game *game, double frame);
 
 /*weapons*/
 void	weapons(t_game *game);
@@ -338,13 +341,14 @@ void	init_ray(t_ray *ray);
 void	put_texture_pixel(t_game *game, t_ray *ray, mlx_image_t *img, int row);
 void	get_brightness_lvl(t_game *game, t_ray *ray);
 int		get_rgba(int red, int green, int blue, int alpha);
-void	render_enemy(t_game *game, int i, int frame);
-void	next_enemy_to_render(t_game *game);
+void	render_enemies(t_game *game);
 void	render_walls(t_game *game);
 void	render_floor_color(t_game *game);
 void	draw_floor(t_game *game, t_ray *ray, mlx_image_t *img);
 void	render_ceiling_color(t_game *game);
 void	draw_ceiling(t_game *game, t_ray *ray, mlx_image_t *img);
+void	get_enemy_tx_ty(t_game *game, t_ray *eray, float ratio, int i);
+void	get_enemy_x_y(t_game *game, t_ray *eray, int i);
 
 /*parse and utils*/
 void	init_scene(t_scene *scene);
