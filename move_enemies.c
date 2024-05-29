@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_enemies.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:47:40 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/29 10:02:03 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 11:38:14 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ void	hitpoints(t_game *game, double frame)
 {
 	char	hp[4];
 
+	if (game->over)
+		return ;
 	ft_memset(hp, 0, 4);
 	ft_itoa_stack(hp, game->p.hp);
 	if (game->hp_img)
 		mlx_delete_image(game->mlx, game->hp_img);
 	game->hp_img = mlx_put_string(game->mlx, hp, 10, 10);
-	if (game->p.hp < 90 && (int)frame % 40 == 0)
+	if (game->p.hp < 90 && (int)frame % 40 == 0 && game->p.regen_cooldown == 0)
 		game->p.hp += 10;
 	disable_img_frames(game->hp_imgs, 10);
 	if (game->p.hp < 80)
@@ -35,8 +37,11 @@ void	enemy_attack(t_game *game, int id)
 	{
 		if (game->e[id].attacking == 0)
 			game->e[id].attacking = 1;
-		if (game->e[id].attacking == 18 && game->p.hp > 20)
+		if (game->e[id].attacking == 18 && game->p.hp > 0)
+		{
 			game->p.hp -= 20;
+			game->p.regen_cooldown = 100;
+		}
 	}
 }
 
@@ -87,6 +92,8 @@ void	move_enemies(t_game *game)
 	int	i;
 
 	i = 0;
+	if (game->over || game->victory || game->keep_playing)
+		return ;
 	while (i < game->enemy_count)
 	{
 		if (game->e[i].alive && game->e[i].dying == 0)

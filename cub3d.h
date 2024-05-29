@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/29 10:47:18 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 13:41:52 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_player
 	int		jumping;
 	int		jump_height[14];
 	int		hp;
+	int		regen_cooldown;
 }	t_player;
 
 typedef struct s_enemy
@@ -139,6 +140,8 @@ typedef struct s_scene
 	mlx_texture_t	*hk53_aim_mid_tx[12];
 	mlx_texture_t	*hk53_fire_mid_tx[13];
 	mlx_texture_t	*hk53_fire_tx[14];
+	mlx_texture_t	*game_over_tex;
+	mlx_texture_t	*win_tex;
 	t_list			*tokens;
 }					t_scene;
 
@@ -242,6 +245,8 @@ typedef struct s_game
 	mlx_image_t		*door_img;
 	mlx_image_t		*hp_img;
 	mlx_image_t		*hp_imgs[10];
+	mlx_image_t		*game_over_img;
+	mlx_image_t		*win_img;
 	t_player		p;
 	t_enemy			e[100];
 	t_render		render;
@@ -260,6 +265,9 @@ typedef struct s_game
 	int				enemy_count;
 	int				in_crosshairs_id;
 	int				next_enemy_to_render;
+	bool			over;
+	bool			victory;
+	bool			keep_playing;
 }					t_game;
 
 /*error*/
@@ -330,19 +338,11 @@ void	init_ray(t_ray *ray);
 void	put_texture_pixel(t_game *game, t_ray *ray, mlx_image_t *img, int row);
 void	get_brightness_lvl(t_game *game, t_ray *ray);
 int		get_rgba(int red, int green, int blue, int alpha);
-
-/*render enemies*/
 void	render_enemy(t_game *game, int i, int frame);
 void	next_enemy_to_render(t_game *game);
-
-/*render walls*/
 void	render_walls(t_game *game);
-
-/*render floor*/
 void	render_floor_color(t_game *game);
 void	draw_floor(t_game *game, t_ray *ray, mlx_image_t *img);
-
-/*render ceiling*/
 void	render_ceiling_color(t_game *game);
 void	draw_ceiling(t_game *game, t_ray *ray, mlx_image_t *img);
 

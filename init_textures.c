@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:32:12 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/29 09:55:08 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 10:27:44 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	init_textures(t_game *game, t_scene *scene)
 	scene->floor_tex = NULL;
 	scene->ceiling_tex = NULL;
 	scene->door_tex = NULL;
+	scene->game_over_tex = NULL;
 	null_e_and_w_textures(scene);
 	load_textures(game, scene);
 	wall_textures_to_img(game, scene);
