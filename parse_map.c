@@ -6,33 +6,11 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 14:20:31 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 09:48:01 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static int	is_arrdigit(char **arr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (arr[i])
-	{
-		j = 0;
-		while (arr[i][j])
-		{
-			if (!ft_isdigit(arr[i][j]))
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	if (i != 3)
-		return (1);
-	return (0);
-}
 
 static void	parse_color(t_scene *scene, t_list **lst_iter, int *color)
 {
@@ -60,6 +38,25 @@ static void	parse_color(t_scene *scene, t_list **lst_iter, int *color)
 		j++;
 	}
 	free_arr(&split);
+}
+
+static void	write_map(t_scene *scene, t_list *lst_iter, int i)
+{
+	char	*t_line;
+	t_type	t_type;
+	size_t	t_len;
+	size_t	t_start;
+
+	t_line = ((t_token *)(lst_iter)->content)->line;
+	t_type = ((t_token *)(lst_iter)->content)->type;
+	t_len = ((t_token *)(lst_iter)->content)->location.len;
+	t_start = ((t_token *)(lst_iter)->content)->location.start;
+	if (t_type == MAP)
+	{
+		scene->map[i] = ft_calloc(scene->map_width + 1, sizeof(char));
+		malloc_guard(scene, &scene->map, scene->map[i]);
+		ft_memcpy(scene->map[i], t_line + t_start, t_len);
+	}
 }
 
 static void	parse_map(t_scene *scene, t_list **map_head)

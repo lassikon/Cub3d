@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_textures.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:59:01 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 14:45:05 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/29 09:45:02 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,24 +63,41 @@ static mlx_image_t	*enemy_death_img(t_game *game, t_scene *scene, int i)
 	return (img);
 }
 
-void	enemy_textures(t_game *game, t_scene *scene)
+static void	assign_enemy_textures(t_game *game)
 {
-	int		i;
 	int		e;
+	int		i;
 
-	e = 0;
+	e = 1;
 	while (e < game->enemy_count)
 	{
 		i = 0;
 		while (i < 9)
 		{
-			game->e[e].dimg[i] = enemy_death_img(game, scene, i);
+			game->e[e].dimg[i] = game->e[0].dimg[i];
 			if (i < 4)
-				game->e[e].img[i] = enemy_walk_img(game, scene, i);
+				game->e[e].img[i] = game->e[0].img[i];
 			if (i < 3)
-				game->e[e].aimg[i] = enemy_attack_img(game, scene, i);
+				game->e[e].aimg[i] = game->e[0].aimg[i];
 			i++;
 		}
 		e++;
 	}
+}
+
+void	enemy_textures(t_game *game, t_scene *scene)
+{
+	int		i;
+
+	i = 0;
+	while (i < 9)
+	{
+		game->e[0].dimg[i] = enemy_death_img(game, scene, i);
+		if (i < 4)
+			game->e[0].img[i] = enemy_walk_img(game, scene, i);
+		if (i < 3)
+			game->e[0].aimg[i] = enemy_attack_img(game, scene, i);
+		i++;
+	}
+	assign_enemy_textures(game);
 }

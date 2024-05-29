@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:42:55 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 14:44:03 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 09:53:40 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	load_floor_ceiling_door_textures(t_game *game, t_scene *scene)
 	}
 }
 
-void	load_hp_textures(t_game *game, t_scene *scene)
+static void	load_hp_textures(t_game *game, t_scene *scene)
 {
 	int		i;
 	char	buffer[100];

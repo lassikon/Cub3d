@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:32:12 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 14:36:12 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 09:55:08 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	floor_ceiling_door_textures_to_img(t_game *game, t_scene *scene)
 	}
 }
 
-static void	null_textures(t_scene *scene)
+static void	null_e_and_w_textures(t_scene *scene)
 {
 	int	i;
 
@@ -86,6 +86,10 @@ static void	null_textures(t_scene *scene)
 			scene->ea_tex[i] = NULL;
 		i++;
 	}
+}
+
+void	init_textures(t_game *game, t_scene *scene)
+{
 	scene->north_tex = NULL;
 	scene->south_tex = NULL;
 	scene->east_tex = NULL;
@@ -93,11 +97,7 @@ static void	null_textures(t_scene *scene)
 	scene->floor_tex = NULL;
 	scene->ceiling_tex = NULL;
 	scene->door_tex = NULL;
-}
-
-void	init_textures(t_game *game, t_scene *scene)
-{
-	null_textures(scene);
+	null_e_and_w_textures(scene);
 	load_textures(game, scene);
 	wall_textures_to_img(game, scene);
 	floor_ceiling_door_textures_to_img(game, scene);

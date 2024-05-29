@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 14:16:52 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 09:52:31 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,6 +288,7 @@ typedef struct s_error_entry
 /*init game*/
 void	init_textures(t_game *game, t_scene *scene);
 void	load_textures(t_game *game, t_scene *scene);
+void	get_texture_name(char *buffer, char *path, int i);
 void	load_weapon_textures(t_game *game, t_scene *scene);
 void	init_game(t_game *game, t_scene *scene);
 void	init_math_tables(t_game *game);
@@ -352,10 +353,10 @@ void	parse(t_scene *scene, int argc, char **argv);
 void	malloc_guard(t_scene *scene, char ***tmp, void *ptr);
 size_t	ft_arrlen(char **arr);
 char	*substr_guard(t_scene *scene, t_list **head);
-void	write_map(t_scene *scene, t_list *head, int i);
 void	extract_data(t_scene *scene);
 void	is_valid(t_scene *scene);
 void	ft_itoa_stack(char *buf, int n);
+int		is_arrdigit(char **arr);
 
 /*frees and error*/
 void	free_arr(char ***array);
@@ -364,9 +365,5 @@ void	free_scene(t_scene *scene);
 void	error_handler(t_scene *scene, t_err_code code);
 void	mlx_error_exit(t_game *game, t_scene *scene);
 void	delete_textures(t_scene *scene);
-
-/*debug*/
-void	print_array(char **array);
-void	print_list(t_list *head);
 
 #endif

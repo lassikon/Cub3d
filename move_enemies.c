@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   move_enemies.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:47:40 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 12:11:57 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/29 10:02:03 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	hitpoints(t_game *game, double frame)
+{
+	char	hp[4];
+
+	ft_memset(hp, 0, 4);
+	ft_itoa_stack(hp, game->p.hp);
+	if (game->hp_img)
+		mlx_delete_image(game->mlx, game->hp_img);
+	game->hp_img = mlx_put_string(game->mlx, hp, 10, 10);
+	if (game->p.hp < 90 && (int)frame % 40 == 0)
+		game->p.hp += 10;
+	disable_img_frames(game->hp_imgs, 10);
+	if (game->p.hp < 80)
+		game->hp_imgs[(game->p.hp / 8)]->enabled = true;
+}
 
 void	enemy_attack(t_game *game, int id)
 {

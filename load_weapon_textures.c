@@ -6,25 +6,13 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 16:04:39 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 14:14:04 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 09:53:31 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	get_texture_name(char *buffer, char *path, int i)
-{
-	char	itoa[100];
-
-	ft_memset(buffer, 0, 100);
-	ft_memset(itoa, 0, 100);
-	ft_itoa_stack(itoa, i);
-	ft_strlcpy(buffer, path, ft_strlen(path) + 1);
-	ft_strlcat(buffer, itoa, ft_strlen(buffer) + ft_strlen(itoa) + 1);
-	ft_strlcat(buffer, ".png", ft_strlen(buffer) + 5);
-}
-
-void	load_fire_images(t_game *game, t_scene *scene)
+static void	load_fire_images(t_game *game, t_scene *scene)
 {
 	int		i;
 	char	buffer[100];
@@ -48,7 +36,7 @@ void	load_fire_images(t_game *game, t_scene *scene)
 	}
 }
 
-void	load_aim_images(t_game *game, t_scene *scene)
+static void	load_aim_images(t_game *game, t_scene *scene)
 {
 	int		i;
 	char	buffer[100];
@@ -72,7 +60,7 @@ void	load_aim_images(t_game *game, t_scene *scene)
 	}
 }
 
-void	load_mid_fire_images(t_game *game, t_scene *scene)
+static void	load_mid_fire_images(t_game *game, t_scene *scene)
 {
 	int		i;
 	char	buffer[100];
