@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:44:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/24 14:46:17 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:38:08 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	move_mouse(t_game *game)
 	int	x_mid;
 	int	y_mid;
 
+	if (game->over || game->victory)
+		return ;
 	x = 0;
 	y = 0;
 	x_mid = SCREEN_WIDTH / 2;

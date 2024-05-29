@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:41:22 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/29 09:31:36 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 11:38:27 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,10 @@ void	init_game(t_game *game, t_scene *scene)
 	game->gun.fire_frme = -1;
 	game->p.jumping = 0;
 	game->p.hp = 100;
+	game->p.regen_cooldown = 0;
+	game->over = false;
+	game->victory = false;
+	game->keep_playing = false;
 	find_player(game);
 	init_enemies(game);
 	init_textures(game, scene);

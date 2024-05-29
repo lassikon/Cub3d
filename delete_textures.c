@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_textures.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:41:14 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/29 09:41:41 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 11:15:44 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	delete_textures(t_scene *scene)
 		mlx_delete_texture(scene->ceiling_tex);
 	if (scene->door_tex)
 		mlx_delete_texture(scene->door_tex);
+	if (scene->game_over_tex)
+		mlx_delete_texture(scene->game_over_tex);
 	delete_enemy_textures(scene);
 	delete_gun_hp_textures(scene);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/29 09:52:31 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/29 11:38:22 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_player
 	int		jumping;
 	int		jump_height[14];
 	int		hp;
+	int		regen_cooldown;
 }	t_player;
 
 typedef struct s_enemy
@@ -139,6 +140,8 @@ typedef struct s_scene
 	mlx_texture_t	*hk53_aim_mid_tx[12];
 	mlx_texture_t	*hk53_fire_mid_tx[13];
 	mlx_texture_t	*hk53_fire_tx[14];
+	mlx_texture_t	*game_over_tex;
+	mlx_texture_t	*win_tex;
 	t_list			*tokens;
 }					t_scene;
 
@@ -242,6 +245,8 @@ typedef struct s_game
 	mlx_image_t		*door_img;
 	mlx_image_t		*hp_img;
 	mlx_image_t		*hp_imgs[10];
+	mlx_image_t		*game_over_img;
+	mlx_image_t		*win_img;
 	t_player		p;
 	t_enemy			e[100];
 	t_render		render;
@@ -260,6 +265,9 @@ typedef struct s_game
 	int				enemy_count;
 	int				in_crosshairs_id;
 	int				next_enemy_to_render;
+	bool			over;
+	bool			victory;
+	bool			keep_playing;
 }					t_game;
 
 /*error*/
@@ -303,6 +311,7 @@ void	move_mouse(t_game *game);
 void	move_enemies(t_game *game);
 int		move_collision(t_game *game, int x, int y);
 void	enemy_attack(t_game *game, int id);
+void	hitpoints(t_game *game, double frame);
 
 /*minimap*/
 void	minimap(t_game *game);

@@ -6,7 +6,7 @@
 /*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:23:34 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/28 10:41:58 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:38:51 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	move_right(t_game *game)
 
 void	move_player(t_game *game)
 {
+	if (game->over || game->victory)
+		return ;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
 		move_forward(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
