@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/27 14:15:24 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 12:41:56 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,17 @@ char	*substr_guard(t_scene *scene, t_list **head)
 	size_t	t_len;
 	size_t	t_start;
 	char	*substr;
+	char	*trim;
 
 	t_line = ((t_token *)(*head)->content)->line;
 	t_len = ((t_token *)(*head)->content)->location.len;
 	t_start = ((t_token *)(*head)->content)->location.start;
 	substr = ft_substr(t_line, t_start, t_len);
 	malloc_guard(scene, NULL, substr);
-	return (substr);
+	trim = ft_strtrim(substr, " ");
+	malloc_guard(scene, NULL, trim);
+	free(substr);
+	return (trim);
 }
 
 void	write_map(t_scene *scene, t_list *lst_iter, int i)

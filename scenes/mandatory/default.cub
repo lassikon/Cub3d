@@ -1,12 +1,12 @@
 SO textures/code3.png
 NO textures/code3.png
-EA textures/code3.png
-WE textures/tile_wall.png
+EA textures/code3.png   
+WE textures/tile_wall.png          
 
 C 0,255,255
 F 105,105,105
 
-    
+
         1111111111111111111111111
         1000000000110000000000001
         1011000001110000000000001
