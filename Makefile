@@ -33,41 +33,41 @@ MNDTRY_SRCS	:= 	cub3d.c \
 
 MNDTRY_OBJS	:= $(addprefix $(MNDTRY_OBJ_DIR), ${MNDTRY_SRCS:.c=.o})
 
-BNS_SRCS	:= 	cub3d.c \
-			cast_ray.c \
-			ray_collision.c \
-			ray_utils.c \
-			errors.c \
-			frees.c \
-			game_state.c \
-			gnl_chk.c \
-			door_operation.c \
-			minimap.c \
-			move_collisions.c \
-			move_enemies.c \
-			move_mouse.c \
-			move_player.c \
-			move_player_vertical.c \
-			parse.c \
-			parse_map.c \
-			parse_map_validate.c \
-			parse_utils.c \
-			render_ceiling.c \
-			render_doors.c \
-			render_enemies.c \
-			render_floor.c \
-			render_utils.c \
-			render_walls.c \
-			tokenize.c \
-			weapons.c \
-			init_game.c \
-			init_textures.c \
-			init_math_tables.c \
-			load_textures.c \
-			load_weapon_textures.c \
-			enemy_textures.c \
-			delete_textures.c \
-			init_texture_utils.c \
+BNS_SRCS	:= 	cub3d_bonus.c \
+			cast_ray_bonus.c \
+			ray_collision_bonus.c \
+			ray_utils_bonus.c \
+			errors_bonus.c \
+			frees_bonus.c \
+			game_state_bonus.c \
+			gnl_chk_bonus.c \
+			door_operation_bonus.c \
+			minimap_bonus.c \
+			move_collisions_bonus.c \
+			move_enemies_bonus.c \
+			move_mouse_bonus.c \
+			move_player_bonus.c \
+			move_player_vertical_bonus.c \
+			parse_bonus.c \
+			parse_map_bonus.c \
+			parse_map_validate_bonus.c \
+			parse_utils_bonus.c \
+			render_ceiling_bonus.c \
+			render_doors_bonus.c \
+			render_enemies_bonus.c \
+			render_floor_bonus.c \
+			render_utils_bonus.c \
+			render_walls_bonus.c \
+			tokenize_bonus.c \
+			weapons_bonus.c \
+			init_game_bonus.c \
+			init_textures_bonus.c \
+			init_math_tables_bonus.c \
+			load_textures_bonus.c \
+			load_weapon_textures_bonus.c \
+			enemy_textures_bonus.c \
+			delete_textures_bonus.c \
+			init_texture_utils_bonus.c \
 			
 BNS_OBJS	:= $(addprefix $(BNS_OBJ_DIR), ${BNS_SRCS:.c=.o})
 
