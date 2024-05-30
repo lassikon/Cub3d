@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_mouse_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:44:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/30 11:07:08 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 11:46:12 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,19 @@ void	move_mouse(t_game *game)
 
 	if (game->over || game->victory)
 		return ;
-	x = 0;
-	y = 0;
 	x_mid = SCREEN_WIDTH / 2;
 	y_mid = SCREEN_HEIGHT / 2;
+	x = x_mid;
+	y = y_mid;
+	if (game->frame_count < 5)
+		mlx_set_mouse_pos(game->mlx, x_mid, y_mid);
+	if (game->frame_count < 5)
+		return ;
 	mlx_get_mouse_pos(game->mlx, &x, &y);
-	if (x > SCREEN_WIDTH)
-		x = SCREEN_WIDTH;
-	if (x < 0)
-		x = 0;
-	move_x(&game->p.angle, x);
-	if (LOOK_UP_AND_DOWN)
+	if (x != x_mid || y != y_mid)
+	{
+		move_x(&game->p.angle, x);
 		move_y(&game->vertical_center, y);
+	}
 	mlx_set_mouse_pos(game->mlx, x_mid, y_mid);
 }

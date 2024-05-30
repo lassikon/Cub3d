@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_game_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 14:41:22 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/30 11:06:46 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 11:50:18 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-void	find_player(t_game *game)
+static void	find_player(t_game *game)
 {
 	int	i;
 	int	j;
@@ -40,7 +40,7 @@ void	find_player(t_game *game)
 	}
 }
 
-void	find_enemies(t_game *game)
+static void	find_enemies(t_game *game)
 {
 	int		i;
 	int		j;
@@ -69,7 +69,7 @@ void	find_enemies(t_game *game)
 	game->enemy_count = k;
 }
 
-void	init_enemies(t_game *game)
+static void	init_enemies(t_game *game)
 {
 	int	i;
 
@@ -85,18 +85,13 @@ void	init_enemies(t_game *game)
 	find_enemies(game);
 }
 
-void	init_game(t_game *game, t_scene *scene)
+static void	init_game_variables(t_game *game)
 {
-	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
-	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	game->mini_img = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
-	game->dist_to_proj_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
+	game->frame_count = 0;
+	game->next_enemy_to_render = 0;
 	game->p.height = TILE / 2;
 	game->vertical_center = SCREEN_HEIGHT / 2;
 	game->angle_step = FOV / SCREEN_WIDTH;
-	game->map = scene->map;
-	game->floor_color = scene->floor_color;
-	game->ceiling_color = scene->ceiling_color;
 	game->gun.aim_frme = -1;
 	game->gun.fire_frme = -1;
 	game->p.jumping = 0;
@@ -105,17 +100,29 @@ void	init_game(t_game *game, t_scene *scene)
 	game->over = false;
 	game->victory = false;
 	game->keep_playing = false;
+}
+
+void	init_game(t_game *game, t_scene *scene)
+{
+	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Cub3D", false);
+	game->image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	game->mini_img = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
+	game->dist_to_proj_plane = (SCREEN_WIDTH / 2) / tan(FOV / 2);
+	game->floor_color = scene->floor_color;
+	game->ceiling_color = scene->ceiling_color;
+	game->map = scene->map;
+	game->map_width = scene->map_width * TILE;
+	game->map_height = scene->map_height * TILE;
+	init_game_variables(game);
 	find_player(game);
 	init_enemies(game);
 	init_textures(game, scene);
 	init_math_tables(game);
 	mlx_image_to_window(game->mlx, game->image, 0, 0);
-	game->map_width = scene->map_width * TILE;
-	game->map_height = scene->map_height * TILE;
-	mlx_image_to_window(game->mlx, game->mini_img, SCREEN_WIDTH - MINIMAP_SIZE, 0);
+	mlx_image_to_window(game->mlx, game->mini_img,
+		SCREEN_WIDTH - MINIMAP_SIZE, 0);
 	mlx_set_instance_depth(&game->image->instances[0], 0);
 	mlx_set_instance_depth(&game->mini_img->instances[0], 1);
-	mlx_set_mouse_pos(game->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
 	init_jump_height_table(game);
 }
