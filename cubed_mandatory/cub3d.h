@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/27 14:15:32 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 10:13:30 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include "../libft/include/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 # include "token.h"
-# include "../MLX42/include/glad/glad.h"
 
 # define SCREEN_WIDTH 1024
 # define SCREEN_HEIGHT 576

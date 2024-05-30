@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_walls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:46:13 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/21 14:08:09 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/30 10:38:02 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ static void	draw_column(t_game *game, t_ray *ray, mlx_image_t *img)
 	while (y < game->vertical_center + ray->height / 2 && y < SCREEN_HEIGHT)
 	{
 		ray->pix = &img->pixels[(int)ray->ty * IMG_WIDTH * 4 + ray->tx];
-		if (!ray->pix[3])
-			break ;
-		color = get_rgba(ray->pix[0], ray->pix[1], ray->pix[2], ray->pix[3]);
-		mlx_put_pixel(game->image, ray->column, y, color);
+		if (ray->pix[3])
+			color = get_rgba(ray->pix[0], ray->pix[1], \
+			ray->pix[2], ray->pix[3]);
+		if (ray->pix[3])
+			mlx_put_pixel(game->image, ray->column, y, color);
 		y++;
 		ray->ty += ray->ty_step;
 		if (ray->ty >= IMG_HEIGHT)

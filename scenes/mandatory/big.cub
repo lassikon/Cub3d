@@ -1,7 +1,7 @@
 NO textures/tile_wall.png
 SO textures/tile_wall.png
 WE textures/tile_wall.png
-EA textures/tile_wall.png
+EA textures/exit.png
 
 F 220,100,0
 C 225,30,0

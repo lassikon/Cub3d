@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   gnl_chk.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: janraub <janraub@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 08:37:53 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/05 12:36:57 by janraub          ###   ########.fr       */
+/*   Updated: 2024/05/30 09:30:41 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/include/libft.h"
+#include "../libft/include/libft.h"
 
 static int	on_error(char **gnl)
 {

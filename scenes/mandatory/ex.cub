@@ -1,4 +1,4 @@
-NO                 textures/checker.png
+NO                 textures/hero.png
 
 
 
@@ -16,7 +16,7 @@ WE              textures/checker.png
 
 
 
-      EA        textures/checker.png
+      EA        textures/grass.png
 
     F 220,100,0
 

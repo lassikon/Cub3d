@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/29 15:49:35 by lkonttin         ###   ########.fr       */
+/*   Updated: 2024/05/30 09:30:21 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@
 # include <errno.h>
 # include <limits.h>
 
-# include "libft/include/libft.h"
-# include "MLX42/include/MLX42/MLX42.h"
+# include "../libft/include/libft.h"
+# include "../MLX42/include/MLX42/MLX42.h"
 # include "token.h"
-# include "MLX42/include/glad/glad.h"
 
 # define SCREEN_WIDTH 1024
 # define SCREEN_HEIGHT 576
