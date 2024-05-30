@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:47:22 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/30 11:07:18 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 11:50:26 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void	parse_color(t_scene *scene, t_list **lst_iter, int *color)
 	i = 0;
 	j = 0;
 	line = substr_guard(scene, lst_iter);
-	if (ft_strnstr(line, ",,", ft_strlen(line)) != NULL)
+	if (ft_strnstr(line, ",,", ft_strlen(line)) != NULL
+		|| line[0] == ',' || line[ft_strlen(line) - 1] == ',')
 		error_handler(scene, SCENE_FORMAT_ERR);
 	split = ft_split(line, ',');
 	malloc_guard(scene, NULL, split);

@@ -6,7 +6,7 @@
 /*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 09:28:19 by jberay            #+#    #+#             */
-/*   Updated: 2024/05/30 11:07:30 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 11:47:10 by jberay           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	is_arrdigit(char **arr)
 		j = 0;
 		while (arr[i][j])
 		{
-			if (!ft_isdigit(arr[i][j]))
+			if (!ft_isdigit(arr[i][j]) || j > 3)
 				return (1);
 			j++;
 		}
