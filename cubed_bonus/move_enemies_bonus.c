@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_enemies_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:47:40 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/30 11:07:05 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 12:10:36 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	enemy_attack(t_game *game, int id)
 		if (game->e[id].attacking == 18 && game->p.hp > 0)
 		{
 			game->p.hp -= 20;
-			game->p.regen_cooldown = 100;
+			if (game->p.hp < 0)
+				game->p.hp = 0;
+			game->p.regen_cooldown = 80;
 		}
 	}
 }

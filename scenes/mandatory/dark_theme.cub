@@ -1,12 +1,11 @@
-SO textures/header_code.png
-NO textures/parse_code.png
-EA textures/door_code.png
-WE textures/tile_wall.png
+NO textures/dark/north.png
+SO textures/dark/south.png
+WE textures/dark/west.png
+EA textures/dark/east.png
 
-C 0,255,255
-F 105,105,105
-
-    
+F 60,40,40
+C 0,0,180
+ 
         1111111111111111111111111
         1000000000110000000000001
         1011000001110000000000001

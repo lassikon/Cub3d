@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_state_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:35:10 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/30 11:06:37 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 12:20:34 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ int	all_enemies_dead(t_game *game)
 			return (0);
 		i++;
 	}
-	return (1);
+	if (i > 0)
+		return (1);
+	return (0);
 }
 
 void	hitpoints(t_game *game, double frame)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 14:54:53 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/30 11:08:04 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 12:44:11 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,18 @@
 # define P_HEIGHT 32
 # define E_HEIGHT 48
 # define MOUSE_SENSITIVITY 500
-# define LOOK_UP_AND_DOWN 1
 # define DOOR_SPEED 1
 # define ENEMY_SPEED 2.5
 
 # define MAP_CHARS "1 023NSEW*"
 # define C_CHARS "12abcdefghijklmnopqrstuvwxyz"
 
-# define GREY2 0x808080FF
 # define GREY 0x404040FF
 # define RED 0xFF0000FF
-# define BROWN 0x8B4513FF
 # define DARK_BROWN 0x5A2B1DFF
 # define OLIVE 0x808000FF
 # define BLACK 0x000000FF
-# define LIGHT_GREY 0xD3D3D3FF
-# define WHITE 0xFFFFFFFF
+# define LIGHT_GREY 0xA0A0A0FF
 
 # define MSG_MALLOC "Error\nMalloc failed\n"
 # define MSG_ARG "Error\nInvalid arguments\n"

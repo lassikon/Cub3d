@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jberay <jberay@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: lkonttin <lkonttin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 10:16:45 by lkonttin          #+#    #+#             */
-/*   Updated: 2024/05/30 11:07:01 by jberay           ###   ########.fr       */
+/*   Updated: 2024/05/30 12:03:41 by lkonttin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	draw_minimap_ray(t_game *game, t_minimap *m, float angle)
 	ray_length = 0;
 	while (ray_length < 128)
 	{
-		mlx_put_pixel(game->mini_img, (int)m->x, (int)m->y, 0xA0A0A0FF);
+		mlx_put_pixel(game->mini_img, (int)m->x, (int)m->y, LIGHT_GREY);
 		m->x += cos(angle) * 0.5f;
 		m->y += sin(angle) * 0.5f;
 		ray_length++;
@@ -71,7 +71,7 @@ static void	put_minimap_pixel(t_game *game, t_minimap *m)
 		mlx_put_pixel(game->mini_img, m->x, m->y, BLACK);
 	else if (game->map[(int)(m->map_y / TILE)][(int)(m->map_x / TILE)]
 		&& game->map[(int)(m->map_y / TILE)][(int)(m->map_x / TILE)] == '2')
-		mlx_put_pixel(game->mini_img, m->x, m->y, BROWN);
+		mlx_put_pixel(game->mini_img, m->x, m->y, DARK_BROWN);
 	else if (game->map[(int)(m->map_y / TILE)][(int)(m->map_x / TILE)]
 		&& game->map[(int)(m->map_y / TILE)][(int)(m->map_x / TILE)] == '3')
 		mlx_put_pixel(game->mini_img, m->x, m->y, OLIVE);
