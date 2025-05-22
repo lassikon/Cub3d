@@ -12,35 +12,35 @@
 
 #include "cub3d_bonus.h"
 
-static void	initial_horizontal_step(t_game *game, t_ray *ray)
+static void initial_horizontal_step(t_game *game, t_ray *ray)
 {
 	if (ray->angle > PI)
 	{
 		ray->y = (int)(game->p.y / TILE) * TILE - 0.001;
-		ray->x = game->p.x + ((game->p.y - ray->y)
-				* (-1 * game->math.itan[(int)(ray->angle
-						* game->math.trig_it)]));
+		ray->x = game->p.x + ((game->p.y - ray->y) * (-1 * game->math.itan[(int)(ray->angle * game->math.trig_it)]));
 		ray->y_step = -TILE;
-		ray->x_step = TILE * (-1 * game->math.itan[(int)(ray->angle
-					* game->math.trig_it)]);
+		ray->x_step = TILE * (-1 * game->math.itan[(int)(ray->angle * game->math.trig_it)]);
 	}
 	else
 	{
 		ray->y = (int)(game->p.y / TILE) * TILE + TILE;
-		ray->x = game->p.x + ((ray->y - game->p.y)
-				* game->math.itan[(int)(ray->angle * game->math.trig_it)]);
+		ray->x = game->p.x + ((ray->y - game->p.y) * game->math.itan[(int)(ray->angle * game->math.trig_it)]);
 		ray->y_step = TILE;
-		ray->x_step = TILE * game->math.itan[(int)(ray->angle
-				* game->math.trig_it)];
+		ray->x_step = TILE * game->math.itan[(int)(ray->angle * game->math.trig_it)];
 	}
 }
 
-static void	horizontal_intersection(t_game *game, t_ray *ray)
+static bool is_float_equal(float a, float b)
 {
-	if (ray->angle == 0 || ray->angle == PI)
+	return (fabs(a - b) < 0.0001);
+}
+
+static void horizontal_intersection(t_game *game, t_ray *ray)
+{
+	if (ray->angle == 0 || is_float_equal(ray->angle, PI))
 	{
 		ray->distance_to_horizontal = MAX_DEPTH;
-		return ;
+		return;
 	}
 	initial_horizontal_step(game, ray);
 	ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
@@ -52,39 +52,34 @@ static void	horizontal_intersection(t_game *game, t_ray *ray)
 		ray->y += ray->y_step;
 		ray->distance_to_horizontal = get_distance(game, ray->x, ray->y);
 		if (ray->distance_to_horizontal == MAX_DEPTH)
-			return ;
+			return;
 	}
 }
 
-static void	initial_vertical_step(t_game *game, t_ray *ray)
+static void initial_vertical_step(t_game *game, t_ray *ray)
 {
 	if (ray->angle > PI / 2 && ray->angle < 3 * PI / 2)
 	{
 		ray->x = (int)(game->p.x / TILE) * TILE - 0.001;
-		ray->y = game->p.y + ((game->p.x - ray->x)
-				* (-1 * game->math.tan[(int)(ray->angle
-						* game->math.trig_it)]));
+		ray->y = game->p.y + ((game->p.x - ray->x) * (-1 * game->math.tan[(int)(ray->angle * game->math.trig_it)]));
 		ray->x_step = -TILE;
-		ray->y_step = TILE * (-1 * game->math.tan[(int)(ray->angle
-					* game->math.trig_it)]);
+		ray->y_step = TILE * (-1 * game->math.tan[(int)(ray->angle * game->math.trig_it)]);
 	}
 	else if (ray->angle < PI / 2 || ray->angle > 3 * PI / 2)
 	{
 		ray->x = (int)(game->p.x / TILE) * TILE + TILE;
-		ray->y = game->p.y + ((ray->x - game->p.x)
-				* game->math.tan[(int)(ray->angle * game->math.trig_it)]);
+		ray->y = game->p.y + ((ray->x - game->p.x) * game->math.tan[(int)(ray->angle * game->math.trig_it)]);
 		ray->x_step = TILE;
-		ray->y_step = TILE * game->math.tan[(int)(ray->angle
-				* game->math.trig_it)];
+		ray->y_step = TILE * game->math.tan[(int)(ray->angle * game->math.trig_it)];
 	}
 }
 
-static void	vertical_intersection(t_game *game, t_ray *ray)
+static void vertical_intersection(t_game *game, t_ray *ray)
 {
 	if (ray->angle == PI / 2 || ray->angle == 3 * PI / 2)
 	{
 		ray->distance_to_vertical = MAX_DEPTH;
-		return ;
+		return;
 	}
 	initial_vertical_step(game, ray);
 	ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
@@ -96,11 +91,11 @@ static void	vertical_intersection(t_game *game, t_ray *ray)
 		ray->y += ray->y_step;
 		ray->distance_to_vertical = get_distance(game, ray->x, ray->y);
 		if (ray->distance_to_vertical == MAX_DEPTH)
-			return ;
+			return;
 	}
 }
 
-void	cast_ray(t_game *game, t_ray *ray)
+void cast_ray(t_game *game, t_ray *ray)
 {
 	init_ray(ray);
 	horizontal_intersection(game, ray);
@@ -122,7 +117,7 @@ void	cast_ray(t_game *game, t_ray *ray)
 		ray->door_col = ray->door_v_col;
 	}
 	if (ray->distance_to_vertical > ray->distance_to_horizontal)
-		return ;
+		return;
 	ray->distance = ray->distance_to_vertical;
 	ray->col = ray_col_point(ray, VERTICAL);
 	if (closed_door_collision(game, ray))

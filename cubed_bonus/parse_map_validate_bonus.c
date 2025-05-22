@@ -12,33 +12,31 @@
 
 #include "cub3d_bonus.h"
 
-static void	check_zero(char **map, int row, int col, size_t row_max)
+static void check_zero(char **map, int row, int col, size_t row_max)
 {
-	if (row - 1 >= 0 && (ft_strchr((MAP_CHARS + 2), map[row - 1][col]) != NULL))
+	if (row - 1 >= 0 && (ft_strchr(&(MAP_CHARS[2]), map[row - 1][col]) != NULL))
 		map[row - 1][col] = 'V';
-	if (row + 1 <= (int)row_max
-		&& (ft_strchr((MAP_CHARS + 2), map[row + 1][col]) != NULL))
+	if (row + 1 <= (int)row_max && (ft_strchr(&(MAP_CHARS[2]), map[row + 1][col]) != NULL))
 		map[row + 1][col] = 'V';
-	if (col - 1 >= 0 && (ft_strchr((MAP_CHARS + 2), map[row][col - 1]) != NULL))
+	if (col - 1 >= 0 && (ft_strchr(&(MAP_CHARS[2]), map[row][col - 1]) != NULL))
 		map[row][col - 1] = 'V';
-	if (map[row][col +1])
-		if ((ft_strchr((MAP_CHARS + 2), map[row][col + 1]) != NULL))
+	if (map[row][col + 1])
+		if ((ft_strchr(&(MAP_CHARS[2]), map[row][col + 1]) != NULL))
 			map[row][col + 1] = 'V';
 }
 
-static void	fill_map(char **map, int row, int col)
+static void fill_map(char **map, int row, int col)
 {
-	size_t	row_max;
+	size_t row_max;
 
 	row_max = ft_arrlen(map) - 1;
 	if (row < 0 || col < 0 || map[row][col] == 'X')
-		return ;
+		return;
 	map[row][col] = 'X';
 	check_zero(map, row, col, row_max);
 	if (row - 1 >= 0 && (map[row - 1][col] == 'J' || map[row - 1][col] == ' '))
 		fill_map(map, row - 1, col);
-	if (row + 1 <= (int)row_max
-		&& (map[row + 1][col] == 'J' || map[row + 1][col] == ' '))
+	if (row + 1 <= (int)row_max && (map[row + 1][col] == 'J' || map[row + 1][col] == ' '))
 		fill_map(map, row + 1, col);
 	if (col - 1 >= 0 && (map[row][col - 1] == 'J' || map[row][col - 1] == ' '))
 		fill_map(map, row, col - 1);
@@ -46,14 +44,14 @@ static void	fill_map(char **map, int row, int col)
 		fill_map(map, row, col + 1);
 }
 
-static void	is_valid_map(t_scene *scene, char **tmp)
+static void is_valid_map(t_scene *scene, char **tmp)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
 
 	i = 0;
 	if (tmp == NULL)
-		return ;
+		return;
 	while ((tmp)[i])
 	{
 		j = 0;
@@ -70,10 +68,10 @@ static void	is_valid_map(t_scene *scene, char **tmp)
 	}
 }
 
-void	is_valid(t_scene *scene)
+void is_valid(t_scene *scene)
 {
-	char	**tmp;
-	int		i;
+	char **tmp;
+	int i;
 
 	tmp = ft_calloc(ft_arrlen(scene->map) + 3, sizeof(char *));
 	malloc_guard(scene, NULL, tmp);
